@@ -8,9 +8,9 @@ __pycache__/
 .venv/
 venv/
 
-# Editör
+# Editors
 .vscode/
 .idea/
 
-# Power BI geçici dosyaları
+# Power BI temporary files
 *.pbix.bak

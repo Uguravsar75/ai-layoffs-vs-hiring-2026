@@ -1,72 +1,72 @@
 """
-Sağlamlık testi: Ana bulgular, verinin farklı güvenilirlik seviyelerinde aynı kalıyor mu?
-- Tüm ana analiz (T1-T5)
-- Doğrulanmış çekirdek (T1-T3: elle doğrulanan, kısmen doğrulanan, güçlü kaynaklı)
-- Sadece elle doğrulanan (T1-T2)
-AI payı her yerde iki tanımla verilir: sıkı (ANA RAKAM) ve geniş (üst sınır).
-Zaman trendi iki ölçüyle verilir: kişi bazlı pay ve duyuru sayısı bazlı pay.
-Çıktı: robustness_check.csv (girdi dosyasıyla aynı klasöre)
+Robustness check: do the main findings hold at different reliability levels?
+- All main-analysis rows (T1-T5)
+- Verified core (T1-T3: manually verified, partially verified, strong source)
+- Manually checked only (T1-T2)
+The AI share is always reported with two definitions: strict (HEADLINE) and broad (upper bound).
+The time trend is reported with two measures: people-based share and announcement-count share.
+Output: robustness_check.csv (next to the input file)
 """
 import sys
 from pathlib import Path
 
 import pandas as pd
 
-GIRDI = Path(sys.argv[1]) if len(sys.argv) > 1 else \
+INPUT = Path(sys.argv[1]) if len(sys.argv) > 1 else \
     Path(__file__).resolve().parent.parent / "data" / "clean" / "layoffs_clean.csv"
-df = pd.read_csv(GIRDI)
-ana = df[df["in_main_analysis"]]
-setler = {
-    "1_tum_veri": ana,
-    "2_cekirdek_T1_T3": ana[ana["in_core_verified"]],
-    "3_sadece_elle_T1_T2": ana[ana["reliability_tier"].isin(["T1_elle_dogrulandi", "T2_elle_kismen"])],
+df = pd.read_csv(INPUT)
+main_set = df[df["in_main_analysis"]]
+levels = {
+    "1_all_rows": main_set,
+    "2_core_T1_T3": main_set[main_set["in_core_verified"]],
+    "3_manual_only_T1_T2": main_set[main_set["reliability_tier"].isin(["T1_manual_verified", "T2_manual_partial"])],
 }
 
 
-def aylik_pay(d, kolon, sayi=False):
-    """Her ay için AI payı (%). sayi=True -> duyuru sayısı bazlı, değilse kişi bazlı."""
+def monthly_share(d, flag, by_count=False):
+    """AI share (%) per month. by_count=True -> share of announcements, else share of people."""
     d = d[d["month"].notna()]
-    if sayi:
-        return d.groupby("month")[kolon].mean() * 100
+    if by_count:
+        return d.groupby("month")[flag].mean() * 100
     return d.groupby("month").apply(
-        lambda g: g.loc[g[kolon], "people_cut"].sum() / g["people_cut"].sum() * 100, include_groups=False)
+        lambda g: g.loc[g[flag], "people_cut"].sum() / g["people_cut"].sum() * 100, include_groups=False)
 
 
-def donem(seri, bas, son):
-    return round(seri.loc[bas:son].mean(), 1)
+def period_mean(series, start, end):
+    return round(series.loc[start:end].mean(), 1)
 
 
-def bulgular(d):
-    ai, siki = d[d["is_ai_driven"]], d[d["is_ai_strict"]]
-    sektor = d.groupby("industry")["people_cut"].sum().sort_values(ascending=False)
-    kisi_siki, kisi_genis = aylik_pay(d, "is_ai_strict"), aylik_pay(d, "is_ai_driven")
-    sayi_siki = aylik_pay(d, "is_ai_strict", sayi=True)
+def findings(d):
+    ai, strict = d[d["is_ai_driven"]], d[d["is_ai_strict"]]
+    industry = d.groupby("industry")["people_cut"].sum().sort_values(ascending=False)
+    people_strict, people_broad = monthly_share(d, "is_ai_strict"), monthly_share(d, "is_ai_driven")
+    count_strict = monthly_share(d, "is_ai_strict", by_count=True)
     return {
-        "satir": len(d),
-        "kisi": int(d["people_cut"].sum()),
-        "kisi_payi_tum_veriye_gore_%": None,
-        "sektor_1": sektor.index[0], "sektor_2": sektor.index[1], "sektor_3": sektor.index[2],
-        "ai_kisi_payi_siki_%": round(siki["people_cut"].sum() / d["people_cut"].sum() * 100, 1),
-        "ai_kisi_payi_genis_%": round(ai["people_cut"].sum() / d["people_cut"].sum() * 100, 1),
-        "ai_duyuru_payi_siki_%": round(len(siki) / len(d) * 100, 1),
-        "ai_duyuru_payi_genis_%": round(len(ai) / len(d) * 100, 1),
-        "ai_siki_medyan_kisi": float(siki["people_cut"].median()),
-        "ai_genis_medyan_kisi": float(ai["people_cut"].median()),
-        "diger_medyan_kisi": float(d.loc[~d["is_ai_driven"], "people_cut"].median()),
-        "ai_medyan_sirket_buyuklugu": float(ai["total_workforce"].median()),
-        "diger_medyan_sirket_buyuklugu": float(d.loc[~d["is_ai_driven"], "total_workforce"].median()),
-        "kisi_payi_siki_oca_nis_ort_%": donem(kisi_siki, "2026-01", "2026-04"),
-        "kisi_payi_siki_haz_eyl_ort_%": donem(kisi_siki, "2026-06", "2026-09"),
-        "kisi_payi_genis_oca_nis_ort_%": donem(kisi_genis, "2026-01", "2026-04"),
-        "kisi_payi_genis_haz_eyl_ort_%": donem(kisi_genis, "2026-06", "2026-09"),
-        "sayi_payi_siki_oca_nis_ort_%": donem(sayi_siki, "2026-01", "2026-04"),
-        "sayi_payi_siki_haz_eyl_ort_%": donem(sayi_siki, "2026-06", "2026-09"),
+        "rows": len(d),
+        "people": int(d["people_cut"].sum()),
+        "people_share_of_all_%": None,
+        "industry_1": industry.index[0], "industry_2": industry.index[1], "industry_3": industry.index[2],
+        "ai_people_share_strict_%": round(strict["people_cut"].sum() / d["people_cut"].sum() * 100, 1),
+        "ai_people_share_broad_%": round(ai["people_cut"].sum() / d["people_cut"].sum() * 100, 1),
+        "ai_count_share_strict_%": round(len(strict) / len(d) * 100, 1),
+        "ai_count_share_broad_%": round(len(ai) / len(d) * 100, 1),
+        "ai_strict_median_people": float(strict["people_cut"].median()),
+        "ai_broad_median_people": float(ai["people_cut"].median()),
+        "non_ai_median_people": float(d.loc[~d["is_ai_driven"], "people_cut"].median()),
+        "ai_median_company_size": float(ai["total_workforce"].median()),
+        "non_ai_median_company_size": float(d.loc[~d["is_ai_driven"], "total_workforce"].median()),
+        "people_share_strict_jan_apr_mean_%": period_mean(people_strict, "2026-01", "2026-04"),
+        "people_share_strict_jun_sep_mean_%": period_mean(people_strict, "2026-06", "2026-09"),
+        "people_share_broad_jan_apr_mean_%": period_mean(people_broad, "2026-01", "2026-04"),
+        "people_share_broad_jun_sep_mean_%": period_mean(people_broad, "2026-06", "2026-09"),
+        "count_share_strict_jan_apr_mean_%": period_mean(count_strict, "2026-01", "2026-04"),
+        "count_share_strict_jun_sep_mean_%": period_mean(count_strict, "2026-06", "2026-09"),
     }
 
 
-sonuc = pd.DataFrame({ad: bulgular(d) for ad, d in setler.items()})
-toplam = sonuc.loc["kisi", "1_tum_veri"]
-sonuc.loc["kisi_payi_tum_veriye_gore_%"] = [round(k / toplam * 100, 1) for k in sonuc.loc["kisi"]]
-sonuc.to_csv(GIRDI.parent / "robustness_check.csv")
+result = pd.DataFrame({name: findings(d) for name, d in levels.items()})
+total = result.loc["people", "1_all_rows"]
+result.loc["people_share_of_all_%"] = [round(k / total * 100, 1) for k in result.loc["people"]]
+result.to_csv(INPUT.parent / "robustness_check.csv")
 pd.set_option("display.width", 200)
-print(sonuc)
+print(result)

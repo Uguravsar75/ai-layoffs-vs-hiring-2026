@@ -1,14 +1,15 @@
 """
-AI Söylemi ve Gerçeklik - Adım 1: layoffs-2026.csv temizleme ve doğrulama
-Kaynak: layoffhedge.com (2026-11-08)
+Step 1 - Clean and validate the layoffhedge 2026 layoff list.
+Source: layoffhedge.com (version generated 2026-11-08)
 
-Çıktılar:
-- layoffs_clean.csv             : satır bazında temiz veri + kalite etiketleri (hiçbir satır silinmez)
-- layoffs_clean_monthly.csv     : temiz veriden aylık özet
-- layoffs_clean_industries.csv  : temiz veriden sektör özeti (ağırlıklı oran)
-- verification_log.csv          : elle doğrulanan satırlar ve kaynakları
+Outputs (data/clean/):
+- layoffs_clean.csv             : one row per announcement + data-quality flags (no row is deleted)
+- layoffs_clean_monthly.csv     : monthly summary of the main analysis set
+- layoffs_clean_industries.csv  : industry summary of the main analysis set
+- verification_log.csv          : manually verified rows with findings and sources
 
-in_main_analysis = True olan satırlar ana analizde kullanılır.
+Rows with in_main_analysis = True form the main analysis set.
+Principle: "flag, don't delete" - every problem is recorded in a column.
 """
 import re
 import sys
@@ -17,351 +18,354 @@ from pathlib import Path
 
 import pandas as pd
 
-VERI = Path(__file__).resolve().parent.parent / "data"
-GIRDI = sys.argv[1] if len(sys.argv) > 1 else str(VERI / "raw" / "layoffs_2026.csv")
-CIKTI = sys.argv[2] if len(sys.argv) > 2 else str(VERI / "clean" / "layoffs_clean.csv")
-YIL = 2026
-AYLAR = {a: i for i, a in enumerate(
+DATA = Path(__file__).resolve().parent.parent / "data"
+INPUT = sys.argv[1] if len(sys.argv) > 1 else str(DATA / "raw" / "layoffs_2026.csv")
+OUTPUT = sys.argv[2] if len(sys.argv) > 2 else str(DATA / "clean" / "layoffs_clean.csv")
+YEAR = 2026
+MONTHS = {m: i for i, m in enumerate(
     ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], 1)}
 
 # ---------------------------------------------------------------------------
-# ELLE DOĞRULAMA (2026-11-09, haber kaynaklarıyla karşılaştırma)
-# anahtar: (şirket, kişi sayısı) -> (durum, not, kaynak)
-# durum: dogrulandi | kismen | hatali | uyusmazlik | dogrulanamadi
+# MANUAL VERIFICATION (2026-11-09 .. 2026-11-11, compared against news sources)
+# key: (company, people_cut as in the raw data) -> (status, finding, source)
+# status: verified | corrected | partial | invalid | mismatch | not_found
 # ---------------------------------------------------------------------------
-DOGRULAMA = {
-    ("Netflix", 1000): ("dogrulandi", "~1.000 kişi, %6", "https://au.variety.com/2026/tv/global/netflix-layoffs-1000-employees-41317/"),
-    ("Nike", 775): ("dogrulandi", "775 kişi, otomasyon gerekçesi", "https://bloomberg.com/news/articles/2026-01-26/nike-lays-off-775-workers-as-it-boosts-use-of-automation"),
-    ("ServiceNow", 287): ("dogrulandi", "~300 kişi, AI gerekçesi", "https://www.webull.com/news/15327790497276928"),
-    ("Iberia", 996): ("dogrulandi", "996 kişi", "https://www.devdiscourse.com/article/business/3836230-iberia-airlines-to-cut-996-jobs-amid-industry-challenges"),
-    ("Tyson Foods", 723): ("dogrulandi", "723 kişi, Eagle Mountain", "https://www.ksl.com/article/51609885/723-jobs-being-lost-as-tyson-foods-closes-eagle-mountain-facility"),
-    ("Dutch Government", 25000): ("dogrulandi", "25.000, AI destekli; 2035'e kadar yayılan plan", "https://www.thestar.com.my/tech/tech-news/2026/10/27/dutch-government-plans-to-cut-25000-jobs-in-ai-led-overhaul"),
-    ("Volkswagen Group", 50000): ("dogrulandi", "Eylül 2026'da onaylanan ek 50.000 (2030'a kadar toplam 100.000)", "https://www.thejakartapost.com/business/2026/09/04/volkswagen-says-cutting-100000-jobs-by-end-of-decade"),
-    ("Volkswagen Group", 31000): ("kismen", "Mart'taki 50.000'lik planın parçası (31.000 + 19.000)", "https://www.digitaljournal.com/world/volkswagen-says-to-cut-50000-jobs-as-profit-slides/article"),
-    ("Volkswagen Group", 19000): ("kismen", "Mart'taki 50.000'lik planın parçası (31.000 + 19.000)", "https://www.timeslive.co.za/motoring/2026-06-11-volkswagen-to-reduce-workforce-by-19000-by-end-of-year/"),
-    ("UPS", 30000): ("dogrulandi", "30.000, 28 Ocak 2026. Gerekçe ağırlıklı olarak Amazon hacminin azaltılması; AI etiketi tartışmalı", "https://www.thestar.com.my/news/world/2026/01/28/ups-to-cut-additional-30000-jobs-this-year"),
-    ("Oracle", 30000): ("dogrulandi", "'30.000'e kadar'; AI veri merkezi yatırımını finanse etmek için", "https://www.hrreporter.com/focus-areas/recruitment-and-staffing/oracle-cuts-up-to-30000-jobs-worldwide/394250"),
-    ("Amazon", 16000): ("dogrulandi", "16.000, Ocak 2026", "https://www.fox7austin.com/news/amazon-jobs-cuts-latest-round-layoffs"),
-    ("Meta", 16000): ("kismen", "Kesin duyuru değil; iş gücünün %20'sine kadar kesinti planlandığına dair haber", "https://entrepreneur.com/business-news/meta-planning-layoffs-affecting-16000-jobs-20-workforce"),
-    ("Dow Chemical", 4500): ("dogrulandi", "4.500, Ocak 2026, AI ve otomasyon gerekçesi", "https://www.theregister.com/2026/01/29/dow_chemical_ai_layoffs/"),
-    ("Heineken", 6000): ("dogrulandi", "'6.000'e kadar', Şubat 2026", "https://www.dutchnews.nl/2026/02/dutch-brewer-heineken-to-cut-up-to-6000-jobs-to-reduce-costs/"),
-    ("Viatris", 3200): ("dogrulandi", "İş gücünün %10'u, 3 yıllık plan", "https://www.fiercepharma.com/manufacturing/viatris-cut-10-workforce-3-year-overhaul-discloses-fire-india-plant"),
-    ("Kyndryl", 10000): ("kismen", "Mayıs 2026'da işten çıkarma açıklandı; 10.000 rakamı doğrulanamadı", "https://www.theregister.com/on-prem/2026/05/20/workforce-rebalancing-comes-for-kyndryl-and-delivery-teams-are-in-the-firing-line/5243327"),
-    ("Dell", 11000): ("kismen", "Duyuru değil; yıllık raporda çalışan sayısının ~11.000 düşmesi. AI etiketi tartışmalı", "https://www.peoplematters.in/news/strategic-hr/dell-workforce-declines-by-about-11000-employees-in-fiscal-2026-48821"),
-    ("Apple", 147): ("uyusmazlik", "Kaynak haber '400+ pozisyon' diyor", "https://www.gadgetreview.com/?p=423977"),
-    ("Tyson Foods", 4900): ("dogrulanamadi", "Derleme sitesi kaynaklı; Ocak 2026 duyurusu bulunamadı", ""),
-    ("Cognizant", 15000): ("kismen", "'15.000'e kadar' değerlendirilen plan (Project Leap), AI gerekçesi", "https://finance.yahoo.com/markets/stocks/articles/cognizant-weighs-to15-000-job-090259496.html"),
-    ("Standard Chartered", 7800): ("dogrulandi", "7.800, AI gerekçesi; 2030'a kadar yayılan plan", "https://gulfnews.com/business/banking/standard-chartered-to-cut-7800-jobs-as-ai-rewrites-back-office-work-report-1.500546702"),
-    ("Microsoft", 8750): ("kismen", "İşten çıkarma değil; ~8.750 kişiye gönüllü emeklilik teklifi (AI yatırımı bağlamında)", "https://www.peoplematters.in/amp/news/strategic-hr/microsoft-offers-voluntary-retirement-to-nearly-8750-us-employees-in-historic-first-49621"),
-    ("Barclays", 5000): ("dogrulandi", "~5.000, Ekim 2026, AI gerekçesi", "https://www.itv.com/news/2026-10-22/barclays-to-cut-5000-jobs-this-year-as-ai-makes-work-more-efficient"),
-    ("PayPal", 4760): ("dogrulandi", "4.760, AI gerekçesi", "https://www.latestly.com/technology/paypal-layoffs-ceo-enrique-lores-led-fintech-giant-announces-4760-job-cuts-to-accelerate-ai-adoption-and-tech-investment-7420240.html"),
-    ("Block", 4000): ("dogrulandi", "~4.000, Şubat 2026, AI gerekçesi", "https://abc7news.com/post/jack-dorseys-oakland-based-fintech-company-block-laying-off-4000-10000-staff-artificial-intelligence-shift/18658391/"),
-    ("Cisco", 4000): ("dogrulandi", "~4.000, Mayıs 2026, AI odaklı yeniden yapılanma", "https://www.businesstoday.in/technology/news/story/while-we-are-reducing-roles-cisco-ceo-outlines-company-plans-as-it-cuts-4000-jobs-531734-2026-05-15"),
-    ("American Express", 3500): ("dogrulandi", "~3.500, Ekim 2026, AI'a hazırlık gerekçesi", "https://www.hrreporter.com/news/hr-news/amex-to-cut-5-per-cent-of-workforce-to-prepare-for-ai/395071"),
-    ("Intuit", 3000): ("dogrulandi", "~3.000 (%17), Mayıs 2026, AI gerekçesi", "https://www.pymnts.com/business/2026/intuit-to-cut-17percent-of-workforce-in-shift-toward-ai/"),
-    ("Intel", 15000): ("hatali", "Ağustos 2024'te açıklanan plan", "https://9to5mac.com/2024/08/02/15000-intel-job-cuts"),
-    ("Nestlé", 16000): ("hatali", "Ekim 2025'te açıklanan plan", "https://www.africanews.com/2025/10/16/nestle-to-cut-16000-jobs-worldwide-in-major-restructuring-move"),
-    ("Nokia", 14000): ("hatali", "Ekim 2023'te açıklanan plan", "https://fortune.com/2023/10/19/nokia-drop-profits-lay-offs-14000-jobs/"),
-    # --- 3.000+ satırların ikinci turu ---
-    ("KLM", 5000): ("kismen", "5.000 pozisyon (5 Kas 2026); bir kısmı dış kaynağa devir, ~1.000'i doğrudan kesinti", "https://www.dutchnews.nl/2026/11/klm-to-cut-5000-jobs-amid-high-fuel-prices-and-global-unrest/"),
-    ("Fiserv", 3000): ("dogrulandi", "3.000 çalışan ve yüklenici, 3 Kas 2026", "https://www.hrkatha.com/news/fiserv-cuts-3000-employee-and-contractor-roles-under-new-ceo/"),
-    ("Schaeffler", 3460): ("dogrulandi", "3.460, Avrupa, 3 Kas 2026", "https://evertiq.com/news/2026-11-03-schaeffler-to-cut-3460-jobs-in-europe-and-close-four-german-sites"),
-    ("Kroger", 3000): ("dogrulandi", "3.000 kurumsal pozisyon, AI gerekçesi, Eki 2026", "https://www.foxbusiness.com/retail/kroger-cut-3000-corporate-jobs-ai-expansion"),
-    ("Novo Nordisk", 4000): ("dogrulanamadi", "2026 duyurusu bulunamadı; Eylül 2025'teki 9.000'lik planla ilişkili olabilir", "https://www.bloomberg.com/news/articles/2025-09-10/novo-nordisk-will-cut-9-000-jobs-globally-to-save-1-3-billion"),
-    ("Omnicom", 15000): ("dogrulandi", "Yıl sonuna kadar 15.000 (IPG birleşmesi), Eyl 2026", "https://www.mediapost.com/publications/article/417911/omnicom-set-to-cut-15000-jobs.html"),
-    ("Jaguar Land Rover", 4000): ("dogrulandi", "4.000, Eyl 2026", "https://abcnews.com/Business/wireStory/jaguar-land-rover-cut-4000-jobs-reduce-costs-136253666"),
-    ("Uber", 3300): ("dogrulandi", "3.300 (%10), Eyl 2026", "https://www.euronews.com/2026/09/03/uber-cuts-10-of-global-workforce-in-biggest-layoffs-since-the-pandemic"),
-    ("BMW", 8000): ("dogrulandi", "~8.000, 2027 sonuna kadar, Tem 2026", "https://www.euronews.com/2026/07/29/bmw-plans-to-cut-around-8000-jobs-in-major-cost-saving-drive"),
-    ("Porsche", 5000): ("dogrulandi", "Ek 5.000; 2035'e kadar toplam 9.000, Tem 2026", "https://www.timeslive.co.za/motoring/2026-07-27-porsche-ramps-up-job-cuts-to-9000-by-2035/"),
-    ("Porsche", 3900): ("kismen", "2035'e kadar 9.000'lik planın önceki kısmı; ilk duyurusu daha eski olabilir", "https://www.cbtnews.com/porsche-confirms-3900-job-cuts/"),
-    ("Verizon", 3000): ("duzeltildi", "Haberler 500 kurumsal işten çıkarma diyor; ~2.500 mağaza çalışanı satışla devrediliyor. 500 olarak düzeltildi", "https://www.lightreading.com/operations/verizon-to-unload-274-stores-lay-off-500-corporate-employees"),
-    ("HDFC Bank", 3343): ("kismen", "Duyuru değil; mali yılda çalışan sayısının 3.343 düşmesi (otomasyon/AI bağlamı)", "https://www.businesstoday.in/latest/corporate/story/hdfc-banks-automation-ai-push-cuts-over-3300-job-in-fy26-542523-2026-07-13"),
-    ("Microsoft", 4664): ("dogrulandi", "~4.800 (%2,1), Tem 2026", "https://aa.com.tr/en/world/microsoft-to-cut-4-800-jobs-spin-off-4-gaming-studios/3987565"),
-    ("British American Tobacco", 9000): ("dogrulandi", "9.000, Haz 2026", "https://www.bnnbloomberg.ca/business/international/2026/06/29/british-american-tobacco-cost-cutting-hits-9000-roles/"),
-    ("Evonik", 3200): ("dogrulandi", "3.200, 2029'a kadar, Haz 2026", "https://www.chemicalprocessing.com/industrynews/news/55385278/evonik-expands-restructuring-program-plans-3200-additional-job-cuts-through-2029"),
-    ("Takeda", 4500): ("dogrulandi", "~4.500, mali yıl 2026, May 2026", "https://www.fiercepharma.com/pharma/takeda-slimming-down-new-era-plots-4500-layoffs-latest-restructuring-drive"),
-    ("Commerzbank", 6900): ("duzeltildi", "Mayıs 2026 haberleri 3.000 diyor; 3.000 olarak düzeltildi", "https://www.dailysabah.com/business/economy/commerzbank-to-cut-3000-jobs-as-it-fends-off-unicredit-takeover"),
-    ("Spirit Airlines", 14000): ("kismen", "Şirket faaliyetlerini durdurdu (2 May 2026); haberlerde etkilenen çalışan 14.000–17.000 arası", "https://lavocedinewyork.com/en/news/2026/05/02/spirit-airlines-shuts-down-all-flights-canceled-over-17000-employees-laid-off/"),
-    ("Whitbread", 3800): ("dogrulandi", "3.800, 5 yıllık plan, Nis 2026", "https://skift.com/2026/04/30/whitbread-sell-hotels-cut-jobs-strategic-overhaul/"),
-    ("HSBC", 20000): ("kismen", "Kesin duyuru değil; 'değerlendiriliyor' haberi, çok yıllı AI dönüşümü, Mar 2026", "https://www.bloomberg.com/news/articles/2026-03-19/hsbc-mulls-deep-job-cuts-from-multiyear-ai-fueled-overhaul"),
-    # --- 3.000 altı satırlardan rastgele (tabakalı) 20'lik örneklem ---
-    ("Peloton", 286): ("dogrulandi", "İş gücünün %11'i, 30 Oca 2026", "https://www.bnnbloomberg.ca/business/2026/01/30/peloton-cuts-11-per-cent-of-staff-in-cost-cutting-push-spokesperson-says/"),
-    ("Electronic Arts", 300): ("dogrulandi", "Battlefield stüdyolarında ~300, Mar 2026", "https://hitmarker.net/news/eas-ceo-earned-38-6-million-in-the-same-year-the-company-laid-off-300-battlefield-developers-3492023"),
-    ("Autolus Therapeutics", 98): ("dogrulandi", "İş gücünün %13'ü, Nis 2026", "https://finance.yahoo.com/sectors/healthcare/articles/autolus-therapeutics-autl-cut-workforce-040108671.html"),
-    ("Envato", 200): ("dogrulandi", "200 rol, Mar 2026; haberlerde AI gerekçesi geçiyor ama etiket RESTRUCTURE", "https://www.startupdaily.net/advice/business-strategy/shutterstock-owned-envato-is-slashing-its-workforce"),
-    ("Artlist", 200): ("dogrulandi", "500 çalışandan 200'ü, Haz 2026, AI", "https://en.globes.co.il/en/article-1001546110"),
-    ("JPMorgan Chase", 121): ("dogrulandi", "New Jersey WARN bildirimi, 2026", "https://citywire.com/pro-buyer/news/jp-morgans-first-round-of-layoffs-to-hit-new-jersey-by-may/a2460400"),
-    ("Sodexo", 121): ("dogrulanamadi", "Michigan'daki bu bildirim bulunamadı", ""),
-    ("Alameda Health System", 240): ("kismen", "Mar 2026 WARN bildirimi var; bir kısmı sonradan geri alındı", "https://www.healthcarefinancenews.com/news/alameda-health-system-rescinds-92-layoffs-after-193m-county-allocation"),
-    ("WPP", 300): ("kismen", "Tasarruf programı doğrulandı; 300 rakamı bulunamadı", "https://www.campaignasia.com/article/wpp-launches-new-elevate28-strategy-with-four-core-divisions-and-676-million-savings/4eb4tskvt4a335kdzk87px21xf"),
-    ("United Internet", 800): ("dogrulandi", "~800 (1&1 ve IONOS), Eyl 2026; haberlerde AI gerekçesi geçiyor ama etiket RESTRUCTURE", "https://www.cio.de/article/4221050/kahlschlag-fuer-ki-1und1-und-ionos-opfern-800-jobs.html"),
-    ("CJ Logistics America", 56): ("dogrulandi", "Newville PA WARN bildirimi (yürürlük Eki 2026)", "https://www.warntracker.com/layoff/cj-logistics-america-2026-10-31"),
-    ("Nike", 1400): ("dogrulandi", "1.400 kurumsal rol, 23 Nis 2026", "https://bloomberg.com/news/articles/2026-04-23/nike-is-cutting-1-400-corporate-jobs-mostly-in-technology"),
-    ("Miele Manufacturing", 60): ("dogrulanamadi", "Yerel haber linki var; aramada teyit edilemedi", ""),
-    ("Stoelzle Glass USA", 200): ("kismen", "Doğru, ancak tesis yenilemesi süresince GEÇİCİ işten çıkarma", "https://www.glass-international.com/news/stoelzle-glass-usa-makes-200-temporary-layoffs"),
-    ("Cubic3", 70): ("dogrulanamadi", "Aramada teyit edilemedi", ""),
-    ("New French Bakery (Rise Baking)", 166): ("kismen", "Rise Baking'in Minnesota tesislerini kapatması doğrulandı; 166 rakamı bulunamadı", "https://www.bakingbusiness.com/articles/67189-rise-baking-to-close-two-minnesota-plants"),
-    ("HubSpot", 660): ("dogrulandi", "660, 6 Eki 2026. CEO işten çıkarmanın AI kaynaklı olduğunu reddediyor; AI etiketi tartışmalı", "https://www.bostonglobe.com/2026/10/06/business/hubspot-layoffs/"),
-    ("Kellanova", 112): ("dogrulanamadi", "Genel Kaliforniya WARN linki; bildirim bulunamadı", ""),
-    ("Agios Pharmaceuticals", 100): ("dogrulandi", "100+ Ar-Ge rolü, Kas 2026", "https://www.fiercebiotech.com/biotech/agios-aims-shed-100-rd-roles-year-ahead-hoped-scd-approval"),
-    ("Nature's Bakery (Mars)", 345): ("dogrulandi", "345, Missouri tesisi, Tem 2026", "https://www.supplychaindive.com/news/mars-to-close-natures-bakery-plant-lay-off-345-workers/824855/"),
-    # --- Kalan tüm AI-DRIVEN satırlar (70 satır, ana analizdeki AI satırlarının tamamı) ---
-    ("Visa", 2600): ("dogrulandi", "2.600 (%7), Tem 2026, AI verimlilik gerekçesi", "https://dealroom.co/news/141615-visa-to-cut-2-600-jobs-7-of-staff-as-ai-reshapes-work/"),
-    ("Amdocs", 2500): ("kismen", "AI'a geçiş gerekçeli kesinti doğrulandı; haberlerde rakam 2.000–3.000 arası", "https://www.valuethemarkets.com/cryptocurrency/news/amdocs-to-cut-workforce-amid-strategic-shift-towards-ai"),
-    ("Acrisure", 2250): ("dogrulandi", "2.250, May 2026, AI gerekçesi", "https://www.insurancebusinessmag.com/us/news/technology/ai-is-cutting-insurance-jobs--the-industry-is-just-starting-to-say-so-580795.aspx"),
-    ("WiseTech Global", 2000): ("dogrulandi", "2.000, Şub 2026, AI gerekçesi; 2 yıla yayılan plan", "https://finder.techleap.nl/news/feed/wisetech-to-cut-2-000-jobs-as-ai-ends-era-of-manual-coding"),
-    ("Atlassian", 1600): ("dogrulandi", "1.600, Mar 2026, AI yatırımı", "https://www.businesstoday.in/amp/technology/story/atlassian-lays-off-1600-employees-as-it-ramps-up-ai-investment-520224-2026-03-12"),
-    ("Centrica", 1300): ("dogrulandi", "1.300, Tem 2026, AI; 2 yıla yayılan plan", "https://www.computing.co.uk/news/2026/ai/centrica-and-monday-com-announce-ai-related-job-cuts"),
-    ("Cloudflare", 1100): ("dogrulandi", "1.100, May 2026, AI gerekçesi", "https://yourstory.com/ai-story/cloudflare-ai-job-cuts-2026"),
-    ("Walmart", 1100): ("kismen", "~1.000 kurumsal çalışan işten çıkarılıyor YA DA taşınıyor; tamamı kesinti değil", "https://www.retailtouchpoints.com/news/walmart-to-lay-off-or-relocate-1000-corporate-jobswalmart-to-lay-off-or-relocate-1000-corporate-jobs/619450/"),
-    ("Wix", 1000): ("dogrulandi", "800–1.000 (üst sınır), May 2026, AI", "https://letsdatascience.com/news/wix-cuts-1000-jobs-amid-ai-transition-d4812c1c"),
-    ("Snap", 1000): ("dogrulandi", "~1.000, Nis 2026, AI", "https://techrepublic.com/article/news-snap-ai-layoffs-april-2026"),
-    ("Salesforce", 1000): ("dogrulandi", "1.000'den az, Şub 2026, Agentforce/AI", "https://www.businesstoday.in/technology/story/salesforce-cuts-nearly-1000-jobs-as-ai-push-reshapes-operations-515580-2026-02-11"),
-    ("NatWest Group", 1000): ("dogrulandi", "~1.000, Eki 2026, verimlilik/AI", "https://www.itv.com/news/2026-10-30/natwest-efficiency-drive-results-in-job-cuts-and-420-million-of-cost-savings"),
-    ("UKG", 950): ("dogrulandi", "950, Nis 2026, AI odaklı yeniden yapılanma", "https://finder.techleap.nl/news/feed/ukg-lays-off-950-employees-globally-in-ai-driven-restructuring"),
-    ("LinkedIn", 875): ("dogrulandi", "~%5 (~875), May 2026", "https://news.tuoitre.vn/linkedin-planning-to-lay-off-5-of-staff-in-latest-tech-sector-cuts-source-says-103260514111904981.htm"),
-    ("Rackspace", 750): ("dogrulandi", "750 (%15), Haz 2026, AI dönüşümü", "https://www.sanantonioreport.org/rackspace-750-workers-pivots-infrastructure-ai-san-antonio/"),
-    ("Coinbase", 700): ("dogrulandi", "%14, May 2026, AI", "https://heygotrade.com/en/news/coinbase-cuts-14-percent-workforce-volatile-markets-ai"),
-    ("Pinterest", 700): ("dogrulandi", "%15, Oca 2026, AI'a yönelim", "https://www.fox7austin.com/news/pinterest-layoff-15-workforce-pivots-ai"),
-    ("Verizon", 621): ("kismen", "Ek kesintiler doğrulandı; haberler 'birkaç yüz' diyor, 621 rakamı bulunamadı", "https://www.lightreading.com/ai-machine-learning/ai-mad-verizon-to-continue-with-cuts-after-ceo-s-jobs-warning"),
-    ("monday.com", 620): ("dogrulandi", "620 (%20), Tem 2026, AI", "https://www.uctoday.com/project-management/monday-com-cuts-20-of-its-workforce-as-its-ai-work-platform-bet-deepens/"),
-    ("FICO", 570): ("dogrulandi", "%15, Eki 2026, SEC 8-K", "https://www.sec.gov/Archives/edgar/data/0000814547/000119312526415732/d127042d8k.htm"),
-    ("NICE", 500): ("dogrulandi", "500, Kas 2026, AI", "https://www.hrkatha.com/news/layoff/nice-cuts-500-jobs-as-ai-reshapes-customer-service-business/"),
-    ("CrowdStrike", 500): ("hatali", "Mayıs 2025'te açıklanan 500'lük kesinti", "https://heise.de/-10376586"),
-    ("Thomson Reuters", 500): ("kismen", "Kesinti doğrulandı; '500'e kadar' / 'az sayıda' ifadeleri", "https://talkingbiznews.com/media-news/thomson-reuters-is-cutting-some-jobs/"),
-    ("Freshworks", 500): ("dogrulandi", "500 (%11), May 2026, AI", "https://india.entrepreneur.com/business-news/freshworks-lays-off-500-employees-amid-ai-led-restructuring-push"),
-    ("Groupon", 400): ("dogrulandi", "'400'e kadar', May 2026", "https://news.bloomberglaw.com/bankruptcy-law/groupon-to-cut-up-to-400-jobs-coo-jiri-ponrt-to-resign"),
-    ("DNB", 400): ("dogrulandi", "~400, Eki 2026, ajan tabanlı AI", "https://www.hrkatha.com/news/layoff/ai-reshapes-banking-dnb-to-cut-400-jobs-in-tech-overhaul/"),
-    ("Angi", 350): ("dogrulandi", "350, Oca 2026, AI", "https://finance.yahoo.com/markets/stocks/articles/list-companies-laying-off-staff-105502686.html"),
-    ("Ticketmaster", 350): ("dogrulandi", "May 2026, derleme haberi", "https://finance.yahoo.com/sectors/technology/articles/layoffs-accelerate-may-2026-firms-040430218.html"),
-    ("Innovaccer", 340): ("dogrulandi", "340, May 2026, AI-native modele geçiş", "https://india.entrepreneur.com/business-news/innovaccer-lays-off-340-employees-amid-shift-to-ai-native-model"),
-    ("Uber", 340): ("kismen", "İK/işe alım biriminin %23'ü; haberlerde AI gerekçesi belirgin değil", "https://www.staffingindustry.com/news/global-daily-news/uber-cuts-23-of-people-in-hr-and-recruitment-division"),
-    ("TikTok", 300): ("dogrulandi", "~300, Dublin, Tem 2026", "https://theprint.in/world/tiktok-plans-to-cut-about-300-jobs-in-dublin-under-europe-restructuring-drive/2974731/"),
-    ("ClickUp", 290): ("dogrulandi", "%22, May 2026, AI ajanları", "https://www.techrepublic.com/article/news-clickup-cuts-staff-ai-restructuring/"),
-    ("Sprout Social", 260): ("dogrulandi", "Tem 2026, AI", "https://www.itiger.com/news/2651466264"),
-    ("Bolt", 250): ("dogrulandi", "Çalışanların üçte biri, Nis 2026, AI gerekçesi", "https://www.americanbanker.com/news/bolt-lays-off-a-third-of-its-employees-citing-ai"),
-    ("DeepL", 250): ("dogrulandi", "%25, May 2026, AI", "https://bloomberg.com/news/articles/2026-05-07/google-translate-rival-deepl-announces-plans-to-cut-25-of-staff"),
-    ("Arctic Wolf", 250): ("dogrulandi", "250, May 2026, AI", "https://stlawyers.ca/blog-news/arctic-wolf-job-cuts-may-2026/"),
-    ("Elastic", 250): ("dogrulandi", "%7, Haz 2026, AI", "https://aiweekly.co/alerts/elastic-cuts-7-of-staff-ceo-cites-ai-enabling-leaner-teams"),
-    ("Opendoor", 250): ("dogrulandi", "250, Haz 2026, Hindistan ofisi kapandı, AI", "https://newswav.com/article/opendoor-shuts-india-operations-lays-off-250-employees-embraces-ai-A2606_CbtzR8"),
-    ("SentinelOne", 240): ("dogrulandi", "%8, May 2026, AI yatırımı", "https://www.peoplematters.in/news/strategic-hr/sentinelone-to-lay-off-8percent-of-staff-while-increasing-investment-in-ai-and-cloud-49991"),
-    ("Reach plc", 220): ("dogrulandi", "220 gazeteci, Eyl 2026; AI özetlerin trafiği düşürmesi", "https://www.cp24.com/news/world/2026/09/16/uk-media-group-reach-to-cut-220-journalist-jobs/"),
-    ("Gemini", 200): ("dogrulandi", "'200'e kadar' (%25), Şub 2026; pazar çıkışı, AI kısmen", "https://crypto.jobs/news/gemini-cuts-25-of-workforce-exits-international-markets-in-strategic-pivot-to-us-operations"),
-    ("Booksy", 200): ("dogrulandi", "~%20, Eyl 2026, AI", "https://www.wiadomoscikosmetyczne.pl/biznes-kosmetyki/booksy-zwolni-okolo-20-proc-zalogi-firma-przyspiesza-wdrazanie-ai-2537931"),
-    ("Southern Cross Media", 200): ("kismen", "200–300'e kadar; ana gerekçe TV reklam düşüşü, AI tartışmalı", "https://www.mediaweek.com.au/southern-cross-media-rohan-lund-ai-redundancies/"),
-    ("Apple", 200): ("dogrulandi", "~200, Ağu 2026, Vision Pro/Siri ekipleri", "https://www.theweek.in/news/biz-tech/2026/08/22/apple-layoffs-iphone-maker-to-cut-200-jobs-half-of-it-from-a-single-product-division.html"),
-    ("SUSE", 190): ("dogrulandi", "%10, Kas 2026, AI", "https://www.hrkatha.com/news/suse-to-cut-10-of-global-workforce-as-ai-reshapes-software-operations/"),
-    ("Crypto.com", 180): ("dogrulandi", "%12, Mar 2026, AI", "https://www.businesstoday.in/amp/technology/story/cryptocom-cuts-12-workforce-amid-ai-push-ceo-points-to-ai-driven-change-521534-2026-03-20"),
-    ("Mews", 170): ("dogrulandi", "Tem 2026, AI yeniden yapılanma", "https://skift.com/2026/07/07/mews-layoffs-restructuring-ai/"),
-    ("Chime", 150): ("dogrulandi", "~140–150 (%10), Tem 2026", "https://www.thestar.com.my/tech/tech-news/2026/07/31/chime-to-cut-10-of-total-workforce-or-about-140-jobs-source-says"),
-    ("BigID", 150): ("dogrulandi", "150, May 2026, AI", "https://en.globes.co.il/en/article-1001544054"),
-    ("Gambling.com Group", 150): ("dogrulandi", "%25, May 2026", "https://frontofficesports.com/newsletter/betting-company-layoffs-pile-up/"),
-    ("Upwork", 145): ("dogrulandi", "~%24, May 2026, AI", "https://staffingindustry.com/news/global-daily-news/upwork-reports-q1-revenue-rises-14-layoffs-ahead"),
-    ("Webflow", 140): ("dogrulandi", "May 2026, 'agentic web' dönüşümü", "https://www.80aj.com/2026/05/28/webflow-layoffs-community-backlash/"),
-    ("Starling Bank", 130): ("dogrulandi", "Çalışanların %3'ü, Tem 2026", "https://www.bankingdive.com/news/starling-to-whittle-headcount-by-3/824729/"),
-    ("GoKwik", 120): ("dogrulandi", "120, Tem 2026, AI", "https://www.latestly.com/technology/gokwik-layoffs-e-commerce-company-reduces-120-staff-amid-ai-adoption-say-reports-7513450.html"),
-    ("Wells Fargo", 112): ("dogrulandi", "112, Raleigh WARN, Şub 2026; haberlerde AI gerekçesi yok", "https://spectrumlocalnews.com/nc/charlotte/news/2026/02/06/raleigh-wells-fargo-layoffs-2026"),
-    ("AI21 Labs", 110): ("kismen", "Çalışanların ~%60'ı, May 2026; 110 rakamı teyit edilemedi", "https://en.globes.co.il/en/article-1001543241"),
-    ("Elementor", 100): ("dogrulandi", "100, Haz 2026, AI", "https://en.globes.co.il/en/article-1001547303"),
-    ("The Telegraph", 100): ("dogrulandi", "'100'e kadar', Eki 2026, AI odaklı dönüşüm", "https://pressgazette.co.uk/news/telegraph-cuts-up-to-100-jobs-as-it-targets-being-global-ai-powered-business/"),
-    ("Skai", 100): ("dogrulanamadi", "Aramada 2026 duyurusu teyit edilemedi", ""),
-    ("Rapyd", 100): ("dogrulanamadi", "Yalnızca daha eski, daha küçük kesintiler bulundu", ""),
-    ("Pendo", 90): ("kismen", "7 Nis 2026 kesintisi ve AI odaklı yeniden yapılanma doğrulandı; 90 rakamı teyit edilemedi", "https://abc11.com/post/pendo-layoffs-ai-tech-firm-nc-announces-job-cuts-raleigh-part-company-wide-restructure/18857051/"),
-    ("Snyk", 90): ("dogrulandi", "90, Haz 2026, AI stratejisi", "https://www.bankinfosecurity.com/snyk-reportedly-cuts-90-jobs-to-accelerate-ai-strategy-a-32081"),
-    ("Salesforce", 86): ("dogrulandi", "86, Haz 2026, Agentforce ekipleri dahil", "https://jbiznews.com/salesforce-cuts-86-more-jobs-including-on-its-own-ai-team/"),
-    ("Lightricks", 75): ("dogrulandi", "75, şirketin AI video birimi etrafında bölünmesi", "https://completeaitraining.com/news/lightricks-splits-facetune-from-its-ai-video-unit-and-cuts/"),
-    ("Snowflake", 70): ("dogrulandi", "~70 teknik yazar, Mar 2026, yerine AI", "https://www.webpronews.com/snowflakes-cio-turned-layoffs-into-a-blunt-ai-mandate/"),
-    ("Vermont Information Processing", 66): ("dogrulandi", "Colchester VT, 20 Eki 2026, WARN kaydı; AI bağlamı", "https://vtdigger.org/2026/10/20/layoffs-announced-at-vermont-information-processing-in-colchester/"),
-    ("Minute Media", 60): ("kismen", "Sports Illustrated'da (Minute Media) May 2026 kesintisi doğrulandı; 60 rakamı teyit edilemedi", "https://barrettmedia.com/2026/05/29/sports-illustrated-layoffs-underway/"),
-    ("Pentera", 60): ("kismen", "Ağu 2026 kesintisi İbranice kaynaklarda var; rakam teyit edilemedi", "https://calcalistech.com/ctechnews/article/b1ioncnpzl"),
-    ("MARA Holdings", 40): ("dogrulandi", "Çalışanların %15'i, Nis 2026, AI altyapısına geçiş", "https://cryptojobslist.com/crypto-layoffs/mara-holdings-2026-04"),
-    ("Gloat", 20): ("kismen", "Kaynak 'iş gücünün %20'si' diyor; 20 kişi mi %20 mi belirsiz", "https://en.globes.co.il/en/article-1001536470"),
-    # 2026-11-11: linkteki rakam ile veri farklı çıkan satırların kontrolü
-    ("Gilead Sciences", 192): ("dogrulandi", "192 = Redwood City 108 + Rockville 84 (WARN, 30 Nis 2026); haber başlığı sonradan güncellenmiş. total_workforce 209 = satın alınan Arcellx'in çalışan sayısı", "https://www.fiercebiotech.com/biotech/after-arcellx-buyout-close-gilead-trims-108-jobs-car-t-biotechs-redwood-city-outpost"),
-    ("Comcast", 634): ("dogrulandi", "634, Philadelphia WARN, Eki 2026; gerekçe yeniden yapılanma (AI değil); aynı anda ~500 yeni pozisyon. Linkteki 'ai-jobs' yeni pozisyonlarla ilgili", "https://www.phillyvoice.com/comcast-layoffs-philadelphia-restructuring/"),
-    ("Capital One", 1100): ("dogrulandi", "1.100+ (Illinois WARN 1.139), Mar 2026, Discover entegrasyonu; linkteki 1.700 birleşmeden beri birikimli toplam", "https://www.paymentsdive.com/news/capital-one-job-cuts-discover-workers-integration-riverwoods/760945/"),
+VERIFICATION = {
+    # --- Group 1: all rows with 3,000+ people (largest influence on totals) ---
+    ("Netflix", 1000): ("verified", "~1,000 people, 6%", "https://au.variety.com/2026/tv/global/netflix-layoffs-1000-employees-41317/"),
+    ("Nike", 775): ("verified", "775 people, automation cited", "https://bloomberg.com/news/articles/2026-01-26/nike-lays-off-775-workers-as-it-boosts-use-of-automation"),
+    ("ServiceNow", 287): ("verified", "~300 people, AI cited", "https://www.webull.com/news/15327790497276928"),
+    ("Iberia", 996): ("verified", "996 people", "https://www.devdiscourse.com/article/business/3836230-iberia-airlines-to-cut-996-jobs-amid-industry-challenges"),
+    ("Tyson Foods", 723): ("verified", "723 people, Eagle Mountain", "https://www.ksl.com/article/51609885/723-jobs-being-lost-as-tyson-foods-closes-eagle-mountain-facility"),
+    ("Dutch Government", 25000): ("verified", "25,000, AI-enabled; plan spread until 2035", "https://www.thestar.com.my/tech/tech-news/2026/10/27/dutch-government-plans-to-cut-25000-jobs-in-ai-led-overhaul"),
+    ("Volkswagen Group", 50000): ("verified", "Additional 50,000 confirmed Sep 2026 (100,000 in total by 2030)", "https://www.thejakartapost.com/business/2026/09/04/volkswagen-says-cutting-100000-jobs-by-end-of-decade"),
+    ("Volkswagen Group", 31000): ("partial", "Part of the 50,000 plan announced in March (31,000 + 19,000)", "https://www.digitaljournal.com/world/volkswagen-says-to-cut-50000-jobs-as-profit-slides/article"),
+    ("Volkswagen Group", 19000): ("partial", "Part of the 50,000 plan announced in March (31,000 + 19,000)", "https://www.timeslive.co.za/motoring/2026-06-11-volkswagen-to-reduce-workforce-by-19000-by-end-of-year/"),
+    ("UPS", 30000): ("verified", "30,000, 28 Jan 2026. Main reason is reduced Amazon volume; AI label questionable", "https://www.thestar.com.my/news/world/2026/01/28/ups-to-cut-additional-30000-jobs-this-year"),
+    ("Oracle", 30000): ("verified", "'Up to 30,000'; to fund AI data-center investment", "https://www.hrreporter.com/focus-areas/recruitment-and-staffing/oracle-cuts-up-to-30000-jobs-worldwide/394250"),
+    ("Amazon", 16000): ("verified", "16,000, Jan 2026", "https://www.fox7austin.com/news/amazon-jobs-cuts-latest-round-layoffs"),
+    ("Meta", 16000): ("partial", "Not a firm announcement; report of planned cuts of up to 20% of workforce", "https://entrepreneur.com/business-news/meta-planning-layoffs-affecting-16000-jobs-20-workforce"),
+    ("Dow Chemical", 4500): ("verified", "4,500, Jan 2026, AI and automation cited", "https://www.theregister.com/2026/01/29/dow_chemical_ai_layoffs/"),
+    ("Heineken", 6000): ("verified", "'Up to 6,000', Feb 2026", "https://www.dutchnews.nl/2026/02/dutch-brewer-heineken-to-cut-up-to-6000-jobs-to-reduce-costs/"),
+    ("Viatris", 3200): ("verified", "10% of workforce, 3-year plan", "https://www.fiercepharma.com/manufacturing/viatris-cut-10-workforce-3-year-overhaul-discloses-fire-india-plant"),
+    ("Kyndryl", 10000): ("partial", "Layoffs reported May 2026; the 10,000 figure could not be confirmed", "https://www.theregister.com/on-prem/2026/05/20/workforce-rebalancing-comes-for-kyndryl-and-delivery-teams-are-in-the-firing-line/5243327"),
+    ("Dell", 11000): ("partial", "Not an announcement; headcount fell by ~11,000 in the annual report. AI label questionable", "https://www.peoplematters.in/news/strategic-hr/dell-workforce-declines-by-about-11000-employees-in-fiscal-2026-48821"),
+    ("Apple", 147): ("mismatch", "Source article says '400+ positions'", "https://www.gadgetreview.com/?p=423977"),
+    ("Tyson Foods", 4900): ("not_found", "From an aggregator site; no Jan 2026 announcement found", ""),
+    ("Cognizant", 15000): ("partial", "Plan 'weighing up to 15,000' (Project Leap), AI cited", "https://finance.yahoo.com/markets/stocks/articles/cognizant-weighs-to15-000-job-090259496.html"),
+    ("Standard Chartered", 7800): ("verified", "7,800, AI cited; plan spread until 2030", "https://gulfnews.com/business/banking/standard-chartered-to-cut-7800-jobs-as-ai-rewrites-back-office-work-report-1.500546702"),
+    ("Microsoft", 8750): ("partial", "Not a layoff; voluntary retirement offer to ~8,750 people (in the context of AI investment)", "https://www.peoplematters.in/amp/news/strategic-hr/microsoft-offers-voluntary-retirement-to-nearly-8750-us-employees-in-historic-first-49621"),
+    ("Barclays", 5000): ("verified", "~5,000, Oct 2026, AI cited", "https://www.itv.com/news/2026-10-22/barclays-to-cut-5000-jobs-this-year-as-ai-makes-work-more-efficient"),
+    ("PayPal", 4760): ("verified", "4,760, AI cited", "https://www.latestly.com/technology/paypal-layoffs-ceo-enrique-lores-led-fintech-giant-announces-4760-job-cuts-to-accelerate-ai-adoption-and-tech-investment-7420240.html"),
+    ("Block", 4000): ("verified", "~4,000, Feb 2026, AI cited", "https://abc7news.com/post/jack-dorseys-oakland-based-fintech-company-block-laying-off-4000-10000-staff-artificial-intelligence-shift/18658391/"),
+    ("Cisco", 4000): ("verified", "~4,000, May 2026, AI-focused restructuring", "https://www.businesstoday.in/technology/news/story/while-we-are-reducing-roles-cisco-ceo-outlines-company-plans-as-it-cuts-4000-jobs-531734-2026-05-15"),
+    ("American Express", 3500): ("verified", "~3,500, Oct 2026, preparing for AI", "https://www.hrreporter.com/news/hr-news/amex-to-cut-5-per-cent-of-workforce-to-prepare-for-ai/395071"),
+    ("Intuit", 3000): ("verified", "~3,000 (17%), May 2026, AI cited", "https://www.pymnts.com/business/2026/intuit-to-cut-17percent-of-workforce-in-shift-toward-ai/"),
+    ("Intel", 15000): ("invalid", "Plan announced in August 2024", "https://9to5mac.com/2024/08/02/15000-intel-job-cuts"),
+    ("Nestlé", 16000): ("invalid", "Plan announced in October 2025", "https://www.africanews.com/2025/10/16/nestle-to-cut-16000-jobs-worldwide-in-major-restructuring-move"),
+    ("Nokia", 14000): ("invalid", "Plan announced in October 2023", "https://fortune.com/2023/10/19/nokia-drop-profits-lay-offs-14000-jobs/"),
+    # --- Group 1, second pass ---
+    ("KLM", 5000): ("partial", "5,000 positions (5 Nov 2026); part outsourced, ~1,000 direct cuts", "https://www.dutchnews.nl/2026/11/klm-to-cut-5000-jobs-amid-high-fuel-prices-and-global-unrest/"),
+    ("Fiserv", 3000): ("verified", "3,000 employees and contractors, 3 Nov 2026", "https://www.hrkatha.com/news/fiserv-cuts-3000-employee-and-contractor-roles-under-new-ceo/"),
+    ("Schaeffler", 3460): ("verified", "3,460, Europe, 3 Nov 2026", "https://evertiq.com/news/2026-11-03-schaeffler-to-cut-3460-jobs-in-europe-and-close-four-german-sites"),
+    ("Kroger", 3000): ("verified", "3,000 corporate roles, AI cited, Oct 2026", "https://www.foxbusiness.com/retail/kroger-cut-3000-corporate-jobs-ai-expansion"),
+    ("Novo Nordisk", 4000): ("not_found", "No 2026 announcement found; may relate to the 9,000 plan of Sep 2025", "https://www.bloomberg.com/news/articles/2025-09-10/novo-nordisk-will-cut-9-000-jobs-globally-to-save-1-3-billion"),
+    ("Omnicom", 15000): ("verified", "15,000 by year-end (IPG merger), Sep 2026", "https://www.mediapost.com/publications/article/417911/omnicom-set-to-cut-15000-jobs.html"),
+    ("Jaguar Land Rover", 4000): ("verified", "4,000, Sep 2026", "https://abcnews.com/Business/wireStory/jaguar-land-rover-cut-4000-jobs-reduce-costs-136253666"),
+    ("Uber", 3300): ("verified", "3,300 (10%), Sep 2026", "https://www.euronews.com/2026/09/03/uber-cuts-10-of-global-workforce-in-biggest-layoffs-since-the-pandemic"),
+    ("BMW", 8000): ("verified", "~8,000 by end of 2027, Jul 2026", "https://www.euronews.com/2026/07/29/bmw-plans-to-cut-around-8000-jobs-in-major-cost-saving-drive"),
+    ("Porsche", 5000): ("verified", "Additional 5,000; 9,000 in total by 2035, Jul 2026", "https://www.timeslive.co.za/motoring/2026-07-27-porsche-ramps-up-job-cuts-to-9000-by-2035/"),
+    ("Porsche", 3900): ("partial", "Earlier part of the 9,000 plan to 2035; first announcement may be older", "https://www.cbtnews.com/porsche-confirms-3900-job-cuts/"),
+    ("Verizon", 3000): ("corrected", "News reports 500 corporate layoffs; ~2,500 store staff transfer with a store sale. Corrected to 500", "https://www.lightreading.com/operations/verizon-to-unload-274-stores-lay-off-500-corporate-employees"),
+    ("HDFC Bank", 3343): ("partial", "Not an announcement; headcount fell by 3,343 in the fiscal year (automation/AI context)", "https://www.businesstoday.in/latest/corporate/story/hdfc-banks-automation-ai-push-cuts-over-3300-job-in-fy26-542523-2026-07-13"),
+    ("Microsoft", 4664): ("verified", "~4,800 (2.1%), Jul 2026", "https://aa.com.tr/en/world/microsoft-to-cut-4-800-jobs-spin-off-4-gaming-studios/3987565"),
+    ("British American Tobacco", 9000): ("verified", "9,000, Jun 2026", "https://www.bnnbloomberg.ca/business/international/2026/06/29/british-american-tobacco-cost-cutting-hits-9000-roles/"),
+    ("Evonik", 3200): ("verified", "3,200 by 2029, Jun 2026", "https://www.chemicalprocessing.com/industrynews/news/55385278/evonik-expands-restructuring-program-plans-3200-additional-job-cuts-through-2029"),
+    ("Takeda", 4500): ("verified", "~4,500, fiscal year 2026, May 2026", "https://www.fiercepharma.com/pharma/takeda-slimming-down-new-era-plots-4500-layoffs-latest-restructuring-drive"),
+    ("Commerzbank", 6900): ("corrected", "May 2026 reports say 3,000; corrected to 3,000", "https://www.dailysabah.com/business/economy/commerzbank-to-cut-3000-jobs-as-it-fends-off-unicredit-takeover"),
+    ("Spirit Airlines", 14000): ("partial", "Company ceased operations (2 May 2026); reports put affected staff at 14,000-17,000", "https://lavocedinewyork.com/en/news/2026/05/02/spirit-airlines-shuts-down-all-flights-canceled-over-17000-employees-laid-off/"),
+    ("Whitbread", 3800): ("verified", "3,800, 5-year plan, Apr 2026", "https://skift.com/2026/04/30/whitbread-sell-hotels-cut-jobs-strategic-overhaul/"),
+    ("HSBC", 20000): ("partial", "Not a firm announcement; 'mulling' report, multi-year AI overhaul, Mar 2026", "https://www.bloomberg.com/news/articles/2026-03-19/hsbc-mulls-deep-job-cuts-from-multiyear-ai-fueled-overhaul"),
+    # --- Group 3: stratified random sample of 20 rows below 3,000 ---
+    ("Peloton", 286): ("verified", "11% of workforce, 30 Jan 2026", "https://www.bnnbloomberg.ca/business/2026/01/30/peloton-cuts-11-per-cent-of-staff-in-cost-cutting-push-spokesperson-says/"),
+    ("Electronic Arts", 300): ("verified", "~300 at Battlefield studios, Mar 2026", "https://hitmarker.net/news/eas-ceo-earned-38-6-million-in-the-same-year-the-company-laid-off-300-battlefield-developers-3492023"),
+    ("Autolus Therapeutics", 98): ("verified", "13% of workforce, Apr 2026", "https://finance.yahoo.com/sectors/healthcare/articles/autolus-therapeutics-autl-cut-workforce-040108671.html"),
+    ("Envato", 200): ("verified", "200 roles, Mar 2026; news cites AI but label is RESTRUCTURE", "https://www.startupdaily.net/advice/business-strategy/shutterstock-owned-envato-is-slashing-its-workforce"),
+    ("Artlist", 200): ("verified", "200 of 500 staff, Jun 2026, AI", "https://en.globes.co.il/en/article-1001546110"),
+    ("JPMorgan Chase", 121): ("verified", "New Jersey WARN notice, 2026", "https://citywire.com/pro-buyer/news/jp-morgans-first-round-of-layoffs-to-hit-new-jersey-by-may/a2460400"),
+    ("Sodexo", 121): ("not_found", "This Michigan notice could not be found", ""),
+    ("Alameda Health System", 240): ("partial", "Mar 2026 WARN notice exists; part was later rescinded", "https://www.healthcarefinancenews.com/news/alameda-health-system-rescinds-92-layoffs-after-193m-county-allocation"),
+    ("WPP", 300): ("partial", "Savings program confirmed; the 300 figure was not found", "https://www.campaignasia.com/article/wpp-launches-new-elevate28-strategy-with-four-core-divisions-and-676-million-savings/4eb4tskvt4a335kdzk87px21xf"),
+    ("United Internet", 800): ("verified", "~800 (1&1 and IONOS), Sep 2026; news cites AI but label is RESTRUCTURE", "https://www.cio.de/article/4221050/kahlschlag-fuer-ki-1und1-und-ionos-opfern-800-jobs.html"),
+    ("CJ Logistics America", 56): ("verified", "Newville PA WARN notice (effective Oct 2026)", "https://www.warntracker.com/layoff/cj-logistics-america-2026-10-31"),
+    ("Nike", 1400): ("verified", "1,400 corporate roles, 23 Apr 2026", "https://bloomberg.com/news/articles/2026-04-23/nike-is-cutting-1-400-corporate-jobs-mostly-in-technology"),
+    ("Miele Manufacturing", 60): ("not_found", "Local news link exists; could not be confirmed by search", ""),
+    ("Stoelzle Glass USA", 200): ("partial", "Correct, but a TEMPORARY layoff during a plant renovation", "https://www.glass-international.com/news/stoelzle-glass-usa-makes-200-temporary-layoffs"),
+    ("Cubic3", 70): ("not_found", "Could not be confirmed by search", ""),
+    ("New French Bakery (Rise Baking)", 166): ("partial", "Rise Baking closing Minnesota plants confirmed; the 166 figure was not found", "https://www.bakingbusiness.com/articles/67189-rise-baking-to-close-two-minnesota-plants"),
+    ("HubSpot", 660): ("verified", "660, 6 Oct 2026. CEO denies the cut is AI-driven; AI label questionable", "https://www.bostonglobe.com/2026/10/06/business/hubspot-layoffs/"),
+    ("Kellanova", 112): ("not_found", "Generic California WARN link; notice not found", ""),
+    ("Agios Pharmaceuticals", 100): ("verified", "100+ R&D roles, Nov 2026", "https://www.fiercebiotech.com/biotech/agios-aims-shed-100-rd-roles-year-ahead-hoped-scd-approval"),
+    ("Nature's Bakery (Mars)", 345): ("verified", "345, Missouri plant, Jul 2026", "https://www.supplychaindive.com/news/mars-to-close-natures-bakery-plant-lay-off-345-workers/824855/"),
+    # --- Group 2: all remaining AI-DRIVEN rows (every AI row in the main analysis is checked) ---
+    ("Visa", 2600): ("verified", "2,600 (7%), Jul 2026, AI efficiency cited", "https://dealroom.co/news/141615-visa-to-cut-2-600-jobs-7-of-staff-as-ai-reshapes-work/"),
+    ("Amdocs", 2500): ("partial", "AI-transition cuts confirmed; reports range 2,000-3,000", "https://www.valuethemarkets.com/cryptocurrency/news/amdocs-to-cut-workforce-amid-strategic-shift-towards-ai"),
+    ("Acrisure", 2250): ("verified", "2,250, May 2026, AI cited", "https://www.insurancebusinessmag.com/us/news/technology/ai-is-cutting-insurance-jobs--the-industry-is-just-starting-to-say-so-580795.aspx"),
+    ("WiseTech Global", 2000): ("verified", "2,000, Feb 2026, AI cited; plan spread over 2 years", "https://finder.techleap.nl/news/feed/wisetech-to-cut-2-000-jobs-as-ai-ends-era-of-manual-coding"),
+    ("Atlassian", 1600): ("verified", "1,600, Mar 2026, AI investment", "https://www.businesstoday.in/amp/technology/story/atlassian-lays-off-1600-employees-as-it-ramps-up-ai-investment-520224-2026-03-12"),
+    ("Centrica", 1300): ("verified", "1,300, Jul 2026, AI; plan spread over 2 years", "https://www.computing.co.uk/news/2026/ai/centrica-and-monday-com-announce-ai-related-job-cuts"),
+    ("Cloudflare", 1100): ("verified", "1,100, May 2026, AI cited", "https://yourstory.com/ai-story/cloudflare-ai-job-cuts-2026"),
+    ("Walmart", 1100): ("partial", "~1,000 corporate staff laid off OR relocated; not all are cuts", "https://www.retailtouchpoints.com/news/walmart-to-lay-off-or-relocate-1000-corporate-jobswalmart-to-lay-off-or-relocate-1000-corporate-jobs/619450/"),
+    ("Wix", 1000): ("verified", "800-1,000 (upper bound), May 2026, AI", "https://letsdatascience.com/news/wix-cuts-1000-jobs-amid-ai-transition-d4812c1c"),
+    ("Snap", 1000): ("verified", "~1,000, Apr 2026, AI", "https://techrepublic.com/article/news-snap-ai-layoffs-april-2026"),
+    ("Salesforce", 1000): ("verified", "Fewer than 1,000, Feb 2026, Agentforce/AI", "https://www.businesstoday.in/technology/story/salesforce-cuts-nearly-1000-jobs-as-ai-push-reshapes-operations-515580-2026-02-11"),
+    ("NatWest Group", 1000): ("verified", "~1,000, Oct 2026, efficiency/AI", "https://www.itv.com/news/2026-10-30/natwest-efficiency-drive-results-in-job-cuts-and-420-million-of-cost-savings"),
+    ("UKG", 950): ("verified", "950, Apr 2026, AI-focused restructuring", "https://finder.techleap.nl/news/feed/ukg-lays-off-950-employees-globally-in-ai-driven-restructuring"),
+    ("LinkedIn", 875): ("verified", "~5% (~875), May 2026", "https://news.tuoitre.vn/linkedin-planning-to-lay-off-5-of-staff-in-latest-tech-sector-cuts-source-says-103260514111904981.htm"),
+    ("Rackspace", 750): ("verified", "750 (15%), Jun 2026, AI transformation", "https://www.sanantonioreport.org/rackspace-750-workers-pivots-infrastructure-ai-san-antonio/"),
+    ("Coinbase", 700): ("verified", "14%, May 2026, AI", "https://heygotrade.com/en/news/coinbase-cuts-14-percent-workforce-volatile-markets-ai"),
+    ("Pinterest", 700): ("verified", "15%, Jan 2026, pivot to AI", "https://www.fox7austin.com/news/pinterest-layoff-15-workforce-pivots-ai"),
+    ("Verizon", 621): ("partial", "Further cuts confirmed; reports say 'several hundred', the 621 figure was not found", "https://www.lightreading.com/ai-machine-learning/ai-mad-verizon-to-continue-with-cuts-after-ceo-s-jobs-warning"),
+    ("monday.com", 620): ("verified", "620 (20%), Jul 2026, AI", "https://www.uctoday.com/project-management/monday-com-cuts-20-of-its-workforce-as-its-ai-work-platform-bet-deepens/"),
+    ("FICO", 570): ("verified", "15%, Oct 2026, SEC 8-K", "https://www.sec.gov/Archives/edgar/data/0000814547/000119312526415732/d127042d8k.htm"),
+    ("NICE", 500): ("verified", "500, Nov 2026, AI", "https://www.hrkatha.com/news/layoff/nice-cuts-500-jobs-as-ai-reshapes-customer-service-business/"),
+    ("CrowdStrike", 500): ("invalid", "500-person cut announced in May 2025", "https://heise.de/-10376586"),
+    ("Thomson Reuters", 500): ("partial", "Cuts confirmed; 'up to 500' / 'a small number' wording", "https://talkingbiznews.com/media-news/thomson-reuters-is-cutting-some-jobs/"),
+    ("Freshworks", 500): ("verified", "500 (11%), May 2026, AI", "https://india.entrepreneur.com/business-news/freshworks-lays-off-500-employees-amid-ai-led-restructuring-push"),
+    ("Groupon", 400): ("verified", "'Up to 400', May 2026", "https://news.bloomberglaw.com/bankruptcy-law/groupon-to-cut-up-to-400-jobs-coo-jiri-ponrt-to-resign"),
+    ("DNB", 400): ("verified", "~400, Oct 2026, agentic AI", "https://www.hrkatha.com/news/layoff/ai-reshapes-banking-dnb-to-cut-400-jobs-in-tech-overhaul/"),
+    ("Angi", 350): ("verified", "350, Jan 2026, AI", "https://finance.yahoo.com/markets/stocks/articles/list-companies-laying-off-staff-105502686.html"),
+    ("Ticketmaster", 350): ("verified", "May 2026, roundup article", "https://finance.yahoo.com/sectors/technology/articles/layoffs-accelerate-may-2026-firms-040430218.html"),
+    ("Innovaccer", 340): ("verified", "340, May 2026, shift to an AI-native model", "https://india.entrepreneur.com/business-news/innovaccer-lays-off-340-employees-amid-shift-to-ai-native-model"),
+    ("Uber", 340): ("partial", "23% of the HR/recruiting unit; AI reason not evident in reports", "https://www.staffingindustry.com/news/global-daily-news/uber-cuts-23-of-people-in-hr-and-recruitment-division"),
+    ("TikTok", 300): ("verified", "~300, Dublin, Jul 2026", "https://theprint.in/world/tiktok-plans-to-cut-about-300-jobs-in-dublin-under-europe-restructuring-drive/2974731/"),
+    ("ClickUp", 290): ("verified", "22%, May 2026, AI agents", "https://www.techrepublic.com/article/news-clickup-cuts-staff-ai-restructuring/"),
+    ("Sprout Social", 260): ("verified", "Jul 2026, AI", "https://www.itiger.com/news/2651466264"),
+    ("Bolt", 250): ("verified", "One third of staff, Apr 2026, AI cited", "https://www.americanbanker.com/news/bolt-lays-off-a-third-of-its-employees-citing-ai"),
+    ("DeepL", 250): ("verified", "25%, May 2026, AI", "https://bloomberg.com/news/articles/2026-05-07/google-translate-rival-deepl-announces-plans-to-cut-25-of-staff"),
+    ("Arctic Wolf", 250): ("verified", "250, May 2026, AI", "https://stlawyers.ca/blog-news/arctic-wolf-job-cuts-may-2026/"),
+    ("Elastic", 250): ("verified", "7%, Jun 2026, AI", "https://aiweekly.co/alerts/elastic-cuts-7-of-staff-ceo-cites-ai-enabling-leaner-teams"),
+    ("Opendoor", 250): ("verified", "250, Jun 2026, India office closed, AI", "https://newswav.com/article/opendoor-shuts-india-operations-lays-off-250-employees-embraces-ai-A2606_CbtzR8"),
+    ("SentinelOne", 240): ("verified", "8%, May 2026, AI investment", "https://www.peoplematters.in/news/strategic-hr/sentinelone-to-lay-off-8percent-of-staff-while-increasing-investment-in-ai-and-cloud-49991"),
+    ("Reach plc", 220): ("verified", "220 journalists, Sep 2026; AI summaries reducing traffic", "https://www.cp24.com/news/world/2026/09/16/uk-media-group-reach-to-cut-220-journalist-jobs/"),
+    ("Gemini", 200): ("verified", "'Up to 200' (25%), Feb 2026; market exit, AI partly", "https://crypto.jobs/news/gemini-cuts-25-of-workforce-exits-international-markets-in-strategic-pivot-to-us-operations"),
+    ("Booksy", 200): ("verified", "~20%, Sep 2026, AI", "https://www.wiadomoscikosmetyczne.pl/biznes-kosmetyki/booksy-zwolni-okolo-20-proc-zalogi-firma-przyspiesza-wdrazanie-ai-2537931"),
+    ("Southern Cross Media", 200): ("partial", "Up to 200-300; main reason is falling TV ad revenue, AI questionable", "https://www.mediaweek.com.au/southern-cross-media-rohan-lund-ai-redundancies/"),
+    ("Apple", 200): ("verified", "~200, Aug 2026, Vision Pro/Siri teams", "https://www.theweek.in/news/biz-tech/2026/08/22/apple-layoffs-iphone-maker-to-cut-200-jobs-half-of-it-from-a-single-product-division.html"),
+    ("SUSE", 190): ("verified", "10%, Nov 2026, AI", "https://www.hrkatha.com/news/suse-to-cut-10-of-global-workforce-as-ai-reshapes-software-operations/"),
+    ("Crypto.com", 180): ("verified", "12%, Mar 2026, AI", "https://www.businesstoday.in/amp/technology/story/cryptocom-cuts-12-workforce-amid-ai-push-ceo-points-to-ai-driven-change-521534-2026-03-20"),
+    ("Mews", 170): ("verified", "Jul 2026, AI restructuring", "https://skift.com/2026/07/07/mews-layoffs-restructuring-ai/"),
+    ("Chime", 150): ("verified", "~140-150 (10%), Jul 2026", "https://www.thestar.com.my/tech/tech-news/2026/07/31/chime-to-cut-10-of-total-workforce-or-about-140-jobs-source-says"),
+    ("BigID", 150): ("verified", "150, May 2026, AI", "https://en.globes.co.il/en/article-1001544054"),
+    ("Gambling.com Group", 150): ("verified", "25%, May 2026", "https://frontofficesports.com/newsletter/betting-company-layoffs-pile-up/"),
+    ("Upwork", 145): ("verified", "~24%, May 2026, AI", "https://staffingindustry.com/news/global-daily-news/upwork-reports-q1-revenue-rises-14-layoffs-ahead"),
+    ("Webflow", 140): ("verified", "May 2026, 'agentic web' transformation", "https://www.80aj.com/2026/05/28/webflow-layoffs-community-backlash/"),
+    ("Starling Bank", 130): ("verified", "3% of staff, Jul 2026", "https://www.bankingdive.com/news/starling-to-whittle-headcount-by-3/824729/"),
+    ("GoKwik", 120): ("verified", "120, Jul 2026, AI", "https://www.latestly.com/technology/gokwik-layoffs-e-commerce-company-reduces-120-staff-amid-ai-adoption-say-reports-7513450.html"),
+    ("Wells Fargo", 112): ("verified", "112, Raleigh WARN, Feb 2026; no AI reason in reports", "https://spectrumlocalnews.com/nc/charlotte/news/2026/02/06/raleigh-wells-fargo-layoffs-2026"),
+    ("AI21 Labs", 110): ("partial", "~60% of staff, May 2026; the 110 figure could not be confirmed", "https://en.globes.co.il/en/article-1001543241"),
+    ("Elementor", 100): ("verified", "100, Jun 2026, AI", "https://en.globes.co.il/en/article-1001547303"),
+    ("The Telegraph", 100): ("verified", "'Up to 100', Oct 2026, AI-focused transformation", "https://pressgazette.co.uk/news/telegraph-cuts-up-to-100-jobs-as-it-targets-being-global-ai-powered-business/"),
+    ("Skai", 100): ("not_found", "No 2026 announcement could be confirmed", ""),
+    ("Rapyd", 100): ("not_found", "Only older, smaller cuts were found", ""),
+    ("Pendo", 90): ("partial", "7 Apr 2026 cut and AI-focused restructuring confirmed; the 90 figure could not be confirmed", "https://abc11.com/post/pendo-layoffs-ai-tech-firm-nc-announces-job-cuts-raleigh-part-company-wide-restructure/18857051/"),
+    ("Snyk", 90): ("verified", "90, Jun 2026, AI strategy", "https://www.bankinfosecurity.com/snyk-reportedly-cuts-90-jobs-to-accelerate-ai-strategy-a-32081"),
+    ("Salesforce", 86): ("verified", "86, Jun 2026, including Agentforce teams", "https://jbiznews.com/salesforce-cuts-86-more-jobs-including-on-its-own-ai-team/"),
+    ("Lightricks", 75): ("verified", "75, company split around its AI video unit", "https://completeaitraining.com/news/lightricks-splits-facetune-from-its-ai-video-unit-and-cuts/"),
+    ("Snowflake", 70): ("verified", "~70 technical writers, Mar 2026, replaced by AI", "https://www.webpronews.com/snowflakes-cio-turned-layoffs-into-a-blunt-ai-mandate/"),
+    ("Vermont Information Processing", 66): ("verified", "Colchester VT, 20 Oct 2026, WARN record; AI context", "https://vtdigger.org/2026/10/20/layoffs-announced-at-vermont-information-processing-in-colchester/"),
+    ("Minute Media", 60): ("partial", "May 2026 cut at Sports Illustrated (Minute Media) confirmed; the 60 figure could not be confirmed", "https://barrettmedia.com/2026/05/29/sports-illustrated-layoffs-underway/"),
+    ("Pentera", 60): ("partial", "Aug 2026 cut in Hebrew-language sources; figure could not be confirmed", "https://calcalistech.com/ctechnews/article/b1ioncnpzl"),
+    ("MARA Holdings", 40): ("verified", "15% of staff, Apr 2026, shift to AI infrastructure", "https://cryptojobslist.com/crypto-layoffs/mara-holdings-2026-04"),
+    ("Gloat", 20): ("partial", "Source says '20% of workforce'; unclear whether 20 people or 20%", "https://en.globes.co.il/en/article-1001536470"),
+    # --- Group 4 (2026-11-11 audit): number in the URL differs from the data ---
+    ("Gilead Sciences", 192): ("verified", "192 = Redwood City 108 + Rockville 84 (WARN, 30 Apr 2026); headline was later updated. total_workforce 209 = headcount of the acquired Arcellx", "https://www.fiercebiotech.com/biotech/after-arcellx-buyout-close-gilead-trims-108-jobs-car-t-biotechs-redwood-city-outpost"),
+    ("Capital One", 1100): ("verified", "1,100+ (Illinois WARN 1,139), Mar 2026, Discover integration; the 1,700 in the URL is the cumulative total since the merger", "https://www.paymentsdive.com/news/capital-one-job-cuts-discover-workers-integration-riverwoods/760945/"),
+    # --- Group 5 (2026-11-11 audit): non-AI row whose URL mentions AI (missed AI label?) ---
+    ("Comcast", 634): ("verified", "634, Philadelphia WARN, Oct 2026; reason is restructuring (not AI); ~500 new positions at the same time. 'ai-jobs' in the URL refers to the new positions", "https://www.phillyvoice.com/comcast-layoffs-philadelphia-restructuring/"),
 }
 
-# Haberlerde AI gerekçesi geçen ama sitede AI etiketi olmayan satırlar
-AI_ETIKET_EKSIK = {("Envato", 200), ("United Internet", 800)}
+# Rows where news coverage cites AI but the site's label is not AI-DRIVEN
+AI_LABEL_MISSING = {("Envato", 200), ("United Internet", 800)}
 
-# Kaynağa göre düzeltilen kişi sayıları: (şirket, eski) -> yeni
-DUZELTME = {("Verizon", 3000): 500, ("Commerzbank", 6900): 3000}
+# People counts corrected according to the source: (company, raw value) -> corrected value
+CORRECTIONS = {("Verizon", 3000): 500, ("Commerzbank", 6900): 3000}
 
-# Rakamın bir üst sınır ("... kadar") ya da kesinleşmemiş plan olduğu satırlar
-UST_SINIR = {("Oracle", 30000), ("Cognizant", 15000), ("Heineken", 6000), ("Meta", 16000),
-             ("Microsoft", 8750), ("HSBC", 20000),
-             ("Wix", 1000), ("Groupon", 400), ("Thomson Reuters", 500), ("The Telegraph", 100),
-             ("Gemini", 200), ("Southern Cross Media", 200), ("Amdocs", 2500)}
+# Rows where the number is an upper bound ("up to ...") or a not-yet-final plan
+UPPER_BOUND = {("Oracle", 30000), ("Cognizant", 15000), ("Heineken", 6000), ("Meta", 16000),
+               ("Microsoft", 8750), ("HSBC", 20000),
+               ("Wix", 1000), ("Groupon", 400), ("Thomson Reuters", 500), ("The Telegraph", 100),
+               ("Gemini", 200), ("Southern Cross Media", 200), ("Amdocs", 2500)}
 
-# AI etiketinin tartışmalı olduğu satırlar (gerekçe başka ya da duyuru değil)
-AI_TARTISMALI = {("UPS", 30000), ("Dell", 11000), ("HDFC Bank", 3343), ("HubSpot", 660),
-                 ("Uber", 340), ("Southern Cross Media", 200), ("Wells Fargo", 112)}
+# Rows where the AI label is questionable (main reason is something else, or not an announcement)
+AI_LABEL_QUESTIONABLE = {("UPS", 30000), ("Dell", 11000), ("HDFC Bank", 3343), ("HubSpot", 660),
+                         ("Uber", 340), ("Southern Cross Media", 200), ("Wells Fargo", 112)}
 
-# Kaynağı satıra özel olmayan linkler (genel sayfa veya derleme sitesi)
-GENEL_LINK = re.compile(
+# Links that are not specific to the row (generic page or aggregator site)
+GENERIC_LINK = re.compile(
     r"Layoff_Services_WARN/?$|warn-list/?$|layoff-tracker|cheapism|recruitingnewsnetwork"
     r"|intellizence|layoffs-surge|californiawarn\.com/companies|major-employers-job-cuts"
     r"|layoffs-list-companies",
     re.IGNORECASE,
 )
-DURAK = {"the", "inc", "group", "co", "company", "corp", "international", "of", "and",
-         "usa", "us", "uk", "global", "systems", "health", "foods"}
+STOPWORDS = {"the", "inc", "group", "co", "company", "corp", "international", "of", "and",
+             "usa", "us", "uk", "global", "systems", "health", "foods"}
 
 
-def tarih_coz(deger):
+def parse_date(value):
     """'Oct 13' -> (2026-10-13, 'day'); 'Jan 2026' -> (2026-01-01, 'month');
-    '2026' -> (NaT, 'year_only': yıl belli, ay belli değil); '2025-30' -> (NaT, 'multi_year': yıllara yayılan plan)"""
-    deger = str(deger).strip()
-    m = re.fullmatch(r"([A-Z][a-z]{2}) (\d{1,2})", deger)
+    '2026' -> (NaT, 'year_only': year known, month unknown); '2025-30' -> (NaT, 'multi_year': multi-year plan)"""
+    value = str(value).strip()
+    m = re.fullmatch(r"([A-Z][a-z]{2}) (\d{1,2})", value)
     if m:
-        return pd.Timestamp(YIL, AYLAR[m.group(1)], int(m.group(2))), "day"
-    m = re.fullmatch(r"([A-Z][a-z]{2}) (\d{4})", deger)
+        return pd.Timestamp(YEAR, MONTHS[m.group(1)], int(m.group(2))), "day"
+    m = re.fullmatch(r"([A-Z][a-z]{2}) (\d{4})", value)
     if m:
-        return pd.Timestamp(int(m.group(2)), AYLAR[m.group(1)], 1), "month"
-    if re.fullmatch(r"\d{4}", deger):
+        return pd.Timestamp(int(m.group(2)), MONTHS[m.group(1)], 1), "month"
+    if re.fullmatch(r"\d{4}", value):
         return pd.NaT, "year_only"
     return pd.NaT, "multi_year"
 
 
-def sade(metin):
-    metin = unicodedata.normalize("NFKD", str(metin)).encode("ascii", "ignore").decode().lower()
-    return re.sub(r"[^a-z0-9]+", " ", metin).strip()
+def simplify(text):
+    text = unicodedata.normalize("NFKD", str(text)).encode("ascii", "ignore").decode().lower()
+    return re.sub(r"[^a-z0-9]+", " ", text).strip()
 
 
-def link_kontrol(satir):
-    """Linkin şirket adını ve kişi sayısını içerip içermediğine göre otomatik güven seviyesi."""
-    url = sade(satir.source_url)
-    kelimeler = [k for k in sade(satir.company).split() if k not in DURAK and len(k) > 2]
-    sirket_var = any(k in url for k in kelimeler) if kelimeler else False
-    ham = satir.source_url.lower().replace(",", "")
-    n = int(satir.people_cut)
-    adaylar = {str(n)} | ({f"{n // 1000}k"} if n >= 1000 and n % 1000 == 0 else set())
-    sayi_var = any(re.search(rf"(?<!\d){re.escape(a)}(?!\d)", ham) for a in adaylar)
-    if sirket_var and sayi_var:
-        return "A_sirket_ve_rakam"
-    if re.search(r"\.gov|warn", satir.source_url, re.IGNORECASE):
-        return "B_resmi_warn"
-    if sirket_var:
-        return "C_sadece_sirket"
-    return "D_belirsiz"
+def score_link(row):
+    """Automatic source score: does the URL contain the company name and the people count?"""
+    url = simplify(row.source_url)
+    words = [w for w in simplify(row.company).split() if w not in STOPWORDS and len(w) > 2]
+    has_company = any(w in url for w in words) if words else False
+    raw = row.source_url.lower().replace(",", "")
+    n = int(row.people_cut)
+    candidates = {str(n)} | ({f"{n // 1000}k"} if n >= 1000 and n % 1000 == 0 else set())
+    has_number = any(re.search(rf"(?<!\d){re.escape(c)}(?!\d)", raw) for c in candidates)
+    if has_company and has_number:
+        return "A_company_and_number"
+    if re.search(r"\.gov|warn", row.source_url, re.IGNORECASE):
+        return "B_official_warn"
+    if has_company:
+        return "C_company_only"
+    return "D_unclear"
+
+
+def reliability_tier(r):
+    """One reliability label per row."""
+    if r.is_invalid:
+        return "X_invalid"
+    if r.is_multi_year:
+        return "X_multi_year_plan"
+    if r.date_precision == "year_only":
+        return "X_month_unknown"
+    if r.verification in ("verified", "corrected"):
+        return "T1_manual_verified"
+    if r.verification == "partial":
+        return "T2_manual_partial"
+    if r.generic_source:  # not checked manually + generic/aggregator link (incl. WARN list home pages)
+        return "T5_weak_source"
+    if r.verification == "not_checked" and r.auto_source_level in ("A_company_and_number", "B_official_warn"):
+        return "T3_strong_source"
+    if r.verification == "not_checked" and r.auto_source_level == "C_company_only":
+        return "T4_medium_source"
+    return "T5_weak_source"
 
 
 def main():
-    df = pd.read_csv(GIRDI, comment="#")
+    df = pd.read_csv(INPUT, comment="#")   # the file starts with 3 '#' comment lines
     df.columns = ["company", "industry", "people_cut", "workforce_pct_raw",
                   "total_workforce", "date_raw", "category", "source_url"]
-    for kol in ["company", "industry", "category", "source_url", "date_raw"]:
-        df[kol] = df[kol].astype(str).str.strip()
+    for col in ["company", "industry", "category", "source_url", "date_raw"]:
+        df[col] = df[col].astype(str).str.strip()
 
     df["workforce_pct"] = df["workforce_pct_raw"].str.rstrip("%").astype(float)
-    cozum = df["date_raw"].apply(tarih_coz)
-    df["announce_date"] = [c[0] for c in cozum]
-    df["date_precision"] = [c[1] for c in cozum]
+    parsed = df["date_raw"].apply(parse_date)
+    df["announce_date"] = [p[0] for p in parsed]
+    df["date_precision"] = [p[1] for p in parsed]
     df["month"] = df["announce_date"].dt.to_period("M").astype(str).replace("NaT", None)
 
-    anahtar = list(zip(df["company"], df["people_cut"]))  # orijinal değerlerle anahtar
+    key = list(zip(df["company"], df["people_cut"]))  # keys use the original raw values
     df["people_cut_original"] = df["people_cut"]
-    df["people_cut"] = [DUZELTME.get(k, n) for k, n in zip(anahtar, df["people_cut"])]
-    df["is_corrected"] = [k in DUZELTME for k in anahtar]
+    df["people_cut"] = [CORRECTIONS.get(k, n) for k, n in zip(key, df["people_cut"])]
+    df["is_corrected"] = [k in CORRECTIONS for k in key]
     df.loc[df["is_corrected"], "workforce_pct"] = (
         df["people_cut"] / df["total_workforce"] * 100).round(1)
-    df["verification"] = [DOGRULAMA.get(k, ("kontrol_edilmedi",))[0] for k in anahtar]
-    df["verification_note"] = [DOGRULAMA[k][1] if k in DOGRULAMA else "" for k in anahtar]
-    df["auto_source_level"] = df.apply(link_kontrol, axis=1)
+    df["verification"] = [VERIFICATION.get(k, ("not_checked",))[0] for k in key]
+    df["verification_note"] = [VERIFICATION[k][1] if k in VERIFICATION else "" for k in key]
+    df["auto_source_level"] = df.apply(score_link, axis=1)
     df["is_multi_year"] = df["date_precision"].eq("multi_year")
-    df["is_undated"] = df["date_precision"].isin(["multi_year", "year_only"])  # ay bilinmiyor
-    df["is_invalid"] = df["verification"].eq("hatali")
-    df["is_upper_bound"] = [k in UST_SINIR for k in anahtar]
-    df["ai_label_questionable"] = [k in AI_TARTISMALI for k in anahtar]
+    df["is_undated"] = df["date_precision"].isin(["multi_year", "year_only"])  # month unknown
+    df["is_invalid"] = df["verification"].eq("invalid")
+    df["is_upper_bound"] = [k in UPPER_BOUND for k in key]
+    df["ai_label_questionable"] = [k in AI_LABEL_QUESTIONABLE for k in key]
     df["is_ai_driven"] = df["category"].eq("AI-DRIVEN")
-    # Sıkı AI tanımı (ANA RAKAM): AI etiketli, etiketi tartışmalı değil, rakamı "...'e kadar" değil
+    # Strict AI definition (HEADLINE): AI-labelled, label not questionable, number not "up to ..."
     df["is_ai_strict"] = df["is_ai_driven"] & ~df["ai_label_questionable"] & ~df["is_upper_bound"]
-    df["ai_label_missing"] = [k in AI_ETIKET_EKSIK for k in anahtar]
-    df["generic_source"] = df["source_url"].str.contains(GENEL_LINK)
-    df["needs_check"] = (df["verification"].eq("kontrol_edilmedi")
+    df["ai_label_missing"] = [k in AI_LABEL_MISSING for k in key]
+    df["generic_source"] = df["source_url"].str.contains(GENERIC_LINK)
+    df["needs_check"] = (df["verification"].eq("not_checked")
                          & (df["generic_source"] | df["date_precision"].eq("month")
-                            | df["auto_source_level"].eq("D_belirsiz")))
-    url_ay = df["source_url"].str.extract(r"2026[/-](\d{2})[/-]\d{2}")[0].astype(float)
-    df["date_mismatch"] = (url_ay - df["announce_date"].dt.month).abs().ge(2)
+                            | df["auto_source_level"].eq("D_unclear")))
+    url_month = df["source_url"].str.extract(r"2026[/-](\d{2})[/-]\d{2}")[0].astype(float)
+    df["date_mismatch"] = (url_month - df["announce_date"].dt.month).abs().ge(2)
     df["is_partial_month"] = df["month"].eq("2026-11")
     df["in_main_analysis"] = ~df["is_undated"] & ~df["is_invalid"]
 
-    # Güvenilirlik katmanı (her satır için tek etiket)
-    def katman(r):
-        if r.is_invalid:
-            return "X_hatali"
-        if r.is_multi_year:
-            return "X_tarihsiz_plan"
-        if r.date_precision == "year_only":
-            return "X_ay_belirsiz"
-        if r.verification in ("dogrulandi", "duzeltildi"):
-            return "T1_elle_dogrulandi"
-        if r.verification == "kismen":
-            return "T2_elle_kismen"
-        if r.generic_source:  # elle bakılmamış + genel sayfa/derleme linki (WARN ana sayfası dahil)
-            return "T5_zayif_kaynak"
-        if r.verification == "kontrol_edilmedi" and r.auto_source_level in ("A_sirket_ve_rakam", "B_resmi_warn"):
-            return "T3_guclu_kaynak"
-        if r.verification == "kontrol_edilmedi" and r.auto_source_level == "C_sadece_sirket":
-            return "T4_orta_kaynak"
-        return "T5_zayif_kaynak"
-    df["reliability_tier"] = df.apply(katman, axis=1)
+    df["reliability_tier"] = df.apply(reliability_tier, axis=1)
     df["in_core_verified"] = df["reliability_tier"].isin(
-        ["T1_elle_dogrulandi", "T2_elle_kismen", "T3_guclu_kaynak"])
+        ["T1_manual_verified", "T2_manual_partial", "T3_strong_source"])
 
-    kolonlar = ["company", "industry", "people_cut", "people_cut_original", "is_corrected",
-                "workforce_pct", "total_workforce",
-                "announce_date", "month", "date_precision", "category", "is_ai_driven", "is_ai_strict",
-                "source_url", "in_main_analysis", "in_core_verified", "reliability_tier",
-                "verification", "verification_note",
-                "auto_source_level", "is_invalid", "is_multi_year", "is_undated", "is_upper_bound",
-                "ai_label_questionable", "ai_label_missing", "generic_source", "needs_check", "date_mismatch",
-                "is_partial_month", "date_raw"]
-    df[kolonlar].to_csv(CIKTI, index=False, date_format="%Y-%m-%d")
+    columns = ["company", "industry", "people_cut", "people_cut_original", "is_corrected",
+               "workforce_pct", "total_workforce",
+               "announce_date", "month", "date_precision", "category", "is_ai_driven", "is_ai_strict",
+               "source_url", "in_main_analysis", "in_core_verified", "reliability_tier",
+               "verification", "verification_note",
+               "auto_source_level", "is_invalid", "is_multi_year", "is_undated", "is_upper_bound",
+               "ai_label_questionable", "ai_label_missing", "generic_source", "needs_check", "date_mismatch",
+               "is_partial_month", "date_raw"]
+    df[columns].to_csv(OUTPUT, index=False, date_format="%Y-%m-%d")
 
-    # Doğrulama günlüğü
+    # Verification log
     log = pd.DataFrame([{"company": k[0], "people_cut_in_data": k[1], "status": v[0],
-                         "finding": v[1], "source": v[2]} for k, v in DOGRULAMA.items()])
-    log.to_csv(CIKTI.replace("layoffs_clean", "verification_log"), index=False)
+                         "finding": v[1], "source": v[2]} for k, v in VERIFICATION.items()])
+    log.to_csv(OUTPUT.replace("layoffs_clean", "verification_log"), index=False)
 
-    ana = df[df["in_main_analysis"]]
+    main_set = df[df["in_main_analysis"]]
+    main_set = main_set.assign(ai_cut=main_set["people_cut"].where(main_set["is_ai_driven"], 0),
+                               ai_strict_cut=main_set["people_cut"].where(main_set["is_ai_strict"], 0))
 
-    ana = ana.assign(ai_cut=ana["people_cut"].where(ana["is_ai_driven"], 0),
-                     ai_strict_cut=ana["people_cut"].where(ana["is_ai_strict"], 0))
+    # Industry summary. total_workforce is NOT summed (the same company can appear in several rows
+    # with different values) -> the median of the row-level workforce % is used instead.
+    industry = (main_set.groupby("industry")
+                .agg(announcements=("company", "size"), companies=("company", "nunique"),
+                     people_cut=("people_cut", "sum"), median_cut=("people_cut", "median"),
+                     median_workforce_pct=("workforce_pct", "median"),
+                     ai_announcements=("is_ai_driven", "sum"), ai_strict_announcements=("is_ai_strict", "sum"),
+                     ai_people_cut=("ai_cut", "sum"), ai_strict_people_cut=("ai_strict_cut", "sum"))
+                .sort_values("people_cut", ascending=False))
+    industry["ai_strict_share_pct"] = (industry["ai_strict_people_cut"] / industry["people_cut"] * 100).round(1)
+    industry["ai_share_pct_upper"] = (industry["ai_people_cut"] / industry["people_cut"] * 100).round(1)
+    industry.to_csv(OUTPUT.replace(".csv", "_industries.csv"))
 
-    # Sektör özeti. Not: total_workforce toplanmaz (aynı şirket birden çok satırda olabilir ve
-    # şirket içinde farklı değerler var) -> iş gücü oranı için satır medyanı kullanılır.
-    sektor = (ana.groupby("industry")
-              .agg(announcements=("company", "size"), companies=("company", "nunique"),
-                   people_cut=("people_cut", "sum"), median_cut=("people_cut", "median"),
-                   median_workforce_pct=("workforce_pct", "median"),
-                   ai_announcements=("is_ai_driven", "sum"), ai_strict_announcements=("is_ai_strict", "sum"),
-                   ai_people_cut=("ai_cut", "sum"), ai_strict_people_cut=("ai_strict_cut", "sum"))
-              .sort_values("people_cut", ascending=False))
-    sektor["ai_strict_share_pct"] = (sektor["ai_strict_people_cut"] / sektor["people_cut"] * 100).round(1)
-    sektor["ai_share_pct_upper"] = (sektor["ai_people_cut"] / sektor["people_cut"] * 100).round(1)
-    sektor.to_csv(CIKTI.replace(".csv", "_industries.csv"))
+    # Monthly summary: people-based share (strict = headline, broad = upper bound)
+    # + announcement-count share (not driven by a single giant announcement)
+    monthly = (main_set[main_set["month"].notna()].groupby("month")
+               .agg(announcements=("company", "size"), companies=("company", "nunique"),
+                    people_cut=("people_cut", "sum"), median_cut=("people_cut", "median"),
+                    ai_announcements=("is_ai_driven", "sum"), ai_strict_announcements=("is_ai_strict", "sum"),
+                    ai_people_cut=("ai_cut", "sum"), ai_strict_people_cut=("ai_strict_cut", "sum")))
+    monthly["ai_strict_share_pct"] = (monthly["ai_strict_people_cut"] / monthly["people_cut"] * 100).round(1)
+    monthly["ai_share_pct_upper"] = (monthly["ai_people_cut"] / monthly["people_cut"] * 100).round(1)
+    monthly["ai_strict_count_share_pct"] = (monthly["ai_strict_announcements"] / monthly["announcements"] * 100).round(1)
+    monthly["ai_count_share_pct"] = (monthly["ai_announcements"] / monthly["announcements"] * 100).round(1)
+    monthly["is_partial_month"] = monthly.index == "2026-11"
+    monthly.to_csv(OUTPUT.replace(".csv", "_monthly.csv"))
 
-    # Aylık özet: kişi bazlı pay (sıkı = ana, geniş = üst sınır) + duyuru sayısı bazlı pay
-    # (sayı payı tek bir dev duyurudan etkilenmez)
-    aylik = (ana[ana["month"].notna()].groupby("month")
-             .agg(announcements=("company", "size"), companies=("company", "nunique"),
-                  people_cut=("people_cut", "sum"), median_cut=("people_cut", "median"),
-                  ai_announcements=("is_ai_driven", "sum"), ai_strict_announcements=("is_ai_strict", "sum"),
-                  ai_people_cut=("ai_cut", "sum"), ai_strict_people_cut=("ai_strict_cut", "sum")))
-    aylik["ai_strict_share_pct"] = (aylik["ai_strict_people_cut"] / aylik["people_cut"] * 100).round(1)
-    aylik["ai_share_pct_upper"] = (aylik["ai_people_cut"] / aylik["people_cut"] * 100).round(1)
-    aylik["ai_strict_count_share_pct"] = (aylik["ai_strict_announcements"] / aylik["announcements"] * 100).round(1)
-    aylik["ai_count_share_pct"] = (aylik["ai_announcements"] / aylik["announcements"] * 100).round(1)
-    aylik["is_partial_month"] = aylik.index == "2026-11"
-    aylik.to_csv(CIKTI.replace(".csv", "_monthly.csv"))
-
-    print(f"Toplam satır: {len(df)} | Ana analiz: {len(ana)} | "
-          f"Çıkarılan: hatalı={df['is_invalid'].sum()}, tarihsiz={df['is_undated'].sum()} | "
-          f"Elle doğrulanan: {(df['verification'] != 'kontrol_edilmedi').sum()} | "
-          f"Kontrol gereken: {df['needs_check'].sum()}")
-    print(f"Kişi toplamı: ham={df['people_cut'].sum():,} | ana analiz={ana['people_cut'].sum():,}")
+    print(f"Rows: {len(df)} | Main analysis: {len(main_set)} | "
+          f"Excluded: invalid={df['is_invalid'].sum()}, undated={df['is_undated'].sum()} | "
+          f"Manually checked: {(df['verification'] != 'not_checked').sum()} | "
+          f"Needs check: {df['needs_check'].sum()}")
+    print(f"People: raw={df['people_cut'].sum():,} | main analysis={main_set['people_cut'].sum():,}")
 
 
 if __name__ == "__main__":

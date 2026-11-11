@@ -1,6 +1,6 @@
 # Mülakat ve Sunum Hazırlığı
 
-Bu dosya projeyi **kendi cümlelerinle** savunabilmen için. Her soruda önce kısa cevap (ezberleme, anla), sonra "derine inerlerse" kısmı var. Rakamlar `PROJE_PLANI.md` Bölüm 5 ile aynıdır.
+Bu dosya projeyi **kendi cümlelerinle** savunabilmen için. Her soruda önce kısa cevap (ezberleme, anla), sonra "derine inerlerse" kısmı var. Rakamlar `docs/PROJECT_PLAN.md` Bölüm 5 ile aynıdır. Not: GitHub tarafı İngilizce; veri etiketleri de İngilizce (ör. `T1_manual_verified`, `verified`, `is_ai_strict`).
 
 ---
 

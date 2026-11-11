@@ -1,11 +1,11 @@
 month,total_us_cuts,ai_attributed_cuts,ai_share_pct,ai_ytd_cuts,total_ytd_cuts,source_url,note
-2026-01,108435,7624,7.0,7624,108435,https://www.challengergray.com/blog/challenger-report-february-cuts-plunge-hiring-falls-56-percent/,Toplam Şubat raporundan; AI = Şubat YTD 12.304 - Şubat 4.680 (türetildi)
-2026-02,48307,4680,9.7,12304,156742,https://www.challengergray.com/blog/challenger-report-february-cuts-plunge-hiring-falls-56-percent/,AI YTD 12.304 (%8)
-2026-03,60620,15341,25.3,27645,217362,https://searchenginejournal.com/ai-leads-all-reasons-for-u-s-job-cuts-in-march-report-says/571065,"AI ilk kez 1. sırada; ikincil kaynak, YTD zinciriyle teyit edildi"
-2026-04,83387,21490,25.8,49135,300749,https://www.cbsnews.com/news/ai-layoffs-job-cuts-challenger-report-april-2026/,Toplam YTD 300.749
-2026-05,97006,38579,39.8,87714,397755,https://foxbusiness.com/economy/ai-remains-top-reason-us-job-cuts-third-straight-month-employers-axed-97000-workers-may,AI için rekor ay; AI YTD 87.714 (%22)
-2026-06,45849,14029,30.6,101743,443604,https://www.challengergray.com/?p=28455,AI YTD 101.743 (%23)
-2026-07,33429,10970,32.8,112713,477033,https://www.challengergray.com/?p=28706,"AI 5. ay üst üste 1. sırada; AI YTD 112.713, toplam YTD 477.033"
-2026-08,52881,3462,6.5,116175,529914,https://www.challengergray.com/?p=28858,AI 4. sıraya düştü (1. yeniden yapılanma 16.173); AI YTD 116.175
-2026-09,43281,3961,9.2,120136,573195,https://www.cpapracticeadvisor.com/2026/10/01/u-s-companies-announce-fewest-job-cuts-for-a-september-since-2022/190969,"AI 5. sırada; AI YTD 120.136, toplam YTD 573.195. Bir haberdeki '7.000' YTD zinciriyle tutmuyor, kullanılmadı"
-2026-10,43994,1265,2.9,121401,617189,https://tradingeconomics.com/united-states/challenger-job-cuts/news/598602,"Yılın en düşük AI ayı; AI YTD 121.401, toplam YTD 617.189 (yıllık -%44)"
+2026-01,108435,7624,7.0,7624,108435,https://www.challengergray.com/blog/challenger-report-february-cuts-plunge-hiring-falls-56-percent/,"Total from the February report; AI = February YTD 12,304 - February 4,680 (derived)"
+2026-02,48307,4680,9.7,12304,156742,https://www.challengergray.com/blog/challenger-report-february-cuts-plunge-hiring-falls-56-percent/,"AI YTD 12,304 (8%)"
+2026-03,60620,15341,25.3,27645,217362,https://searchenginejournal.com/ai-leads-all-reasons-for-u-s-job-cuts-in-march-report-says/571065,"AI ranked first for the first time; secondary source, confirmed by the YTD chain"
+2026-04,83387,21490,25.8,49135,300749,https://www.cbsnews.com/news/ai-layoffs-job-cuts-challenger-report-april-2026/,"Total YTD 300,749"
+2026-05,97006,38579,39.8,87714,397755,https://foxbusiness.com/economy/ai-remains-top-reason-us-job-cuts-third-straight-month-employers-axed-97000-workers-may,"Record month for AI; AI YTD 87,714 (22%)"
+2026-06,45849,14029,30.6,101743,443604,https://www.challengergray.com/?p=28455,"AI YTD 101,743 (23%)"
+2026-07,33429,10970,32.8,112713,477033,https://www.challengergray.com/?p=28706,"AI ranked first for the 5th month in a row; AI YTD 112,713, total YTD 477,033"
+2026-08,52881,3462,6.5,116175,529914,https://www.challengergray.com/?p=28858,"AI fell to 4th (restructuring 1st with 16,173); AI YTD 116,175"
+2026-09,43281,3961,9.2,120136,573195,https://www.cpapracticeadvisor.com/2026/10/01/u-s-companies-announce-fewest-job-cuts-for-a-september-since-2022/190969,"AI ranked 5th; AI YTD 120,136, total YTD 573,195. A '7,000' figure in one article does not fit the YTD chain and was not used"
+2026-10,43994,1265,2.9,121401,617189,https://tradingeconomics.com/united-states/challenger-job-cuts/news/598602,"Lowest AI month of the year; AI YTD 121,401, total YTD 617,189 (-44% year over year)"
