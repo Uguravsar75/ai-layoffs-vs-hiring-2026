@@ -1,0 +1,569 @@
+company_id,company_name,industry_id
+1,24Hr HomeCare,8
+2,3M,9
+3,AI21 Labs,12
+4,ASML,12
+5,Abbott House,7
+6,Accenture,12
+7,Acme Brick,9
+8,Acrisure,6
+9,Admiral Group,6
+10,Aer Lingus,1
+11,Aetos Systems,12
+12,Agios Pharmaceuticals,8
+13,Airtable,12
+14,AkzoNobel,9
+15,Alameda Health System,8
+16,Alan Ritchey,1
+17,Alaska Air Group,1
+18,Algoma Steel,9
+19,Alltrna,8
+20,Alphia,2
+21,Amazon,12
+22,Amdocs,12
+23,Amentum,12
+24,AmeriHealth Caritas,8
+25,American Express,6
+26,American Woodmark,9
+27,Amy's Kitchen,2
+28,Anchor Glass,9
+29,Angi,12
+30,Apple,12
+31,Aramark,11
+32,Arctic Wolf,12
+33,Arkansas Democrat-Gazette (WEHCO Media),10
+34,Arrow Fastener,9
+35,Arsenal,10
+36,ArsenalBio,8
+37,Artiva Biotherapeutics,8
+38,Artlist,12
+39,Ascension,8
+40,AssistRx,8
+41,Associated Press,10
+42,Atlassian,12
+43,Autodesk,12
+44,Autolus Therapeutics,8
+45,BBC,10
+46,BHP,9
+47,BILL Holdings,3
+48,BMW,1
+49,Banker Steel,9
+50,Barclays,6
+51,Barrette Outdoor Living,9
+52,Beachbody,2
+53,Behlen Manufacturing,9
+54,Bell Canada,13
+55,Bicycle Therapeutics,8
+56,BigID,12
+57,Bilfinger,9
+58,BioMarin Pharmaceutical,8
+59,BioNTech,8
+60,BitGo,3
+61,Bitcoin Suisse,3
+62,BlackRock,6
+63,Block,3
+64,Blue Diamond Growers,9
+65,Blue Shield of California,8
+66,Bolt,3
+67,Booksy,12
+68,Bosch,1
+69,Bossong Hosiery Mills,9
+70,BrewDog,2
+71,Bristol Myers Squibb,8
+72,British American Tobacco,2
+73,Build a Rocket Boy,12
+74,Builders FirstSource,9
+75,Buitoni,2
+76,Bumble Bee Foods,2
+77,Bungie,12
+78,BuzzFeed,10
+79,CBS News,10
+80,CJ Logistics America,1
+81,CNN,10
+82,CWT (Amex GBT),1
+83,Cambium Networks,13
+84,Campbell's,9
+85,Canada Revenue Agency,7
+86,Cannondale (Pon.Bike),2
+87,Canva,12
+88,Capital One,3
+89,Cardinal Glass Industries,9
+90,Caribou Biosciences,8
+91,Carlex Glass America,1
+92,Carlsberg Britvic,2
+93,Carry-On Trailer,1
+94,Cars.com,1
+95,Castle Park (Lucky Strike),10
+96,Cboe Global Markets,6
+97,Cellares,8
+98,Cemex,9
+99,Centrica,5
+100,Channel 4,10
+101,ChargePoint,1
+102,Charter Next Generation,9
+103,Chevron,5
+104,Children's Mercy,8
+105,Chime,3
+106,Cigna Evernorth,8
+107,Cisco,12
+108,Citigroup,6
+109,City of Hope,8
+110,Claire's,11
+111,ClickUp,12
+112,Close Brothers,6
+113,Cloudflare,12
+114,Cognizant,12
+115,Coinbase,3
+116,Comcast,13
+117,Commerzbank,6
+118,Compass,12
+119,Conduent,12
+120,Conifer Health (Tenet),8
+121,Coolbet,10
+122,CorroHealth,8
+123,Corteva,9
+124,Corus Entertainment,10
+125,Coty,2
+126,Coursera,12
+127,Crinetics Pharmaceuticals (Vertex),8
+128,Crothall / Morrison Healthcare,8
+129,CrowdStrike,12
+130,Crypto.com,3
+131,Cubic3,12
+132,DNB,6
+133,DSV,1
+134,Daily Wire,10
+135,Daimler Truck North America,1
+136,Dakkota Integrated Systems,1
+137,Dal-Tile (Mohawk),9
+138,Danone,2
+139,Dartmouth Health,8
+140,Davey Tree Surgery,9
+141,DeepL,12
+142,Dell,12
+143,Deloitte Australia,6
+144,Dexter Axle (DexKo Global),9
+145,Diageo,2
+146,Disc Medicine,8
+147,Disney,10
+148,Domo,12
+149,Don't Nod,12
+150,Dow Chemical,9
+151,Dropbox,12
+152,Dutch Government,7
+153,Dürr CTS,9
+154,E.W. Scripps,10
+155,Eagle Rock Distributing,2
+156,Ecco,11
+157,Educational Testing Service,4
+158,Eesti Energia,9
+159,Elastic,12
+160,Electrolux,9
+161,Electronic Arts,12
+162,Elementor,12
+163,Elevance Health,8
+164,Emergent BioSolutions,8
+165,Entain,10
+166,Envato,12
+167,Epic Games,12
+168,Ericsson,13
+169,Essendant,11
+170,Ethereum Foundation,3
+171,Etsy,12
+172,Evonik,9
+173,Evotec,8
+174,Expedia Group,12
+175,Expeditors International,1
+176,EyePoint,8
+177,FICO,6
+178,FalconX,3
+179,Family Dollar,11
+180,Family Endeavors,8
+181,FanDuel,10
+182,FedEx,1
+183,Federated Hermes,6
+184,Fidelity Investments,6
+185,Fifth Third Bank,6
+186,Fiserv,3
+187,Flipkart,12
+188,Flock Safety,12
+189,Flutter Entertainment,10
+190,Flying Food Group,2
+191,Foster USA,2
+192,Fresh Venture Foods,2
+193,Freshworks,12
+194,From the Ground Up (Our Home),2
+195,Front,12
+196,Frugal Fannie's,11
+197,Fujitsu UK,12
+198,Full Sail University,4
+199,GEICO,6
+200,GSK,8
+201,GXO Logistics,1
+202,Gambling.com Group,12
+203,Gemini,3
+204,Genentech,8
+205,General Dynamics,12
+206,General Jackson Showboat (Ryman),10
+207,General Motors,1
+208,Generali Deutschland,6
+209,Georgia-Pacific,9
+210,Gerresheimer,9
+211,Gilead Sciences,8
+212,GitLab,12
+213,GladUDid Chick-fil-A,11
+214,Gloat,12
+215,Glovo,2
+216,GoHealth,8
+217,GoKwik,12
+218,GoPro,2
+219,Goldman Sachs,6
+220,Goodyear,9
+221,Google,12
+222,Gossamer Bio,8
+223,Grede,9
+224,Greggs,9
+225,Group 1 Automotive,1
+226,Groupon,12
+227,H&M,11
+228,H&R Block,6
+229,HDFC Bank,6
+230,HMSHost,11
+231,HSBC,6
+232,Haas Automation,9
+233,Hancock Whitney,6
+234,Harley-Davidson,1
+235,Hasbro,2
+236,Health First,8
+237,HealthEdge,12
+238,Heidi Health,12
+239,Heineken,2
+240,Hello Bello,2
+241,HelloFresh,2
+242,Herzog,1
+243,Home Depot,11
+244,Horizon BCBS NJ,8
+245,Howard University,4
+246,HubSpot,12
+247,Hy Cite Enterprises,2
+248,IAC Group,1
+249,ICF International,12
+250,IGT,10
+251,IKEA (Ingka Group),11
+252,ING,6
+253,Iberia,1
+254,Ice Cream Specialties (Prairie Farms),2
+255,Imperial Brands,2
+256,Innodata,12
+257,Innovaccer,12
+258,Insteel Industries,9
+259,Intel,12
+260,Inter IKEA Group,11
+261,Intermountain Health,8
+262,International Motors,1
+263,Intuit,3
+264,InvaGen Pharmaceuticals (Cipla),8
+265,J.G. Kern Enterprises,1
+266,JBS,9
+267,JPMorgan Chase,6
+268,Jabil,9
+269,Jaguar Land Rover,1
+270,Jerith Manufacturing (Assa Abloy),9
+271,John Deere,9
+272,John Muir Health,8
+273,Johns Hopkins University,4
+274,Johnson & Johnson,8
+275,Just Group,6
+276,K&L Gates,6
+277,KLM,1
+278,KPMG Australia,6
+279,KPMG UK,6
+280,KPMG US,6
+281,Kaiser Permanente,8
+282,Kellanova,9
+283,Kenco Logistic Services,1
+284,Kilgore Flares (Chemring),9
+285,Kings Food Markets (Albertsons),11
+286,Kroger,11
+287,Kyndryl,12
+288,L.A. Care Health Plan,8
+289,LAHSA,7
+290,LAUSD (Los Angeles Unified School District),4
+291,LIV Golf,10
+292,Lear,1
+293,LeeMAH Electronics,9
+294,Legal & General,6
+295,Legends Global,10
+296,Leidos,12
+297,Levi Strauss & Co.,11
+298,Levy Restaurants (Compass Group),11
+299,Lightricks,12
+300,Lightspeed Commerce,12
+301,LinkedIn,12
+302,Los Angeles Lakers,10
+303,Louisiana-Pacific,9
+304,Lucid,1
+305,MARA Holdings,3
+306,Macy's,11
+307,Magic Leap,12
+308,MaineHealth,8
+309,Manhattan Associates,12
+310,Marc's,11
+311,Marriott,11
+312,Mars Petcare,2
+313,MasterBrand Cabinets,9
+314,Mastercard,6
+315,Maverick Gaming,10
+316,Maynard Steel,9
+317,McClatchy,10
+318,MedImpact Healthcare,8
+319,Medline,8
+320,Menzies Aviation,1
+321,Mercedes-Benz R and D North America,1
+322,Mercer International,9
+323,Merck,8
+324,Meta,12
+325,Metro,10
+326,Mews,12
+327,Microsoft,12
+328,Miele Manufacturing,9
+329,Minute Media,10
+330,Mission Foods,2
+331,Molecular Partners,8
+332,Molina Healthcare,8
+333,Montrose Forest Products (Neiman),9
+334,Montrose Regional Health,8
+335,Morgan Stanley,6
+336,Morton Salt,2
+337,Mosaic,9
+338,Mountain Valley Golf Course,10
+339,MultiCare Health System,8
+340,MyHeritage,12
+341,NBA,10
+342,NIC Global,9
+343,NICE,12
+344,NatWest Group,6
+345,National Australia Bank,6
+346,Nationwide Building Society,6
+347,Nature's Bakery (Mars),2
+348,Nestlé,2
+349,Netflix,10
+350,New French Bakery (Rise Baking),2
+351,Niagara Bottling,2
+352,Nike,11
+353,Nippon Electric Glass,9
+354,Nissan,1
+355,Nokia,13
+356,Nordstrom,11
+357,Northpointe Bank,6
+358,Notions Marketing,2
+359,Novartis,8
+360,Novo Nordisk,8
+361,Nutanix,12
+362,OPmobility,1
+363,Obsidian Entertainment,12
+364,Omnicom,10
+365,One Drop Foundation,7
+366,Opendoor,12
+367,Oracle,12
+368,Oshkosh Corporation,9
+369,Owens & Minor,8
+370,Ozark Materials (PPG),9
+371,PGA Tour,10
+372,PMG Indiana,1
+373,PNC / FirstBank,6
+374,PacificSource,8
+375,Packaging Corp. of America,9
+376,Palo Alto / CyberArk,12
+377,PandaDoc,12
+378,Patreon,12
+379,PayPal,3
+380,PeaceHealth,8
+381,Pella,9
+382,Peloton,2
+383,Pendo,12
+384,Penn Entertainment,10
+385,Pentera,12
+386,People Inc.,10
+387,Pep Boys,1
+388,PepsiCo,2
+389,Peraton,12
+390,Perstorp Polyols (PETRONAS),9
+391,Pfizer,8
+392,Pinterest,10
+393,Pipedrive,12
+394,Polygon Labs,3
+395,Porsche,1
+396,Portillo's,11
+397,Portland Trail Blazers,10
+398,Postal Center International,1
+399,Power Safety Service,1
+400,Prairie Farms Dairy,2
+401,Pro-Vigil (GardaWorld),12
+402,Procter & Gamble,2
+403,Prudential Financial,6
+404,Qualtrics,12
+405,RTI International,7
+406,RYAM (Rayonier Advanced Materials),9
+407,Rackspace,12
+408,Raley's,11
+409,Ramboll,9
+410,Rapid7,12
+411,Rapyd,3
+412,Reach plc,10
+413,Redwood Materials,9
+414,Regional Acceptance (Truist),6
+415,Renewal by Andersen,9
+416,Replimune,8
+417,Republic National Distributing,2
+418,Reyes Coca-Cola Bottling,2
+419,Rivian,1
+420,Robinhood,3
+421,Roskam Baking Company,2
+422,Royal Mail,1
+423,Ruiz Foods,9
+424,Ryder,1
+425,S&S Worldwide,11
+426,SFC Global (Schwan's),9
+427,SK Battery America,1
+428,SUSE,12
+429,Saddle Creek Logistics Services,1
+430,Safeway (Albertsons),11
+431,Saks Global,11
+432,Salesforce,12
+433,Samsung Electronics America,2
+434,San Francisco Pretrial Diversion Project,7
+435,Sanofi,8
+436,Schaeffler,1
+437,Seachill (Hilton Food Group),2
+438,Sealy (Tempur Sealy),9
+439,SentinelOne,12
+440,ServiceNow,12
+441,Sharp HealthCare,8
+442,Shell Catalyst & Technologies,9
+443,Sherritt International,9
+444,Silgan Containers,9
+445,Silverton Mortgage,6
+446,Skai,12
+447,Smokey Bones,11
+448,Snap,10
+449,Snowflake,12
+450,Snyk,12
+451,Sodexo,11
+452,SolarEdge,9
+453,Sonos,12
+454,Sony Pictures,10
+455,Southern Cross Media,10
+456,Spirit Airlines,1
+457,Sprout Social,12
+458,Squarespace,12
+459,Standard Chartered,6
+460,Stanford Health Care,8
+461,Stanley Black & Decker,9
+462,Staples,11
+463,Star Tribune,10
+464,Starbucks,2
+465,Starling Bank,6
+466,Stelco (Cleveland-Cliffs),9
+467,Stoelzle Glass USA,9
+468,Stone Brewing,2
+469,Streamland Media,10
+470,Sumitomo Mitsui Banking,6
+471,Sunrise,13
+472,Supermassive Games,12
+473,Superside,12
+474,Swedbank,6
+475,Swiss Life,6
+476,Synopsys,12
+477,T-Mobile,13
+478,TC Transcontinental,9
+479,TScan Therapeutics,8
+480,Takeda,8
+481,Target,11
+482,Telefonica,13
+483,Telia,13
+484,Tessera Therapeutics,8
+485,Teva,8
+486,Texas Family Initiative,8
+487,The Andersons,9
+488,The Bancorp,6
+489,The Blade (Toledo),10
+490,The Children's Place,11
+491,The Original Factory Shop,11
+492,The Telegraph,10
+493,The Trade Desk,12
+494,Theravance Biopharma,8
+495,Thermo Fisher,8
+496,Thinkific,12
+497,Thomson Reuters,12
+498,Ticketmaster,10
+499,TikTok,10
+500,TomTom,12
+501,Toter (Wastequip),9
+502,Transdev,1
+503,Treasury Wine Estates,2
+504,Trinity Health,8
+505,Trustly,3
+506,Tsubaki Nakashima,9
+507,Tyson Foods,9
+508,UBS,6
+509,UCare,8
+510,UKG,12
+511,UPS,1
+512,USC (University of Southern California),4
+513,Uber,1
+514,Ubisoft,12
+515,Ubisoft / Red Storm,12
+516,Ultium Cells,1
+517,UniCredit,6
+518,United Internet,12
+519,"University of Maryland, College Park",4
+520,University of Nottingham,4
+521,University of Vermont Health Network,8
+522,Upwork,12
+523,Veritone,12
+524,Verizon,13
+525,Vermont Information Processing,12
+526,Vertex Pharma,8
+527,Viatris,8
+528,Visa,6
+529,Volkswagen Group,1
+530,Volvo Cars,1
+531,Vons (Albertsons),11
+532,WK Kellogg Co,9
+533,WME,10
+534,WPP,10
+535,Walgreens,11
+536,Walmart,11
+537,Washington Post,10
+538,Webflow,12
+539,Weil Gotshal & Manges,6
+540,Wells Fargo,6
+541,Wellstar Health System,8
+542,West Fraser,9
+543,West Marine,11
+544,Westpac,6
+545,Whirlpool,9
+546,Whitbread,11
+547,Whyalla Steelworks (OneSteel),9
+548,Winnebago Industries,1
+549,WiseTech Global,1
+550,Wix,12
+551,Wonder,11
+552,Woodside,9
+553,Workday,12
+554,Worthy Integrated Chick-fil-A,11
+555,XM Cyber,12
+556,ZF Active Safety (ZF Group),1
+557,Zalando,11
+558,Zillow,12
+559,Zomato (Eternal),2
+560,ZoomInfo,12
+561,Zscaler,12
+562,airBaltic,1
+563,bet365,10
+564,eBay,12
+565,iHeartMedia,10
+566,id Software,12
+567,monday.com,12
+568,xAI,12

@@ -2,7 +2,6 @@
 **Uğur Avşar · Softito Data Analytics-2 capstone project · Due: 13 November 2026**
 
 > Single source of truth for whoever continues the project.
-> Note for Claude: talk to the user in Turkish; keep everything visible on GitHub in English. The decisions below are FINAL; apply them, do not reopen them.
 
 ---
 
@@ -28,7 +27,7 @@ ai-layoffs-vs-hiring-2026/
 ├── sql/                  ← 01_schema.sql, 02_load.sql, 03_analysis.sql, 04_checks.sql
 ├── powerbi/              ← dashboard.pbix + screenshots (png)
 ├── docs/                 ← PROJECT_PLAN.md, PROCESS.md, DATA_QUALITY.md,
-│                           MULAKAT_HAZIRLIK.md (personal, Turkish)
+│                           (+ a personal interview-prep file, kept locally)
 └── README.md             ← the showcase (written last)
 ```
 

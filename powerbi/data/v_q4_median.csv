@@ -1,0 +1,5 @@
+grp,announcements,median_cut,mean_cut,median_company_size
+"0_AI (broad, all)",92,375,2725,5208.5
+1_AI (strict),74,295,1494,4437.5
+2_AI (broad only: questionable / upper bound),18,1750,7784,56500
+3_Non-AI,551,180,731,10000

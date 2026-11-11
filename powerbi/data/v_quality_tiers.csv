@@ -1,0 +1,6 @@
+reliability_tier,rows,people_cut,people_pct,cumulative_people_pct
+T1_manual_verified,106,308736,47.2,47.2
+T2_manual_partial,27,163500,25.0,72.3
+T3_strong_source,180,60883,9.3,81.6
+T4_medium_source,186,72383,11.1,92.7
+T5_weak_source,144,47954,7.3,100.0

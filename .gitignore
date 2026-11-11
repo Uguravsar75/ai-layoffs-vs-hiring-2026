@@ -14,3 +14,6 @@ venv/
 
 # Power BI temporary files
 *.pbix.bak
+
+# Personal interview preparation (kept locally, not published)
+docs/MULAKAT_HAZIRLIK.md

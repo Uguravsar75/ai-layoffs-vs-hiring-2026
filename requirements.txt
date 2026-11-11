@@ -1,0 +1,13 @@
+# Python 3.11+ (developed and tested with Python 3.15)
+# Tested versions in comments.
+
+# Data cleaning and analysis
+pandas>=2.2        # tested 3.0.6 (groupby.apply(include_groups=False) needs >= 2.2)
+numpy>=1.26        # tested 2.5.4
+scipy>=1.11        # tested 1.18.1 (Mann-Whitney U)
+
+# Notebook and charts
+matplotlib>=3.8    # tested 3.11.2
+jupyter>=1.0
+nbformat>=5.9      # tested 5.11.1
+nbconvert>=7.0     # tested 7.17.2

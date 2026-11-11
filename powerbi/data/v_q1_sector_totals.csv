@@ -1,0 +1,14 @@
+industry_name,announcements,companies,people_cut,rank_by_people,rank_by_announcements,share_of_total_pct,median_cut,median_workforce_pct
+Automotive & Transportation,65,56,203285,1,4,31.1,340,4.6
+Tech,139,119,157961,2,1,24.2,240,8.3
+Finance & Banking,59,51,71100,3,6,10.9,387,3.2
+Manufacturing,86,80,37868,4,2,5.8,148,3.1500000000000004
+Media & Entertainment,62,50,34214,5,5,5.2,146.5,5.25
+Healthcare & Pharma,86,75,31750,6,2,4.9,134,2.1500000000000004
+Consumer Goods,49,45,31118,7,7,4.8,170,6.4
+Retail,46,40,30910,8,8,4.7,273,0.7
+Government & Nonprofit,7,7,26013,9,12,4.0,200,32.4
+Crypto & Fintech,22,20,19347,10,9,3.0,200,15
+Telecom,12,8,6092,11,10,0.9,475,0.6499999999999999
+Education,8,8,2318,12,11,0.4,145,1.7
+Energy,2,2,1480,13,13,0.2,740,3.4499999999999997

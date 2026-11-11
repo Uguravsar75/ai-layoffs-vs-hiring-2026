@@ -461,7 +461,7 @@ The project was reviewed from the perspective of a hiring manager; the 7 weak po
 | 4 | Little statistical weight | `statistical_tests.py`: bootstrap CIs, Mann-Whitney, permutation test, split-month sensitivity (see DATA_QUALITY.md §7) |
 | 5 | The Indeed metric must be read narrowly | "AI demand / AI-skill demand" replaced by "share of job postings mentioning AI"; limitation added |
 | 6 | No git/GitHub | Git repository created; GitHub-facing content translated to English |
-| 7 | Being able to defend the project | `docs/MULAKAT_HAZIRLIK.md` (personal, Turkish): likely questions, answers and a self-test list |
+| 7 | Being able to defend the project | A personal interview-preparation file (kept locally, not published): likely questions, answers and a self-test list |
 
 ---
 
