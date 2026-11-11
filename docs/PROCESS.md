@@ -367,7 +367,7 @@ Manual verification results live in dictionaries inside `clean_layoffs.py`. When
 
 1. ~~Challenger table~~ ✅ (§14)
 2. ~~PostgreSQL~~ ✅ (§15)
-3. **Python notebook:** one section and one chart per research question.
+3. ~~Python notebook~~ ✅ `notebooks/analysis.ipynb` (9 charts in `notebooks/figures/`)
 4. **Power BI (4 pages):** Overview · AI narrative · Hiring side · Data reliability.
 5. **README + Medium post:** findings, charts and the data-quality section.
 

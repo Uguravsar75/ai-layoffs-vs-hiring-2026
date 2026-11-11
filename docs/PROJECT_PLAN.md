@@ -24,8 +24,9 @@ ai-layoffs-vs-hiring-2026/
 │   └── clean/            ← outputs of the Python scripts
 ├── python/               ← clean_layoffs.py, clean_ai_posting.py, build_challenger.py,
 │                           robustness_check.py, statistical_tests.py
-├── sql/                  ← 01_schema.sql, 02_load.sql, 03_analysis.sql, 04_checks.sql
-├── powerbi/              ← dashboard.pbix + screenshots (png)
+├── sql/                  ← 01_schema.sql, 02_load.sql, 03_analysis.sql, 04_checks.sql, 05_export_powerbi.sql
+├── notebooks/            ← analysis.ipynb + figures/ (PNG charts)
+├── powerbi/              ← data/ (CSV export for Power BI), dashboard.pbix + screenshots (png)
 ├── docs/                 ← PROJECT_PLAN.md, PROCESS.md, DATA_QUALITY.md,
 │                           (+ a personal interview-prep file, kept locally)
 └── README.md             ← the showcase (written last)
@@ -123,8 +124,9 @@ Database: `ai_is_piyasasi` (PostgreSQL 18, localhost)
 - Extra findings: 561 companies in the main analysis; the 18 "broad only" AI rows (questionable / upper bound) have a median of 1,750 people → these giant rows inflate the broad definition. Indeed US vs layoffhedge count share move in opposite directions in Jan–Sep (−0.38). Shown side by side, no causal claim.
 - Run (from the project root): `for f in sql/0*.sql; do psql -U postgres -d ai_is_piyasasi -v ON_ERROR_STOP=1 -f "$f"; done`
 
-### Step 3 — Python notebook (EDA + charts) ⏳
-- `notebooks/analysis.ipynb`: one section per question (question → code → chart → 2–3 sentences of interpretation). Charts are reused in the README and the Medium post.
+### Step 3 — Python notebook (EDA + charts) ✅
+- `notebooks/analysis.ipynb`: one section per question (question → code → chart → 2–3 sentences of interpretation), executed with all outputs. 9 charts saved to `notebooks/figures/` for the README and the Medium post.
+- Chart rules: one y-axis per chart (two measures of different scale → two panels), emphasis (highlight one series, grey the rest), validated categorical palette in fixed order, source note under every chart, a table under every chart.
 
 ### Step 4 — Power BI 📊 (4 pages) ⏳
 - Power BI Desktop is Windows-only. Either connect to PostgreSQL (*Get data → PostgreSQL*, server `localhost`, database `ai_is_piyasasi`) or import CSV exports of the `v_*` views. Relationships via `date_key`, `company_id`, `industry_id`, `country_code`.
