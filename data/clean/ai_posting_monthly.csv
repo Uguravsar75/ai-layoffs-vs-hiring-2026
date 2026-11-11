@@ -1,0 +1,838 @@
+country_code,month,ai_share_pct,country_name,yoy_change_pt,note,comparable
+AU,2019-01,2.19,Avustralya,,,True
+AU,2019-02,2.056,Avustralya,,,True
+AU,2019-03,2.113,Avustralya,,,True
+AU,2019-04,2.157,Avustralya,,,True
+AU,2019-05,2.157,Avustralya,,,True
+AU,2019-06,2.118,Avustralya,,,True
+AU,2019-07,2.204,Avustralya,,,True
+AU,2019-08,2.249,Avustralya,,,True
+AU,2019-09,2.183,Avustralya,,,True
+AU,2019-10,2.053,Avustralya,,,True
+AU,2019-11,2.117,Avustralya,,,True
+AU,2019-12,2.335,Avustralya,,,True
+AU,2020-01,2.4,Avustralya,0.21,,True
+AU,2020-02,2.441,Avustralya,0.385,,True
+AU,2020-03,2.77,Avustralya,0.657,,True
+AU,2020-04,2.839,Avustralya,0.682,,True
+AU,2020-05,2.782,Avustralya,0.625,,True
+AU,2020-06,2.331,Avustralya,0.213,,True
+AU,2020-07,2.554,Avustralya,0.35,,True
+AU,2020-08,2.58,Avustralya,0.331,,True
+AU,2020-09,2.501,Avustralya,0.318,,True
+AU,2020-10,2.461,Avustralya,0.408,,True
+AU,2020-11,2.537,Avustralya,0.42,,True
+AU,2020-12,2.758,Avustralya,0.423,,True
+AU,2021-01,2.963,Avustralya,0.563,,True
+AU,2021-02,2.951,Avustralya,0.51,,True
+AU,2021-03,3.116,Avustralya,0.346,,True
+AU,2021-04,2.943,Avustralya,0.104,,True
+AU,2021-05,3.034,Avustralya,0.252,,True
+AU,2021-06,3.158,Avustralya,0.827,,True
+AU,2021-07,3.395,Avustralya,0.841,,True
+AU,2021-08,3.595,Avustralya,1.015,,True
+AU,2021-09,3.634,Avustralya,1.133,,True
+AU,2021-10,3.372,Avustralya,0.911,,True
+AU,2021-11,3.287,Avustralya,0.75,,True
+AU,2021-12,3.366,Avustralya,0.608,,True
+AU,2022-01,3.665,Avustralya,0.702,,True
+AU,2022-02,3.384,Avustralya,0.433,,True
+AU,2022-03,3.365,Avustralya,0.249,,True
+AU,2022-04,3.359,Avustralya,0.416,,True
+AU,2022-05,3.36,Avustralya,0.326,,True
+AU,2022-06,3.14,Avustralya,-0.018,,True
+AU,2022-07,3.158,Avustralya,-0.237,,True
+AU,2022-08,3.115,Avustralya,-0.48,,True
+AU,2022-09,2.997,Avustralya,-0.637,,True
+AU,2022-10,2.747,Avustralya,-0.625,,True
+AU,2022-11,2.614,Avustralya,-0.673,,True
+AU,2022-12,2.48,Avustralya,-0.886,,True
+AU,2023-01,2.408,Avustralya,-1.257,,True
+AU,2023-02,2.344,Avustralya,-1.04,,True
+AU,2023-03,2.568,Avustralya,-0.797,,True
+AU,2023-04,2.469,Avustralya,-0.89,,True
+AU,2023-05,2.367,Avustralya,-0.993,,True
+AU,2023-06,2.317,Avustralya,-0.823,,True
+AU,2023-07,2.373,Avustralya,-0.785,,True
+AU,2023-08,2.45,Avustralya,-0.665,,True
+AU,2023-09,2.324,Avustralya,-0.673,,True
+AU,2023-10,2.193,Avustralya,-0.554,,True
+AU,2023-11,2.141,Avustralya,-0.473,,True
+AU,2023-12,2.276,Avustralya,-0.204,,True
+AU,2024-01,2.392,Avustralya,-0.016,,True
+AU,2024-02,2.287,Avustralya,-0.057,,True
+AU,2024-03,2.414,Avustralya,-0.154,,True
+AU,2024-04,2.373,Avustralya,-0.096,,True
+AU,2024-05,2.365,Avustralya,-0.002,,True
+AU,2024-06,2.409,Avustralya,0.092,,True
+AU,2024-07,2.437,Avustralya,0.064,,True
+AU,2024-08,2.523,Avustralya,0.073,,True
+AU,2024-09,2.574,Avustralya,0.25,,True
+AU,2024-10,2.54,Avustralya,0.347,,True
+AU,2024-11,2.753,Avustralya,0.612,,True
+AU,2024-12,2.844,Avustralya,0.568,,True
+AU,2025-01,3.011,Avustralya,0.619,,True
+AU,2025-02,3.14,Avustralya,0.853,,True
+AU,2025-03,3.549,Avustralya,1.135,,True
+AU,2025-04,3.549,Avustralya,1.176,,True
+AU,2025-05,3.643,Avustralya,1.278,,True
+AU,2025-06,4.139,Avustralya,1.73,,True
+AU,2025-07,4.655,Avustralya,2.218,,True
+AU,2025-08,4.813,Avustralya,2.29,,True
+AU,2025-09,4.802,Avustralya,2.228,,True
+AU,2025-10,5.112,Avustralya,2.572,,True
+AU,2025-11,5.359,Avustralya,2.606,,True
+AU,2025-12,5.743,Avustralya,2.899,,True
+AU,2026-01,5.938,Avustralya,2.927,,True
+AU,2026-02,5.914,Avustralya,2.774,,True
+AU,2026-03,6.396,Avustralya,2.847,,True
+AU,2026-04,6.855,Avustralya,3.306,,True
+AU,2026-05,7.002,Avustralya,3.359,,True
+AU,2026-06,7.418,Avustralya,3.279,,True
+AU,2026-07,7.676,Avustralya,3.021,,True
+AU,2026-08,7.547,Avustralya,2.734,,True
+AU,2026-09,7.287,Avustralya,2.485,,True
+CA,2019-01,1.778,Kanada,,,True
+CA,2019-02,1.703,Kanada,,,True
+CA,2019-03,1.601,Kanada,,,True
+CA,2019-04,1.5,Kanada,,,True
+CA,2019-05,1.586,Kanada,,,True
+CA,2019-06,1.636,Kanada,,,True
+CA,2019-07,1.679,Kanada,,,True
+CA,2019-08,1.716,Kanada,,,True
+CA,2019-09,1.721,Kanada,,,True
+CA,2019-10,1.778,Kanada,,,True
+CA,2019-11,1.893,Kanada,,,True
+CA,2019-12,2.072,Kanada,,,True
+CA,2020-01,2.167,Kanada,0.389,,True
+CA,2020-02,2.13,Kanada,0.427,,True
+CA,2020-03,2.16,Kanada,0.559,,True
+CA,2020-04,2.288,Kanada,0.788,,True
+CA,2020-05,2.143,Kanada,0.557,,True
+CA,2020-06,2.038,Kanada,0.402,,True
+CA,2020-07,1.985,Kanada,0.306,,True
+CA,2020-08,1.93,Kanada,0.214,,True
+CA,2020-09,1.944,Kanada,0.223,,True
+CA,2020-10,2.119,Kanada,0.341,,True
+CA,2020-11,2.269,Kanada,0.376,,True
+CA,2020-12,2.528,Kanada,0.456,,True
+CA,2021-01,2.829,Kanada,0.662,,True
+CA,2021-02,2.877,Kanada,0.747,,True
+CA,2021-03,2.69,Kanada,0.53,,True
+CA,2021-04,2.679,Kanada,0.391,,True
+CA,2021-05,2.83,Kanada,0.687,,True
+CA,2021-06,2.778,Kanada,0.74,,True
+CA,2021-07,2.736,Kanada,0.751,,True
+CA,2021-08,2.664,Kanada,0.734,,True
+CA,2021-09,2.73,Kanada,0.786,,True
+CA,2021-10,2.862,Kanada,0.743,,True
+CA,2021-11,3.022,Kanada,0.753,,True
+CA,2021-12,3.249,Kanada,0.721,,True
+CA,2022-01,3.46,Kanada,0.631,,True
+CA,2022-02,3.412,Kanada,0.535,,True
+CA,2022-03,3.287,Kanada,0.597,,True
+CA,2022-04,3.188,Kanada,0.509,,True
+CA,2022-05,3.08,Kanada,0.25,,True
+CA,2022-06,3.021,Kanada,0.243,,True
+CA,2022-07,2.961,Kanada,0.225,,True
+CA,2022-08,2.762,Kanada,0.098,,True
+CA,2022-09,2.544,Kanada,-0.186,,True
+CA,2022-10,2.396,Kanada,-0.466,,True
+CA,2022-11,2.259,Kanada,-0.763,,True
+CA,2022-12,2.203,Kanada,-1.046,,True
+CA,2023-01,2.16,Kanada,-1.3,,True
+CA,2023-02,2.125,Kanada,-1.287,,True
+CA,2023-03,2.067,Kanada,-1.22,,True
+CA,2023-04,1.936,Kanada,-1.252,,True
+CA,2023-05,1.874,Kanada,-1.206,,True
+CA,2023-06,1.83,Kanada,-1.191,,True
+CA,2023-07,1.892,Kanada,-1.069,,True
+CA,2023-08,1.939,Kanada,-0.823,,True
+CA,2023-09,1.996,Kanada,-0.548,,True
+CA,2023-10,2.093,Kanada,-0.303,,True
+CA,2023-11,2.185,Kanada,-0.074,,True
+CA,2023-12,2.372,Kanada,0.169,,True
+CA,2024-01,2.542,Kanada,0.382,,True
+CA,2024-02,2.509,Kanada,0.384,,True
+CA,2024-03,2.521,Kanada,0.454,,True
+CA,2024-04,2.562,Kanada,0.626,,True
+CA,2024-05,2.662,Kanada,0.788,,True
+CA,2024-06,2.762,Kanada,0.932,,True
+CA,2024-07,2.98,Kanada,1.088,,True
+CA,2024-08,3.064,Kanada,1.125,,True
+CA,2024-09,3.186,Kanada,1.19,,True
+CA,2024-10,3.341,Kanada,1.248,,True
+CA,2024-11,3.37,Kanada,1.185,,True
+CA,2024-12,3.49,Kanada,1.118,,True
+CA,2025-01,3.647,Kanada,1.105,,True
+CA,2025-02,3.755,Kanada,1.246,,True
+CA,2025-03,3.866,Kanada,1.345,,True
+CA,2025-04,4.083,Kanada,1.521,,True
+CA,2025-05,4.255,Kanada,1.593,,True
+CA,2025-06,4.549,Kanada,1.787,,True
+CA,2025-07,4.867,Kanada,1.887,,True
+CA,2025-08,5.213,Kanada,2.149,,True
+CA,2025-09,5.607,Kanada,2.421,,True
+CA,2025-10,6.215,Kanada,2.874,Ontario AI açıklama zorunluluğu etkisi; AI becerisi talebi olarak yorumlanmamalı,False
+CA,2025-11,7.266,Kanada,3.896,Ontario AI açıklama zorunluluğu etkisi; AI becerisi talebi olarak yorumlanmamalı,False
+CA,2025-12,9.297,Kanada,5.807,Ontario AI açıklama zorunluluğu etkisi; AI becerisi talebi olarak yorumlanmamalı,False
+CA,2026-01,11.819,Kanada,8.172,Ontario AI açıklama zorunluluğu etkisi; AI becerisi talebi olarak yorumlanmamalı,False
+CA,2026-02,13.243,Kanada,9.488,Ontario AI açıklama zorunluluğu etkisi; AI becerisi talebi olarak yorumlanmamalı,False
+CA,2026-03,14.544,Kanada,10.678,Ontario AI açıklama zorunluluğu etkisi; AI becerisi talebi olarak yorumlanmamalı,False
+CA,2026-04,16.157,Kanada,12.074,Ontario AI açıklama zorunluluğu etkisi; AI becerisi talebi olarak yorumlanmamalı,False
+CA,2026-05,17.025,Kanada,12.77,Ontario AI açıklama zorunluluğu etkisi; AI becerisi talebi olarak yorumlanmamalı,False
+CA,2026-06,17.546,Kanada,12.997,Ontario AI açıklama zorunluluğu etkisi; AI becerisi talebi olarak yorumlanmamalı,False
+CA,2026-07,18.112,Kanada,13.245,Ontario AI açıklama zorunluluğu etkisi; AI becerisi talebi olarak yorumlanmamalı,False
+CA,2026-08,18.379,Kanada,13.166,Ontario AI açıklama zorunluluğu etkisi; AI becerisi talebi olarak yorumlanmamalı,False
+CA,2026-09,18.387,Kanada,12.78,Ontario AI açıklama zorunluluğu etkisi; AI becerisi talebi olarak yorumlanmamalı,False
+DE,2019-01,1.991,Almanya,,,True
+DE,2019-02,1.999,Almanya,,,True
+DE,2019-03,2.08,Almanya,,,True
+DE,2019-04,2.129,Almanya,,,True
+DE,2019-05,2.107,Almanya,,,True
+DE,2019-06,2.055,Almanya,,,True
+DE,2019-07,1.987,Almanya,,,True
+DE,2019-08,1.981,Almanya,,,True
+DE,2019-09,1.941,Almanya,,,True
+DE,2019-10,1.93,Almanya,,,True
+DE,2019-11,1.954,Almanya,,,True
+DE,2019-12,1.977,Almanya,,,True
+DE,2020-01,1.992,Almanya,0.001,,True
+DE,2020-02,1.988,Almanya,-0.011,,True
+DE,2020-03,2.003,Almanya,-0.077,,True
+DE,2020-04,1.942,Almanya,-0.187,,True
+DE,2020-05,1.871,Almanya,-0.236,,True
+DE,2020-06,1.833,Almanya,-0.222,,True
+DE,2020-07,1.796,Almanya,-0.191,,True
+DE,2020-08,1.777,Almanya,-0.204,,True
+DE,2020-09,1.742,Almanya,-0.199,,True
+DE,2020-10,1.773,Almanya,-0.157,,True
+DE,2020-11,1.868,Almanya,-0.086,,True
+DE,2020-12,1.963,Almanya,-0.014,,True
+DE,2021-01,2.077,Almanya,0.085,,True
+DE,2021-02,2.209,Almanya,0.221,,True
+DE,2021-03,2.378,Almanya,0.375,,True
+DE,2021-04,2.448,Almanya,0.506,,True
+DE,2021-05,2.416,Almanya,0.545,,True
+DE,2021-06,2.42,Almanya,0.587,,True
+DE,2021-07,2.41,Almanya,0.614,,True
+DE,2021-08,2.482,Almanya,0.705,,True
+DE,2021-09,2.474,Almanya,0.732,,True
+DE,2021-10,2.434,Almanya,0.661,,True
+DE,2021-11,2.44,Almanya,0.572,,True
+DE,2021-12,2.519,Almanya,0.556,,True
+DE,2022-01,2.584,Almanya,0.507,,True
+DE,2022-02,2.569,Almanya,0.36,,True
+DE,2022-03,2.593,Almanya,0.215,,True
+DE,2022-04,2.644,Almanya,0.196,,True
+DE,2022-05,2.643,Almanya,0.227,,True
+DE,2022-06,2.686,Almanya,0.266,,True
+DE,2022-07,2.592,Almanya,0.182,,True
+DE,2022-08,2.53,Almanya,0.048,,True
+DE,2022-09,2.5,Almanya,0.026,,True
+DE,2022-10,2.381,Almanya,-0.053,,True
+DE,2022-11,2.331,Almanya,-0.109,,True
+DE,2022-12,2.254,Almanya,-0.265,,True
+DE,2023-01,2.209,Almanya,-0.375,,True
+DE,2023-02,2.336,Almanya,-0.233,,True
+DE,2023-03,2.396,Almanya,-0.197,,True
+DE,2023-04,2.259,Almanya,-0.385,,True
+DE,2023-05,2.097,Almanya,-0.546,,True
+DE,2023-06,2.075,Almanya,-0.611,,True
+DE,2023-07,2.065,Almanya,-0.527,,True
+DE,2023-08,2.054,Almanya,-0.476,,True
+DE,2023-09,2.063,Almanya,-0.437,,True
+DE,2023-10,2.044,Almanya,-0.337,,True
+DE,2023-11,2.08,Almanya,-0.251,,True
+DE,2023-12,2.133,Almanya,-0.121,,True
+DE,2024-01,2.25,Almanya,0.041,,True
+DE,2024-02,2.291,Almanya,-0.045,,True
+DE,2024-03,2.269,Almanya,-0.127,,True
+DE,2024-04,2.23,Almanya,-0.029,,True
+DE,2024-05,2.211,Almanya,0.114,,True
+DE,2024-06,2.224,Almanya,0.149,,True
+DE,2024-07,2.333,Almanya,0.268,,True
+DE,2024-08,2.375,Almanya,0.321,,True
+DE,2024-09,2.326,Almanya,0.263,,True
+DE,2024-10,2.303,Almanya,0.259,,True
+DE,2024-11,2.319,Almanya,0.239,,True
+DE,2024-12,2.359,Almanya,0.226,,True
+DE,2025-01,2.507,Almanya,0.257,,True
+DE,2025-02,2.597,Almanya,0.306,,True
+DE,2025-03,2.728,Almanya,0.459,,True
+DE,2025-04,2.8,Almanya,0.57,,True
+DE,2025-05,2.886,Almanya,0.675,,True
+DE,2025-06,3.076,Almanya,0.852,,True
+DE,2025-07,3.171,Almanya,0.838,,True
+DE,2025-08,3.571,Almanya,1.196,,True
+DE,2025-09,3.591,Almanya,1.265,,True
+DE,2025-10,3.609,Almanya,1.306,,True
+DE,2025-11,3.729,Almanya,1.41,,True
+DE,2025-12,3.919,Almanya,1.56,,True
+DE,2026-01,4.197,Almanya,1.69,,True
+DE,2026-02,4.379,Almanya,1.782,,True
+DE,2026-03,4.573,Almanya,1.845,,True
+DE,2026-04,4.896,Almanya,2.096,,True
+DE,2026-05,5.192,Almanya,2.306,,True
+DE,2026-06,5.253,Almanya,2.177,,True
+DE,2026-07,5.563,Almanya,2.392,,True
+DE,2026-08,5.685,Almanya,2.114,,True
+DE,2026-09,5.727,Almanya,2.136,,True
+FR,2019-01,2.436,Fransa,,,True
+FR,2019-02,2.258,Fransa,,,True
+FR,2019-03,2.185,Fransa,,,True
+FR,2019-04,2.129,Fransa,,,True
+FR,2019-05,2.08,Fransa,,,True
+FR,2019-06,2.096,Fransa,,,True
+FR,2019-07,2.077,Fransa,,,True
+FR,2019-08,2.101,Fransa,,,True
+FR,2019-09,2.081,Fransa,,,True
+FR,2019-10,2.232,Fransa,,,True
+FR,2019-11,2.429,Fransa,,,True
+FR,2019-12,2.451,Fransa,,,True
+FR,2020-01,2.4,Fransa,-0.036,,True
+FR,2020-02,2.261,Fransa,0.003,,True
+FR,2020-03,2.147,Fransa,-0.038,,True
+FR,2020-04,2.347,Fransa,0.218,,True
+FR,2020-05,2.35,Fransa,0.27,,True
+FR,2020-06,2.223,Fransa,0.127,,True
+FR,2020-07,2.151,Fransa,0.074,,True
+FR,2020-08,2.303,Fransa,0.202,,True
+FR,2020-09,2.151,Fransa,0.07,,True
+FR,2020-10,2.247,Fransa,0.015,,True
+FR,2020-11,2.515,Fransa,0.086,,True
+FR,2020-12,2.532,Fransa,0.081,,True
+FR,2021-01,2.454,Fransa,0.054,,True
+FR,2021-02,2.279,Fransa,0.018,,True
+FR,2021-03,2.204,Fransa,0.057,,True
+FR,2021-04,2.214,Fransa,-0.133,,True
+FR,2021-05,2.177,Fransa,-0.173,,True
+FR,2021-06,2.062,Fransa,-0.161,,True
+FR,2021-07,2.016,Fransa,-0.135,,True
+FR,2021-08,2.037,Fransa,-0.266,,True
+FR,2021-09,1.989,Fransa,-0.162,,True
+FR,2021-10,2.06,Fransa,-0.187,,True
+FR,2021-11,2.246,Fransa,-0.269,,True
+FR,2021-12,2.284,Fransa,-0.248,,True
+FR,2022-01,2.298,Fransa,-0.156,,True
+FR,2022-02,2.164,Fransa,-0.115,,True
+FR,2022-03,2.118,Fransa,-0.086,,True
+FR,2022-04,2.06,Fransa,-0.154,,True
+FR,2022-05,2.031,Fransa,-0.146,,True
+FR,2022-06,1.99,Fransa,-0.072,,True
+FR,2022-07,1.948,Fransa,-0.068,,True
+FR,2022-08,1.904,Fransa,-0.133,,True
+FR,2022-09,1.823,Fransa,-0.166,,True
+FR,2022-10,1.832,Fransa,-0.228,,True
+FR,2022-11,1.883,Fransa,-0.363,,True
+FR,2022-12,1.827,Fransa,-0.457,,True
+FR,2023-01,1.755,Fransa,-0.543,,True
+FR,2023-02,1.692,Fransa,-0.472,,True
+FR,2023-03,1.677,Fransa,-0.441,,True
+FR,2023-04,1.704,Fransa,-0.356,,True
+FR,2023-05,1.682,Fransa,-0.349,,True
+FR,2023-06,1.602,Fransa,-0.388,,True
+FR,2023-07,1.581,Fransa,-0.367,,True
+FR,2023-08,1.57,Fransa,-0.334,,True
+FR,2023-09,1.561,Fransa,-0.262,,True
+FR,2023-10,1.759,Fransa,-0.073,,True
+FR,2023-11,1.962,Fransa,0.079,,True
+FR,2023-12,2.001,Fransa,0.174,,True
+FR,2024-01,1.996,Fransa,0.241,,True
+FR,2024-02,1.959,Fransa,0.267,,True
+FR,2024-03,1.968,Fransa,0.291,,True
+FR,2024-04,2.036,Fransa,0.332,,True
+FR,2024-05,2.095,Fransa,0.413,,True
+FR,2024-06,2.084,Fransa,0.482,,True
+FR,2024-07,2.081,Fransa,0.5,,True
+FR,2024-08,2.07,Fransa,0.5,,True
+FR,2024-09,2.054,Fransa,0.493,,True
+FR,2024-10,2.206,Fransa,0.447,,True
+FR,2024-11,2.4,Fransa,0.438,,True
+FR,2024-12,2.336,Fransa,0.335,,True
+FR,2025-01,2.279,Fransa,0.283,,True
+FR,2025-02,2.299,Fransa,0.34,,True
+FR,2025-03,2.485,Fransa,0.517,,True
+FR,2025-04,2.582,Fransa,0.546,,True
+FR,2025-05,2.54,Fransa,0.445,,True
+FR,2025-06,2.617,Fransa,0.533,,True
+FR,2025-07,2.65,Fransa,0.569,,True
+FR,2025-08,2.61,Fransa,0.54,,True
+FR,2025-09,2.61,Fransa,0.556,,True
+FR,2025-10,2.953,Fransa,0.747,,True
+FR,2025-11,3.317,Fransa,0.917,,True
+FR,2025-12,3.459,Fransa,1.123,,True
+FR,2026-01,3.358,Fransa,1.079,,True
+FR,2026-02,3.334,Fransa,1.035,,True
+FR,2026-03,3.682,Fransa,1.197,,True
+FR,2026-04,4.063,Fransa,1.481,,True
+FR,2026-05,4.191,Fransa,1.651,,True
+FR,2026-06,4.007,Fransa,1.39,,True
+FR,2026-07,4.012,Fransa,1.362,,True
+FR,2026-08,4.102,Fransa,1.492,,True
+FR,2026-09,4.24,Fransa,1.63,,True
+GB,2019-01,2.104,Birleşik Krallık,,,True
+GB,2019-02,2.104,Birleşik Krallık,,,True
+GB,2019-03,2.059,Birleşik Krallık,,,True
+GB,2019-04,1.986,Birleşik Krallık,,,True
+GB,2019-05,2.02,Birleşik Krallık,,,True
+GB,2019-06,2.031,Birleşik Krallık,,,True
+GB,2019-07,2.061,Birleşik Krallık,,,True
+GB,2019-08,2.043,Birleşik Krallık,,,True
+GB,2019-09,2.026,Birleşik Krallık,,,True
+GB,2019-10,2.049,Birleşik Krallık,,,True
+GB,2019-11,2.141,Birleşik Krallık,,,True
+GB,2019-12,2.303,Birleşik Krallık,,,True
+GB,2020-01,2.339,Birleşik Krallık,0.235,,True
+GB,2020-02,2.358,Birleşik Krallık,0.254,,True
+GB,2020-03,2.551,Birleşik Krallık,0.492,,True
+GB,2020-04,3.109,Birleşik Krallık,1.123,,True
+GB,2020-05,2.991,Birleşik Krallık,0.971,,True
+GB,2020-06,2.944,Birleşik Krallık,0.913,,True
+GB,2020-07,2.861,Birleşik Krallık,0.8,,True
+GB,2020-08,2.628,Birleşik Krallık,0.585,,True
+GB,2020-09,2.529,Birleşik Krallık,0.503,,True
+GB,2020-10,2.689,Birleşik Krallık,0.64,,True
+GB,2020-11,2.96,Birleşik Krallık,0.819,,True
+GB,2020-12,3.129,Birleşik Krallık,0.826,,True
+GB,2021-01,3.51,Birleşik Krallık,1.171,,True
+GB,2021-02,3.616,Birleşik Krallık,1.258,,True
+GB,2021-03,3.413,Birleşik Krallık,0.862,,True
+GB,2021-04,3.04,Birleşik Krallık,-0.069,,True
+GB,2021-05,2.737,Birleşik Krallık,-0.254,,True
+GB,2021-06,2.681,Birleşik Krallık,-0.263,,True
+GB,2021-07,2.689,Birleşik Krallık,-0.172,,True
+GB,2021-08,2.58,Birleşik Krallık,-0.048,,True
+GB,2021-09,2.559,Birleşik Krallık,0.03,,True
+GB,2021-10,2.564,Birleşik Krallık,-0.125,,True
+GB,2021-11,2.67,Birleşik Krallık,-0.29,,True
+GB,2021-12,2.927,Birleşik Krallık,-0.202,,True
+GB,2022-01,3.226,Birleşik Krallık,-0.284,,True
+GB,2022-02,3.148,Birleşik Krallık,-0.468,,True
+GB,2022-03,3.094,Birleşik Krallık,-0.319,,True
+GB,2022-04,2.976,Birleşik Krallık,-0.064,,True
+GB,2022-05,2.865,Birleşik Krallık,0.128,,True
+GB,2022-06,2.718,Birleşik Krallık,0.037,,True
+GB,2022-07,2.586,Birleşik Krallık,-0.103,,True
+GB,2022-08,2.506,Birleşik Krallık,-0.074,,True
+GB,2022-09,2.429,Birleşik Krallık,-0.13,,True
+GB,2022-10,2.319,Birleşik Krallık,-0.245,,True
+GB,2022-11,2.257,Birleşik Krallık,-0.413,,True
+GB,2022-12,2.161,Birleşik Krallık,-0.766,,True
+GB,2023-01,2.049,Birleşik Krallık,-1.177,,True
+GB,2023-02,2.009,Birleşik Krallık,-1.139,,True
+GB,2023-03,1.971,Birleşik Krallık,-1.123,,True
+GB,2023-04,1.932,Birleşik Krallık,-1.044,,True
+GB,2023-05,1.798,Birleşik Krallık,-1.067,,True
+GB,2023-06,1.729,Birleşik Krallık,-0.989,,True
+GB,2023-07,1.753,Birleşik Krallık,-0.833,,True
+GB,2023-08,1.811,Birleşik Krallık,-0.695,,True
+GB,2023-09,1.781,Birleşik Krallık,-0.648,,True
+GB,2023-10,1.844,Birleşik Krallık,-0.475,,True
+GB,2023-11,1.948,Birleşik Krallık,-0.309,,True
+GB,2023-12,2.147,Birleşik Krallık,-0.014,,True
+GB,2024-01,2.225,Birleşik Krallık,0.176,,True
+GB,2024-02,2.251,Birleşik Krallık,0.242,,True
+GB,2024-03,2.302,Birleşik Krallık,0.331,,True
+GB,2024-04,2.347,Birleşik Krallık,0.415,,True
+GB,2024-05,2.404,Birleşik Krallık,0.606,,True
+GB,2024-06,2.449,Birleşik Krallık,0.72,,True
+GB,2024-07,2.572,Birleşik Krallık,0.819,,True
+GB,2024-08,2.621,Birleşik Krallık,0.81,,True
+GB,2024-09,2.688,Birleşik Krallık,0.907,,True
+GB,2024-10,2.824,Birleşik Krallık,0.98,,True
+GB,2024-11,2.983,Birleşik Krallık,1.035,,True
+GB,2024-12,3.216,Birleşik Krallık,1.069,,True
+GB,2025-01,3.373,Birleşik Krallık,1.148,,True
+GB,2025-02,3.489,Birleşik Krallık,1.238,,True
+GB,2025-03,3.633,Birleşik Krallık,1.331,,True
+GB,2025-04,3.948,Birleşik Krallık,1.601,,True
+GB,2025-05,3.969,Birleşik Krallık,1.565,,True
+GB,2025-06,4.394,Birleşik Krallık,1.945,,True
+GB,2025-07,4.519,Birleşik Krallık,1.947,,True
+GB,2025-08,4.857,Birleşik Krallık,2.236,,True
+GB,2025-09,4.945,Birleşik Krallık,2.257,,True
+GB,2025-10,5.452,Birleşik Krallık,2.628,,True
+GB,2025-11,5.943,Birleşik Krallık,2.96,,True
+GB,2025-12,6.7,Birleşik Krallık,3.484,,True
+GB,2026-01,6.975,Birleşik Krallık,3.602,,True
+GB,2026-02,7.148,Birleşik Krallık,3.659,,True
+GB,2026-03,7.633,Birleşik Krallık,4.0,,True
+GB,2026-04,8.277,Birleşik Krallık,4.329,,True
+GB,2026-05,8.884,Birleşik Krallık,4.915,,True
+GB,2026-06,9.279,Birleşik Krallık,4.885,,True
+GB,2026-07,9.441,Birleşik Krallık,4.922,,True
+GB,2026-08,9.605,Birleşik Krallık,4.748,,True
+GB,2026-09,9.832,Birleşik Krallık,4.887,,True
+IE,2019-01,4.001,İrlanda,,,True
+IE,2019-02,3.949,İrlanda,,,True
+IE,2019-03,4.036,İrlanda,,,True
+IE,2019-04,4.03,İrlanda,,,True
+IE,2019-05,4.124,İrlanda,,,True
+IE,2019-06,4.085,İrlanda,,,True
+IE,2019-07,4.165,İrlanda,,,True
+IE,2019-08,4.055,İrlanda,,,True
+IE,2019-09,3.882,İrlanda,,,True
+IE,2019-10,3.934,İrlanda,,,True
+IE,2019-11,3.932,İrlanda,,,True
+IE,2019-12,4.198,İrlanda,,,True
+IE,2020-01,4.324,İrlanda,0.323,,True
+IE,2020-02,4.394,İrlanda,0.445,,True
+IE,2020-03,4.816,İrlanda,0.78,,True
+IE,2020-04,5.465,İrlanda,1.435,,True
+IE,2020-05,5.469,İrlanda,1.345,,True
+IE,2020-06,5.334,İrlanda,1.249,,True
+IE,2020-07,4.979,İrlanda,0.814,,True
+IE,2020-08,4.728,İrlanda,0.673,,True
+IE,2020-09,4.91,İrlanda,1.028,,True
+IE,2020-10,4.92,İrlanda,0.986,,True
+IE,2020-11,5.316,İrlanda,1.384,,True
+IE,2020-12,5.286,İrlanda,1.088,,True
+IE,2021-01,5.888,İrlanda,1.564,,True
+IE,2021-02,6.261,İrlanda,1.867,,True
+IE,2021-03,6.648,İrlanda,1.832,,True
+IE,2021-04,6.886,İrlanda,1.421,,True
+IE,2021-05,6.186,İrlanda,0.717,,True
+IE,2021-06,5.943,İrlanda,0.609,,True
+IE,2021-07,5.671,İrlanda,0.692,,True
+IE,2021-08,5.179,İrlanda,0.451,,True
+IE,2021-09,5.133,İrlanda,0.223,,True
+IE,2021-10,5.253,İrlanda,0.333,,True
+IE,2021-11,5.484,İrlanda,0.168,,True
+IE,2021-12,6.001,İrlanda,0.715,,True
+IE,2022-01,6.216,İrlanda,0.328,,True
+IE,2022-02,5.658,İrlanda,-0.603,,True
+IE,2022-03,5.651,İrlanda,-0.997,,True
+IE,2022-04,5.094,İrlanda,-1.792,,True
+IE,2022-05,5.186,İrlanda,-1.0,,True
+IE,2022-06,5.178,İrlanda,-0.765,,True
+IE,2022-07,5.159,İrlanda,-0.512,,True
+IE,2022-08,5.004,İrlanda,-0.175,,True
+IE,2022-09,4.75,İrlanda,-0.383,,True
+IE,2022-10,4.563,İrlanda,-0.69,,True
+IE,2022-11,4.293,İrlanda,-1.191,,True
+IE,2022-12,3.99,İrlanda,-2.011,,True
+IE,2023-01,3.714,İrlanda,-2.502,,True
+IE,2023-02,3.436,İrlanda,-2.222,,True
+IE,2023-03,3.366,İrlanda,-2.285,,True
+IE,2023-04,3.366,İrlanda,-1.728,,True
+IE,2023-05,3.305,İrlanda,-1.881,,True
+IE,2023-06,3.362,İrlanda,-1.816,,True
+IE,2023-07,3.787,İrlanda,-1.372,,True
+IE,2023-08,3.818,İrlanda,-1.186,,True
+IE,2023-09,3.722,İrlanda,-1.028,,True
+IE,2023-10,3.837,İrlanda,-0.726,,True
+IE,2023-11,3.833,İrlanda,-0.46,,True
+IE,2023-12,4.051,İrlanda,0.061,,True
+IE,2024-01,4.249,İrlanda,0.535,,True
+IE,2024-02,4.211,İrlanda,0.775,,True
+IE,2024-03,4.288,İrlanda,0.922,,True
+IE,2024-04,4.595,İrlanda,1.229,,True
+IE,2024-05,4.447,İrlanda,1.142,,True
+IE,2024-06,4.629,İrlanda,1.267,,True
+IE,2024-07,5.493,İrlanda,1.706,,True
+IE,2024-08,5.647,İrlanda,1.829,,True
+IE,2024-09,5.472,İrlanda,1.75,,True
+IE,2024-10,5.695,İrlanda,1.858,,True
+IE,2024-11,6.034,İrlanda,2.201,,True
+IE,2024-12,6.443,İrlanda,2.392,,True
+IE,2025-01,6.608,İrlanda,2.359,,True
+IE,2025-02,6.487,İrlanda,2.276,,True
+IE,2025-03,6.755,İrlanda,2.467,,True
+IE,2025-04,7.322,İrlanda,2.727,,True
+IE,2025-05,7.608,İrlanda,3.161,,True
+IE,2025-06,8.179,İrlanda,3.55,,True
+IE,2025-07,8.854,İrlanda,3.361,,True
+IE,2025-08,9.446,İrlanda,3.799,,True
+IE,2025-09,9.461,İrlanda,3.989,,True
+IE,2025-10,10.605,İrlanda,4.91,,True
+IE,2025-11,11.282,İrlanda,5.248,,True
+IE,2025-12,12.136,İrlanda,5.693,,True
+IE,2026-01,12.134,İrlanda,5.526,,True
+IE,2026-02,11.786,İrlanda,5.299,,True
+IE,2026-03,11.809,İrlanda,5.054,,True
+IE,2026-04,12.982,İrlanda,5.66,,True
+IE,2026-05,13.775,İrlanda,6.167,,True
+IE,2026-06,14.228,İrlanda,6.049,,True
+IE,2026-07,14.704,İrlanda,5.85,,True
+IE,2026-08,15.245,İrlanda,5.799,,True
+IE,2026-09,15.029,İrlanda,5.568,,True
+IT,2019-01,2.164,İtalya,,,True
+IT,2019-02,2.097,İtalya,,,True
+IT,2019-03,2.056,İtalya,,,True
+IT,2019-04,2.037,İtalya,,,True
+IT,2019-05,2.3,İtalya,,,True
+IT,2019-06,2.332,İtalya,,,True
+IT,2019-07,2.433,İtalya,,,True
+IT,2019-08,2.874,İtalya,,,True
+IT,2019-09,2.781,İtalya,,,True
+IT,2019-10,2.77,İtalya,,,True
+IT,2019-11,2.897,İtalya,,,True
+IT,2019-12,2.923,İtalya,,,True
+IT,2020-01,2.94,İtalya,0.776,,True
+IT,2020-02,2.767,İtalya,0.67,,True
+IT,2020-03,2.954,İtalya,0.898,,True
+IT,2020-04,3.53,İtalya,1.493,,True
+IT,2020-05,3.611,İtalya,1.311,,True
+IT,2020-06,3.546,İtalya,1.214,,True
+IT,2020-07,3.395,İtalya,0.962,,True
+IT,2020-08,3.3,İtalya,0.426,,True
+IT,2020-09,3.111,İtalya,0.33,,True
+IT,2020-10,3.157,İtalya,0.387,,True
+IT,2020-11,3.418,İtalya,0.521,,True
+IT,2020-12,3.768,İtalya,0.845,,True
+IT,2021-01,3.934,İtalya,0.994,,True
+IT,2021-02,3.886,İtalya,1.119,,True
+IT,2021-03,4.133,İtalya,1.179,,True
+IT,2021-04,4.164,İtalya,0.634,,True
+IT,2021-05,3.749,İtalya,0.138,,True
+IT,2021-06,3.59,İtalya,0.044,,True
+IT,2021-07,3.691,İtalya,0.296,,True
+IT,2021-08,4.101,İtalya,0.801,,True
+IT,2021-09,4.021,İtalya,0.91,,True
+IT,2021-10,4.022,İtalya,0.865,,True
+IT,2021-11,3.984,İtalya,0.566,,True
+IT,2021-12,4.161,İtalya,0.393,,True
+IT,2022-01,4.213,İtalya,0.279,,True
+IT,2022-02,4.113,İtalya,0.227,,True
+IT,2022-03,4.041,İtalya,-0.092,,True
+IT,2022-04,4.123,İtalya,-0.041,,True
+IT,2022-05,4.016,İtalya,0.267,,True
+IT,2022-06,3.777,İtalya,0.187,,True
+IT,2022-07,3.822,İtalya,0.131,,True
+IT,2022-08,3.647,İtalya,-0.454,,True
+IT,2022-09,3.406,İtalya,-0.615,,True
+IT,2022-10,3.461,İtalya,-0.561,,True
+IT,2022-11,3.261,İtalya,-0.723,,True
+IT,2022-12,2.958,İtalya,-1.203,,True
+IT,2023-01,2.752,İtalya,-1.461,,True
+IT,2023-02,2.626,İtalya,-1.487,,True
+IT,2023-03,2.554,İtalya,-1.487,,True
+IT,2023-04,2.435,İtalya,-1.688,,True
+IT,2023-05,2.439,İtalya,-1.577,,True
+IT,2023-06,2.295,İtalya,-1.482,,True
+IT,2023-07,2.318,İtalya,-1.504,,True
+IT,2023-08,2.432,İtalya,-1.215,,True
+IT,2023-09,2.418,İtalya,-0.988,,True
+IT,2023-10,2.406,İtalya,-1.055,,True
+IT,2023-11,2.372,İtalya,-0.889,,True
+IT,2023-12,2.418,İtalya,-0.54,,True
+IT,2024-01,2.44,İtalya,-0.312,,True
+IT,2024-02,2.358,İtalya,-0.268,,True
+IT,2024-03,2.336,İtalya,-0.218,,True
+IT,2024-04,2.348,İtalya,-0.087,,True
+IT,2024-05,2.296,İtalya,-0.143,,True
+IT,2024-06,2.364,İtalya,0.069,,True
+IT,2024-07,2.57,İtalya,0.252,,True
+IT,2024-08,2.923,İtalya,0.491,,True
+IT,2024-09,2.837,İtalya,0.419,,True
+IT,2024-10,2.862,İtalya,0.456,,True
+IT,2024-11,2.925,İtalya,0.553,,True
+IT,2024-12,2.765,İtalya,0.347,,True
+IT,2025-01,2.837,İtalya,0.397,,True
+IT,2025-02,2.79,İtalya,0.432,,True
+IT,2025-03,2.975,İtalya,0.639,,True
+IT,2025-04,3.021,İtalya,0.673,,True
+IT,2025-05,2.997,İtalya,0.701,,True
+IT,2025-06,3.198,İtalya,0.834,,True
+IT,2025-07,3.273,İtalya,0.703,,True
+IT,2025-08,3.604,İtalya,0.681,,True
+IT,2025-09,3.429,İtalya,0.592,,True
+IT,2025-10,3.321,İtalya,0.459,,True
+IT,2025-11,3.504,İtalya,0.579,,True
+IT,2025-12,3.731,İtalya,0.966,,True
+IT,2026-01,3.829,İtalya,0.992,,True
+IT,2026-02,3.526,İtalya,0.736,,True
+IT,2026-03,3.673,İtalya,0.698,,True
+IT,2026-04,4.161,İtalya,1.14,,True
+IT,2026-05,4.551,İtalya,1.554,,True
+IT,2026-06,4.358,İtalya,1.16,,True
+IT,2026-07,4.583,İtalya,1.31,,True
+IT,2026-08,5.158,İtalya,1.554,,True
+IT,2026-09,4.856,İtalya,1.427,,True
+NL,2019-01,1.768,Hollanda,,,True
+NL,2019-02,1.833,Hollanda,,,True
+NL,2019-03,1.801,Hollanda,,,True
+NL,2019-04,1.856,Hollanda,,,True
+NL,2019-05,1.778,Hollanda,,,True
+NL,2019-06,1.755,Hollanda,,,True
+NL,2019-07,1.811,Hollanda,,,True
+NL,2019-08,1.925,Hollanda,,,True
+NL,2019-09,1.896,Hollanda,,,True
+NL,2019-10,1.877,Hollanda,,,True
+NL,2019-11,1.775,Hollanda,,,True
+NL,2019-12,1.879,Hollanda,,,True
+NL,2020-01,1.933,Hollanda,0.165,,True
+NL,2020-02,1.97,Hollanda,0.137,,True
+NL,2020-03,2.102,Hollanda,0.301,,True
+NL,2020-04,2.207,Hollanda,0.351,,True
+NL,2020-05,2.209,Hollanda,0.431,,True
+NL,2020-06,2.098,Hollanda,0.343,,True
+NL,2020-07,2.041,Hollanda,0.23,,True
+NL,2020-08,1.983,Hollanda,0.058,,True
+NL,2020-09,1.861,Hollanda,-0.035,,True
+NL,2020-10,1.937,Hollanda,0.06,,True
+NL,2020-11,2.094,Hollanda,0.319,,True
+NL,2020-12,2.236,Hollanda,0.357,,True
+NL,2021-01,2.407,Hollanda,0.474,,True
+NL,2021-02,2.579,Hollanda,0.609,,True
+NL,2021-03,2.64,Hollanda,0.538,,True
+NL,2021-04,2.61,Hollanda,0.403,,True
+NL,2021-05,2.573,Hollanda,0.364,,True
+NL,2021-06,2.462,Hollanda,0.364,,True
+NL,2021-07,2.391,Hollanda,0.35,,True
+NL,2021-08,2.431,Hollanda,0.448,,True
+NL,2021-09,2.4,Hollanda,0.539,,True
+NL,2021-10,2.438,Hollanda,0.501,,True
+NL,2021-11,2.5,Hollanda,0.406,,True
+NL,2021-12,2.578,Hollanda,0.342,,True
+NL,2022-01,2.658,Hollanda,0.251,,True
+NL,2022-02,2.588,Hollanda,0.009,,True
+NL,2022-03,2.566,Hollanda,-0.074,,True
+NL,2022-04,2.525,Hollanda,-0.085,,True
+NL,2022-05,2.507,Hollanda,-0.066,,True
+NL,2022-06,2.459,Hollanda,-0.003,,True
+NL,2022-07,2.421,Hollanda,0.03,,True
+NL,2022-08,2.478,Hollanda,0.047,,True
+NL,2022-09,2.417,Hollanda,0.017,,True
+NL,2022-10,2.302,Hollanda,-0.136,,True
+NL,2022-11,2.303,Hollanda,-0.197,,True
+NL,2022-12,2.173,Hollanda,-0.405,,True
+NL,2023-01,2.126,Hollanda,-0.532,,True
+NL,2023-02,2.097,Hollanda,-0.491,,True
+NL,2023-03,2.049,Hollanda,-0.517,,True
+NL,2023-04,1.999,Hollanda,-0.526,,True
+NL,2023-05,1.923,Hollanda,-0.584,,True
+NL,2023-06,1.838,Hollanda,-0.621,,True
+NL,2023-07,1.874,Hollanda,-0.547,,True
+NL,2023-08,1.892,Hollanda,-0.586,,True
+NL,2023-09,1.85,Hollanda,-0.567,,True
+NL,2023-10,1.915,Hollanda,-0.387,,True
+NL,2023-11,1.956,Hollanda,-0.347,,True
+NL,2023-12,1.972,Hollanda,-0.201,,True
+NL,2024-01,2.007,Hollanda,-0.119,,True
+NL,2024-02,2.015,Hollanda,-0.082,,True
+NL,2024-03,1.998,Hollanda,-0.051,,True
+NL,2024-04,2.012,Hollanda,0.013,,True
+NL,2024-05,1.969,Hollanda,0.046,,True
+NL,2024-06,1.943,Hollanda,0.105,,True
+NL,2024-07,1.985,Hollanda,0.111,,True
+NL,2024-08,2.013,Hollanda,0.121,,True
+NL,2024-09,1.949,Hollanda,0.099,,True
+NL,2024-10,1.967,Hollanda,0.052,,True
+NL,2024-11,2.009,Hollanda,0.053,,True
+NL,2024-12,2.012,Hollanda,0.04,,True
+NL,2025-01,2.081,Hollanda,0.074,,True
+NL,2025-02,2.141,Hollanda,0.126,,True
+NL,2025-03,2.185,Hollanda,0.187,,True
+NL,2025-04,2.179,Hollanda,0.167,,True
+NL,2025-05,2.214,Hollanda,0.245,,True
+NL,2025-06,2.253,Hollanda,0.31,,True
+NL,2025-07,2.261,Hollanda,0.276,,True
+NL,2025-08,2.318,Hollanda,0.305,,True
+NL,2025-09,2.306,Hollanda,0.357,,True
+NL,2025-10,2.329,Hollanda,0.362,,True
+NL,2025-11,2.494,Hollanda,0.485,,True
+NL,2025-12,2.575,Hollanda,0.563,,True
+NL,2026-01,2.664,Hollanda,0.583,,True
+NL,2026-02,2.756,Hollanda,0.615,,True
+NL,2026-03,3.001,Hollanda,0.816,,True
+NL,2026-04,3.095,Hollanda,0.916,,True
+NL,2026-05,3.131,Hollanda,0.917,,True
+NL,2026-06,3.209,Hollanda,0.956,,True
+NL,2026-07,3.422,Hollanda,1.161,,True
+NL,2026-08,3.511,Hollanda,1.193,,True
+NL,2026-09,3.56,Hollanda,1.254,,True
+US,2019-01,1.711,ABD,,,True
+US,2019-02,1.761,ABD,,,True
+US,2019-03,1.715,ABD,,,True
+US,2019-04,1.673,ABD,,,True
+US,2019-05,1.665,ABD,,,True
+US,2019-06,1.67,ABD,,,True
+US,2019-07,1.732,ABD,,,True
+US,2019-08,1.721,ABD,,,True
+US,2019-09,1.752,ABD,,,True
+US,2019-10,1.805,ABD,,,True
+US,2019-11,1.839,ABD,,,True
+US,2019-12,1.892,ABD,,,True
+US,2020-01,1.891,ABD,0.18,,True
+US,2020-02,1.948,ABD,0.187,,True
+US,2020-03,1.987,ABD,0.272,,True
+US,2020-04,1.931,ABD,0.258,,True
+US,2020-05,1.74,ABD,0.075,,True
+US,2020-06,1.573,ABD,-0.097,,True
+US,2020-07,1.486,ABD,-0.246,,True
+US,2020-08,1.494,ABD,-0.227,,True
+US,2020-09,1.54,ABD,-0.212,,True
+US,2020-10,1.622,ABD,-0.183,,True
+US,2020-11,1.749,ABD,-0.09,,True
+US,2020-12,1.913,ABD,0.021,,True
+US,2021-01,1.979,ABD,0.088,,True
+US,2021-02,2.141,ABD,0.193,,True
+US,2021-03,2.216,ABD,0.229,,True
+US,2021-04,2.078,ABD,0.147,,True
+US,2021-05,2.093,ABD,0.353,,True
+US,2021-06,2.171,ABD,0.598,,True
+US,2021-07,2.232,ABD,0.746,,True
+US,2021-08,2.389,ABD,0.895,,True
+US,2021-09,2.56,ABD,1.02,,True
+US,2021-10,2.692,ABD,1.07,,True
+US,2021-11,2.843,ABD,1.094,,True
+US,2021-12,3.0,ABD,1.087,,True
+US,2022-01,3.074,ABD,1.095,,True
+US,2022-02,3.219,ABD,1.078,,True
+US,2022-03,3.232,ABD,1.016,,True
+US,2022-04,3.189,ABD,1.111,,True
+US,2022-05,3.191,ABD,1.098,,True
+US,2022-06,3.049,ABD,0.878,,True
+US,2022-07,2.903,ABD,0.671,,True
+US,2022-08,2.737,ABD,0.348,,True
+US,2022-09,2.611,ABD,0.051,,True
+US,2022-10,2.445,ABD,-0.247,,True
+US,2022-11,2.272,ABD,-0.571,,True
+US,2022-12,2.194,ABD,-0.806,,True
+US,2023-01,2.155,ABD,-0.919,,True
+US,2023-02,2.096,ABD,-1.123,,True
+US,2023-03,1.927,ABD,-1.305,,True
+US,2023-04,1.812,ABD,-1.377,,True
+US,2023-05,1.75,ABD,-1.441,,True
+US,2023-06,1.709,ABD,-1.34,,True
+US,2023-07,1.719,ABD,-1.184,,True
+US,2023-08,1.74,ABD,-0.997,,True
+US,2023-09,1.808,ABD,-0.803,,True
+US,2023-10,1.843,ABD,-0.602,,True
+US,2023-11,1.865,ABD,-0.407,,True
+US,2023-12,1.905,ABD,-0.289,,True
+US,2024-01,1.962,ABD,-0.193,,True
+US,2024-02,2.05,ABD,-0.046,,True
+US,2024-03,2.06,ABD,0.133,,True
+US,2024-04,2.035,ABD,0.223,,True
+US,2024-05,2.053,ABD,0.303,,True
+US,2024-06,2.178,ABD,0.469,,True
+US,2024-07,2.206,ABD,0.487,,True
+US,2024-08,2.246,ABD,0.506,,True
+US,2024-09,2.382,ABD,0.574,,True
+US,2024-10,2.462,ABD,0.619,,True
+US,2024-11,2.573,ABD,0.708,,True
+US,2024-12,2.667,ABD,0.762,,True
+US,2025-01,2.731,ABD,0.769,,True
+US,2025-02,2.794,ABD,0.744,,True
+US,2025-03,2.762,ABD,0.702,,True
+US,2025-04,2.783,ABD,0.748,,True
+US,2025-05,2.798,ABD,0.745,,True
+US,2025-06,3.004,ABD,0.826,,True
+US,2025-07,3.16,ABD,0.954,,True
+US,2025-08,3.349,ABD,1.103,,True
+US,2025-09,3.556,ABD,1.174,,True
+US,2025-10,3.873,ABD,1.411,,True
+US,2025-11,4.189,ABD,1.616,,True
+US,2025-12,4.378,ABD,1.711,,True
+US,2026-01,4.563,ABD,1.832,,True
+US,2026-02,4.932,ABD,2.138,,True
+US,2026-03,5.224,ABD,2.462,,True
+US,2026-04,5.49,ABD,2.707,,True
+US,2026-05,5.713,ABD,2.915,,True
+US,2026-06,5.876,ABD,2.872,,True
+US,2026-07,6.256,ABD,3.096,,True
+US,2026-08,6.592,ABD,3.243,,True
+US,2026-09,7.155,ABD,3.599,,True

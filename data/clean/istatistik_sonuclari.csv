@@ -1,0 +1,17 @@
+test,deger,ci95_alt,ci95_ust,p_degeri,yorum
+1a_medyan_farki_ai_siki_eksi_diger,115.0,50.0,421.0,,AI sıkı medyan 295 (n=74) vs diğer 180 (n=551); GA sıfırı içermiyor
+1b_mann_whitney_ai_buyuk_mu,25857.0,,,0.0001,"Tek yönlü: AI duyuruları daha fazla kişi mi kapsıyor? (dağılım farkı, normal dağılım varsaymaz)"
+2a_ai_kisi_payi_siki_%,16.92,8.82,27.45,,Geniş GA = sonuç birkaç dev satıra bağlı
+2b_ai_kisi_payi_genis_%,38.36,23.98,52.0,,Üst sınır
+2c_ai_duyuru_payi_siki_%,11.51,9.02,14.0,,Sayı payı dev satırlardan etkilenmez -> GA dar
+3_ayrim_2026-05_layoffhedge_sayi_payi,-0.22,14.58,14.8,,önce 14.6 -> sonra 14.8 (deger = fark; alt/ust = önce/sonra ort.) | Challenger önce 16.9 -> sonra 20.3
+3_ayrim_2026-06_layoffhedge_sayi_payi,10.02,19.72,9.7,,önce 19.7 -> sonra 9.7 (deger = fark; alt/ust = önce/sonra ort.) | Challenger önce 21.5 -> sonra 16.4
+3_ayrim_2026-07_layoffhedge_sayi_payi,12.64,19.77,7.13,,önce 19.8 -> sonra 7.1 (deger = fark; alt/ust = önce/sonra ort.) | Challenger önce 23.0 -> sonra 12.8
+3_ayrim_2026-08_layoffhedge_sayi_payi,15.82,19.46,3.63,,önce 19.5 -> sonra 3.6 (deger = fark; alt/ust = önce/sonra ort.) | Challenger önce 24.4 -> sonra 6.2
+3_ayrim_2026-09_layoffhedge_sayi_payi,13.32,17.38,4.05,,önce 17.4 -> sonra 4.0 (deger = fark; alt/ust = önce/sonra ort.) | Challenger önce 22.2 -> sonra 6.0
+4a_corr_challenger_vs_sayi_payi,0.72,,,0.0056,"n=10 ay; permütasyon p tek yönlü. Not: aylık seriler birbirine bağımlı (otokorelasyon), p iyimser olabilir -> yön teyidi olarak oku"
+4b_corr_challenger_vs_kisi_payi,-0.2,,,0.7178,Kişi payı Challenger ile örtüşmüyor
+5a_eksik_etiket_orani_elle_bakilanlarda,4.0,,,,2 / 50 elle bakılan AI-etiketsiz satır
+5b_ai_payi_siki_senaryo_A_bulunanlar_eklenirse_%,17.07,,,,Envato + United Internet
+5c_ai_payi_siki_senaryo_B_oran_bakilmayanlara_medyanla_%,17.59,,,,~20 satır x medyan 168 kişi
+5d_ai_payi_siki_senaryo_C_oran_bakilmayanlara_ortalamayla_%,18.12,,,,Kötümser üst tahmin

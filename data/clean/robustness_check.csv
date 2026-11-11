@@ -1,0 +1,22 @@
+,1_tum_veri,2_cekirdek_T1_T3,3_sadece_elle_T1_T2
+satir,643,313,133
+kisi,653456,533119,472236
+kisi_payi_tum_veriye_gore_%,100.0,81.6,72.3
+sektor_1,Automotive & Transportation,Automotive & Transportation,Automotive & Transportation
+sektor_2,Tech,Tech,Tech
+sektor_3,Finance & Banking,Finance & Banking,Finance & Banking
+ai_kisi_payi_siki_%,16.9,20.7,23.4
+ai_kisi_payi_genis_%,38.4,47.0,53.0
+ai_duyuru_payi_siki_%,11.5,23.0,54.1
+ai_duyuru_payi_genis_%,14.3,28.8,67.7
+ai_siki_medyan_kisi,295.0,320.0,320.0
+ai_genis_medyan_kisi,375.0,400.0,400.0
+diger_medyan_kisi,180.0,200.0,3000.0
+ai_medyan_sirket_buyuklugu,5208.5,5269.0,5269.0
+diger_medyan_sirket_buyuklugu,10000.0,14600.0,40000.0
+kisi_payi_siki_oca_nis_ort_%,18.2,22.3,23.4
+kisi_payi_siki_haz_eyl_ort_%,5.2,6.6,13.0
+kisi_payi_genis_oca_nis_ort_%,57.3,69.9,74.1
+kisi_payi_genis_haz_eyl_ort_%,8.0,9.9,16.8
+sayi_payi_siki_oca_nis_ort_%,14.6,30.8,46.9
+sayi_payi_siki_haz_eyl_ort_%,10.8,20.2,50.9
