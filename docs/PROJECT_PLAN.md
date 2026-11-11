@@ -129,7 +129,7 @@ Database: `ai_is_piyasasi` (PostgreSQL 18, localhost)
 - Chart rules: one y-axis per chart (two measures of different scale → two panels), emphasis (highlight one series, grey the rest), validated categorical palette in fixed order, source note under every chart, a table under every chart.
 
 ### Step 4 — Power BI 📊 (4 pages) ⏳
-- Power BI Desktop is Windows-only. Either connect to PostgreSQL (*Get data → PostgreSQL*, server `localhost`, database `ai_is_piyasasi`) or import CSV exports of the `v_*` views. Relationships via `date_key`, `company_id`, `industry_id`, `country_code`.
+- Power BI Desktop runs on a remote Windows virtual machine. The `powerbi/` folder is self-contained: copy it to the VM and follow `powerbi/README.md` (data model in `powerbi/data/model/`, ready-made answers in `powerbi/data/summary/`, produced by `sql/05_export_powerbi.sql`).
 1. **Overview:** KPI cards (announcements, people, companies, AI share 16.9%), monthly trend, industry bar chart
 2. **AI narrative:** monthly AI share line (layoffhedge people share + count share vs Challenger), AI share by industry, AI vs non-AI median
 3. **Hiring side:** Indeed share of postings mentioning AI (US highlighted, other countries grey), year-over-year change; Canada annotated
@@ -137,12 +137,16 @@ Database: `ai_is_piyasasi` (PostgreSQL 18, localhost)
 - Filters: month, industry, reliability tier, "strict AI definition only"
 - Source note on every page. Save screenshots to `powerbi/`.
 
-### Step 5 — README + Medium + LinkedIn 📝 ⏳
+### Step 5 — PowerPoint presentation + Word report 🎤 ⏳ (at the very end)
+- Audience: people with **no background** in data or in the topic. Both must be understandable without the notebook or the code.
+- Plain language, one idea per slide, every chart explained in one sentence ("what you see / why it matters"), glossary for terms like "strict definition", "median", "correlation".
+
+### Step 6 — README + Medium + LinkedIn 📝 ⏳
 - `README.md`: title, one-sentence question, 3–4 key findings, dashboard image, data sources, method, data-quality section (from DATA_QUALITY.md), limitations, how to run.
 - `docs/medium_post.md`: "Is AI Taking Jobs, or Did Only the Narrative Change?" — short, 3–4 charts, plain language.
 - LinkedIn post: 4–5 sentences + dashboard image.
 
-### Step 6 — Final check ✔️ ⏳
+### Step 7 — Final check ✔️ ⏳
 - Are all numbers identical in SQL, Power BI and README?
 - Are sources credited (layoffhedge, Indeed CC-BY, Challenger)?
 - Is the raw data unchanged?

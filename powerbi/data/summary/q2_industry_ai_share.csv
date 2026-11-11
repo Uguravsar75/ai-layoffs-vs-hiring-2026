@@ -1,0 +1,14 @@
+industry_name,announcements,ai_strict_announcements,people_cut,ai_strict_people_cut,ai_strict_people_pct,ai_upper_people_pct,ai_strict_count_pct,rank_ai_strict_pct,small_sample
+Government & Nonprofit,7,1,26013,25000,96.1,96.1,14.3,1,TRUE
+Energy,2,1,1480,1300,87.8,87.8,50.0,2,TRUE
+Crypto & Fintech,22,9,19347,13180,68.1,69.2,40.9,3,FALSE
+Finance & Banking,59,9,71100,23250,32.7,65.7,15.3,4,FALSE
+Tech,139,42,157961,33194,21.0,75.3,30.2,5,FALSE
+Retail,46,3,30910,4875,15.8,15.8,6.5,6,FALSE
+Manufacturing,86,1,37868,4500,11.9,11.9,1.2,7,FALSE
+Telecom,12,1,6092,621,10.2,10.2,8.3,8,FALSE
+Media & Entertainment,62,6,34214,2630,7.7,8.6,9.7,9,FALSE
+Automotive & Transportation,65,1,203285,2000,1.0,15.9,1.5,10,FALSE
+Healthcare & Pharma,86,0,31750,0,0.0,0.0,0.0,11,FALSE
+Consumer Goods,49,0,31118,0,0.0,0.0,0.0,11,FALSE
+Education,8,0,2318,0,0.0,0.0,0.0,11,TRUE
