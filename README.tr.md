@@ -2,7 +2,7 @@
 
 *2026 işten çıkarma duyurularında yapay zekâ ile iş ilanlarında yapay zekâ*
 
-[English](README.md) | **Türkçe**
+[English](README.md) | **Türkçe** · 📖 [Yazıyı Medium'da okuyun](https://medium.com/@uguravsar10/yapay-zek%C3%A2-i%CC%87%C5%9Fleri-mi-al%C4%B1yor-yoksa-sadece-su%C3%A7u-mu-%C3%BCstleniyor-71f44f79ce58)
 
 Neredeyse her hafta *"X şirketi yapay zekâ yüzünden binlerce kişiyi işten çıkarıyor"* gibi bir haber başlığı görüyoruz. Bu proje bu başlıkları veriyle sınıyor. Üç soruya yanıt arıyor: **Şirketler 2026'da işten çıkarma duyururken yapay zekâyı (AI) gerçekte ne sıklıkla gerekçe gösterdi? Bu oran yıl içinde nasıl değişti? Aynı dönemde iş ilanlarında AI'ın payına ne oldu?**
 

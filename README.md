@@ -2,7 +2,7 @@
 
 *AI in 2026 layoff announcements vs. AI in job postings*
 
-**English** | [Türkçe](README.tr.md)
+**English** | [Türkçe](README.tr.md) · 📖 [Read the story on Medium (Turkish)](https://medium.com/@uguravsar10/yapay-zek%C3%A2-i%CC%87%C5%9Fleri-mi-al%C4%B1yor-yoksa-sadece-su%C3%A7u-mu-%C3%BCstleniyor-71f44f79ce58)
 
 Every week there is a headline like *"Company X cuts thousands of jobs because of AI."* This project checks those headlines against data: **how often did companies actually name AI when they announced job cuts in 2026, how did that change over the year, and what happened to AI in job postings at the same time?**
 
