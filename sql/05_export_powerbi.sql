@@ -52,8 +52,8 @@ END $$;
 -- 2) SUMMARY TABLES (ready-made answers) -> powerbi/data/summary/
 -- ---------------------------------------------------------------------
 \copy (SELECT * FROM pbi_v_kpi)                                        TO 'powerbi/data/summary/kpi.csv'                 WITH (FORMAT csv, HEADER true)
-\copy (SELECT * FROM pbi_v_q1_sector_totals ORDER BY rank_by_people)   TO 'powerbi/data/summary/q1_industry_totals.csv'  WITH (FORMAT csv, HEADER true)
-\copy (SELECT * FROM pbi_v_q2_sector_ai ORDER BY rank_ai_strict_pct)   TO 'powerbi/data/summary/q2_industry_ai_share.csv' WITH (FORMAT csv, HEADER true)
+\copy (SELECT * FROM pbi_v_q1_sector_totals ORDER BY rank_by_people, industry_name) TO 'powerbi/data/summary/q1_industry_totals.csv'  WITH (FORMAT csv, HEADER true)
+\copy (SELECT * FROM pbi_v_q2_sector_ai ORDER BY rank_ai_strict_pct, industry_name) TO 'powerbi/data/summary/q2_industry_ai_share.csv' WITH (FORMAT csv, HEADER true)
 \copy (SELECT * FROM pbi_v_q3_monthly_ai ORDER BY month_start)         TO 'powerbi/data/summary/q3_monthly_ai_share.csv' WITH (FORMAT csv, HEADER true)
 \copy (SELECT * FROM pbi_v_q4_median ORDER BY grp)                     TO 'powerbi/data/summary/q4_median_size.csv'      WITH (FORMAT csv, HEADER true)
 \copy (SELECT * FROM pbi_v_q5_indeed WHERE year_month >= '2024-01' ORDER BY country_code, month_start) TO 'powerbi/data/summary/q5_indeed_monthly.csv' WITH (FORMAT csv, HEADER true)

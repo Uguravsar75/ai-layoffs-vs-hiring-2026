@@ -204,12 +204,12 @@ SELECT * FROM v_kpi;
 \echo '\n=== Q1: Announced job cuts by industry ==='
 SELECT rank_by_people AS rank, industry_name, announcements, people_cut,
        share_of_total_pct, median_cut
-FROM v_q1_sector_totals ORDER BY rank_by_people;
+FROM v_q1_sector_totals ORDER BY rank_by_people, industry_name;
 
 \echo '\n=== Q2: AI share by industry (strict = headline, broad = upper bound) ==='
 SELECT rank_ai_strict_pct AS rank, industry_name, announcements,
        ai_strict_people_pct, ai_upper_people_pct, ai_strict_count_pct, small_sample
-FROM v_q2_sector_ai ORDER BY rank_ai_strict_pct;
+FROM v_q2_sector_ai ORDER BY rank_ai_strict_pct, industry_name;
 
 \echo '\n=== Q3: Monthly AI share (strict) ==='
 SELECT year_month, announcements, ai_strict_count_pct, count_pct_change_pt, count_pct_ma3,

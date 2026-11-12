@@ -27,9 +27,9 @@ ai-layoffs-vs-hiring-2026/
 ├── sql/                  ← 01_schema.sql, 02_load.sql, 03_analysis.sql, 04_checks.sql, 05_export_powerbi.sql
 ├── notebooks/            ← analysis.ipynb + figures/ (PNG charts)
 ├── powerbi/              ← data/ (CSV export for Power BI), dashboard.pbix + screenshots (png)
-├── docs/                 ← PROJECT_PLAN.md, PROCESS.md, DATA_QUALITY.md,
-│                           (+ a personal interview-prep file, kept locally)
-└── README.md             ← the showcase (written last)
+├── presentation/         ← AI_Layoffs_vs_Hiring_2026.pptx (16 slides) + build_deck.py
+├── docs/                 ← PROJECT_PLAN.md, PROCESS.md, DATA_QUALITY.md, medium_post.md
+└── README.md / README.tr.md ← the showcase (English / Turkish)
 ```
 
 ---
@@ -62,7 +62,7 @@ Auxiliary (not counted as a data set): raw/layoffs_monthly_2026.csv, raw/layoffs
 - Robustness check: industry ranking and the decline of the AI share hold at every level.
 - Indeed converted to a monthly table.
 - 2026-11-11 audit (see PROCESS.md §13): AI share switched to the strict definition everywhere (`is_ai_strict`), announcement-count share added, wrong "weighted workforce %" removed, generic WARN links moved to T5, Gilead and Capital One verified.
-- 2026-11-11 external review (see PROCESS.md §16): junior conclusion reframed, limitations added, statistical tests, git, interview preparation.
+- 2026-11-11 external review (see PROCESS.md §16): junior conclusion reframed, limitations added, statistical tests, git.
 
 **Filter for the analysis:** `in_main_analysis = True` (643 rows, 653,456 people)
 
@@ -128,7 +128,8 @@ Database: `ai_is_piyasasi` (PostgreSQL 18, localhost)
 - `notebooks/analysis.ipynb`: one section per question (question → code → chart → 2–3 sentences of interpretation), executed with all outputs. 9 charts saved to `notebooks/figures/` for the README and the Medium post.
 - Chart rules: one y-axis per chart (two measures of different scale → two panels), emphasis (highlight one series, grey the rest), validated categorical palette in fixed order, source note under every chart, a table under every chart.
 
-### Step 4 — Power BI 📊 (4 pages) ⏳
+### Step 4 — Power BI 📊 (4 pages) ✅
+- Done: `powerbi/dashboard.pbix`, `powerbi/dashboard.pdf`, one PNG per page in `powerbi/screenshots/`. The dashboard reproduces the SQL numbers (643 announcements, 653,456 people, 561 companies, strict AI share 16.9%).
 - Power BI Desktop runs on a remote Windows virtual machine. The `powerbi/` folder is self-contained: copy it to the VM and follow `powerbi/README.md` (data model in `powerbi/data/model/`, ready-made answers in `powerbi/data/summary/`, produced by `sql/05_export_powerbi.sql`).
 1. **Overview:** KPI cards (announcements, people, companies, AI share 16.9%), monthly trend, industry bar chart
 2. **AI narrative:** monthly AI share line (layoffhedge people share + count share vs Challenger), AI share by industry, AI vs non-AI median
@@ -137,12 +138,13 @@ Database: `ai_is_piyasasi` (PostgreSQL 18, localhost)
 - Filters: month, industry, reliability tier, "strict AI definition only"
 - Source note on every page. Save screenshots to `powerbi/`.
 
-### Step 5 — PowerPoint presentation + Word report 🎤 ⏳ (at the very end)
+### Step 5 — PowerPoint presentation ✅ + Word report ⏳
+- Done: `presentation/AI_Layoffs_vs_Hiring_2026.pptx` — 16 slides for a 15-minute talk, speaker notes on every slide, native (editable) charts; built by `presentation/build_deck.py` from the files in `data/clean/`.
 - Audience: people with **no background** in data or in the topic. Both must be understandable without the notebook or the code.
 - Plain language, one idea per slide, every chart explained in one sentence ("what you see / why it matters"), glossary for terms like "strict definition", "median", "correlation".
 
-### Step 6 — README + Medium + LinkedIn 📝 ⏳
-- `README.md`: title, one-sentence question, 3–4 key findings, dashboard image, data sources, method, data-quality section (from DATA_QUALITY.md), limitations, how to run.
+### Step 6 — README ✅ + Medium + LinkedIn 📝 ⏳
+- `README.md` (English) and `README.tr.md` (Turkish): title, one-sentence question, 3–4 key findings, dashboard image, data sources, method, data-quality section (from DATA_QUALITY.md), limitations, how to run.
 - `docs/medium_post.md`: "Is AI Taking Jobs, or Did Only the Narrative Change?" — short, 3–4 charts, plain language.
 - LinkedIn post: 4–5 sentences + dashboard image.
 
@@ -169,5 +171,5 @@ Database: `ai_is_piyasasi` (PostgreSQL 18, localhost)
 
 ---
 
-## 9. Interview sentence
+## 9. The project in one sentence
 > "I validated data from a little-known source by materiality: I compared every large row and every AI-labelled row with news sources, sampled the small rows at random, found 4 wrong-year rows and 2 wrong numbers, and then showed with a robustness check that my findings hold when the questionable rows are removed."

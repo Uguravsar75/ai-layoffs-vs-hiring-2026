@@ -368,8 +368,10 @@ Manual verification results live in dictionaries inside `clean_layoffs.py`. When
 1. ~~Challenger table~~ ✅ (§14)
 2. ~~PostgreSQL~~ ✅ (§15)
 3. ~~Python notebook~~ ✅ `notebooks/analysis.ipynb` (9 charts in `notebooks/figures/`)
-4. **Power BI (4 pages):** Overview · AI narrative · Hiring side · Data reliability.
-5. **README + Medium post:** findings, charts and the data-quality section.
+4. ~~Power BI (4 pages)~~ ✅ (§17)
+5. ~~Presentation~~ ✅ (§18)
+6. ~~README (English + Turkish)~~ ✅
+7. Word report, Medium post, LinkedIn post.
 
 ---
 
@@ -461,10 +463,22 @@ The project was reviewed from the perspective of a hiring manager; the 7 weak po
 | 4 | Little statistical weight | `statistical_tests.py`: bootstrap CIs, Mann-Whitney, permutation test, split-month sensitivity (see DATA_QUALITY.md §7) |
 | 5 | The Indeed metric must be read narrowly | "AI demand / AI-skill demand" replaced by "share of job postings mentioning AI"; limitation added |
 | 6 | No git/GitHub | Git repository created; GitHub-facing content translated to English |
-| 7 | Being able to defend the project | A personal interview-preparation file (kept locally, not published): likely questions, answers and a self-test list |
+| 7 | Being able to defend every number | Every decision is logged in this file and in DATA_QUALITY.md; every number can be traced back to a script and re-checked in SQL (`04_checks.sql`) |
+
+## 17. Power BI dashboard (12 November 2026)
+
+- Built on a remote Windows machine from the self-contained `powerbi/` folder (see `powerbi/README.md`): 7 CSV tables from `sql/05_export_powerbi.sql`, star schema with 6 single-direction many-to-one relationships, measures in a `_Measures` table (DAX).
+- 4 pages: **Overview** · **AI Narrative** · **Hiring Side** · **Data Reliability**; source note on every page.
+- Checked against SQL: 643 announcements, 653,456 people, 561 companies, strict AI share 16.9%, broad 38.4%, count share 11.5%, medians 295 vs 180, tier shares T1 47.2% … T5 7.3%.
+- Exports: `powerbi/dashboard.pdf` and `powerbi/screenshots/*.png`.
+
+## 18. Presentation (12 November 2026)
+
+- `presentation/AI_Layoffs_vs_Hiring_2026.pptx`: 16 slides, 15 minutes, written for people with no background in the topic. One message per slide, speaker notes on every slide.
+- Built by `presentation/build_deck.py` (python-pptx). Every number is read from `data/clean/`, so the deck cannot drift from the analysis; charts are native PowerPoint charts.
 
 ---
 
-## The project in one sentence (interview)
+## The project in one sentence
 
 > "I validated data from a little-known source by materiality: I compared every large row and every AI-labelled row with news sources one by one, sampled the small rows at random, found 4 wrong-year rows and 2 wrong numbers, and then showed with a robustness check that my findings hold when the questionable rows are removed."
