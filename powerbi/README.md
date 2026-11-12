@@ -6,12 +6,10 @@ Everything Power BI needs is in this folder. **Dashboard pages:** Overview · AI
 powerbi/
 ├── README.md            ← this file
 ├── data/
-│   ├── model/           ← the data model (7 tables) — use these to build the dashboard
-│   └── summary/         ← ready-made answers (8 small tables) — use these to check the numbers
+│   └── model/           ← the data model (7 tables) behind the dashboard
 ├── dashboard.pbix       ← the Power BI file (4 pages, data imported — opens without the CSVs)
 ├── dashboard.pdf        ← PDF export of the four pages
-├── screenshots/         ← one PNG per page (rendered from the PDF by pdf_to_png.swift)
-└── pdf_to_png.swift     ← macOS script: PDF pages → PNG
+└── screenshots/         ← one PNG per page
 ```
 
 The CSV files are exported from the PostgreSQL database by `sql/05_export_powerbi.sql`. Booleans are written as `TRUE`/`FALSE`, so Power BI reads them as True/False columns.
@@ -47,24 +45,7 @@ Two kinds of tables:
 
 Monthly facts (Indeed, Challenger) use the `date_key` of the **1st day of the month** (e.g. `20260301` = March 2026).
 
-## 2. `data/summary/` — ready-made answers
-
-Small tables with the final numbers, computed in SQL. They are useful for KPI cards and for checking that the dashboard measures are right.
-
-| File | Answers |
-|---|---|
-| `kpi.csv` | Headline numbers: 643 announcements, 561 companies, 653,456 people, AI share 16.9% (strict) / 38.4% (broad) |
-| `q1_industry_totals.csv` | Q1 — people and rank per industry |
-| `q2_industry_ai_share.csv` | Q2 — AI share per industry (strict and broad), `small_sample` flag |
-| `q3_monthly_ai_share.csv` | Q3 — monthly AI share (people and announcement count), month-over-month change, 3-month moving average |
-| `q4_median_size.csv` | Q4 — median people per announcement, AI vs non-AI |
-| `q5_indeed_monthly.csv` | Q5 — share of job postings mentioning AI per country and month |
-| `combined_monthly.csv` | layoffhedge + Challenger + Indeed US side by side, Jan–Oct 2026 |
-| `quality_tiers.csv` | Rows and share of people per reliability tier |
-
----
-
-## 3. Loading the model in Power BI Desktop
+## 2. Loading the model in Power BI Desktop
 
 1. **Get data → Text/CSV**, load the 7 files in `data/model/` (one by one, or **Get data → Folder** and combine is *not* needed — load them as separate tables).
 2. Check the column types in Power Query: `date_key` and `*_id` = Whole number, `TRUE/FALSE` columns = True/False, `full_date` / `month_start` = Date.
@@ -80,9 +61,8 @@ Small tables with the final numbers, computed in SQL. They are useful for KPI ca
 | `fact_challenger[date_key]` | `dim_date[date_key]` |
 
 4. Mark `dim_date` as the date table (**Table tools → Mark as date table → `full_date`**).
-5. Optionally load files from `data/summary/` as separate, unrelated tables (e.g. for KPI cards or to compare numbers).
 
-## 4. Numbers the dashboard must reproduce
+## 3. Numbers the dashboard must reproduce
 
 | Check | Expected |
 |---|---|
@@ -97,5 +77,5 @@ Small tables with the final numbers, computed in SQL. They are useful for KPI ca
 
 If a dashboard number differs, the usual cause is a missing `in_main_analysis = TRUE` filter.
 
-## 5. Sources (show on every page)
+## 4. Sources (show on every page)
 layoffhedge.com (2026-11-08) · Indeed Hiring Lab AI Tracker (CC BY 4.0) · Challenger, Gray & Christmas monthly reports. See `../data/SOURCES.md`.

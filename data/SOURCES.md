@@ -4,7 +4,7 @@ The raw data in `data/raw/` comes from third parties and is **not** covered by t
 
 | Data | Files | Source | License / terms |
 |---|---|---|---|
-| 2026 layoff announcements | `raw/layoffs_2026.csv`, `raw/layoffs_monthly_2026.csv`, `raw/layoffs_industries_2026.csv` | [layoffhedge.com](https://layoffhedge.com) — export generated 2026-11-08 | "Free to use with attribution" (stated in the file header) |
+| 2026 layoff announcements | `raw/layoffs_2026.csv` | [layoffhedge.com](https://layoffhedge.com) — export generated 2026-11-08 | "Free to use with attribution" (stated in the file header) |
 | Share of job postings mentioning AI | `raw/indeed_ai_posting.csv` | [Indeed Hiring Lab — AI Tracker](https://www.hiringlab.org/) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | US job cuts and AI-attributed cuts, Jan–Oct 2026 | `clean/challenger_ai_monthly.csv` (built by `python/build_challenger.py`) | [Challenger, Gray & Christmas](https://www.challengergray.com/) monthly job-cut reports and news coverage of them (source link per row) | Publicly reported figures; facts quoted with attribution |
 

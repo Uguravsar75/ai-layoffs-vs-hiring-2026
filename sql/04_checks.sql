@@ -3,7 +3,7 @@
 -- Run: psql -U postgres -d ai_is_piyasasi -f sql/04_checks.sql
 --
 -- "expected": values computed in Python (pandas) from the clean CSV files
---   (docs/PROJECT_PLAN.md section 5, robustness_check.csv, layoffs_clean_monthly.csv,
+--   (layoffs_clean.csv, robustness_check.csv, layoffs_clean_monthly.csv,
 --   output of build_challenger.py).
 -- "actual": the same value computed from the database views.
 -- If any row does not match, the script raises an ERROR at the end.

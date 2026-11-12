@@ -112,7 +112,7 @@ Every number is computed in Python and **re-computed independently in SQL**: `sq
 ├── notebooks/          analysis.ipynb + figures/
 ├── powerbi/            dashboard.pbix · dashboard.pdf · screenshots/ · data/ (CSV export)
 ├── presentation/       AI_Layoffs_vs_Hiring_2026.pptx · build_deck.py
-└── docs/               PROCESS.md · DATA_QUALITY.md · PROJECT_PLAN.md
+└── docs/               PROCESS.md · DATA_QUALITY.md
 ```
 
 ### How to run

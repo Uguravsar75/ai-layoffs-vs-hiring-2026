@@ -15,5 +15,7 @@ venv/
 # Power BI temporary files
 *.pbix.bak
 
-# Personal notes (kept locally, not published)
+# Personal notes and drafts (kept locally, not published)
 docs/MULAKAT_HAZIRLIK.md
+docs/PROJECT_PLAN.md
+docs/medium_post.md

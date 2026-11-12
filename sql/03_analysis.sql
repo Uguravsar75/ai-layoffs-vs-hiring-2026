@@ -6,7 +6,7 @@
 --   * Power BI reads the same views -> every number is computed in one place
 --   * The rules (strict AI definition, main-analysis filter) are not repeated in each query
 --
--- Rules (see docs/PROJECT_PLAN.md, section 5):
+-- Rules (see docs/DATA_QUALITY.md):
 --   * Main-analysis filter: in_main_analysis = TRUE (643 rows, 653,456 people)
 --   * HEADLINE AI share = strict definition (is_ai_strict); broad (is_ai_driven) = upper bound
 --   * Wording: "announced job cuts" (NOT "jobs lost")

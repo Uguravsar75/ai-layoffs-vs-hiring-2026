@@ -30,9 +30,8 @@ Goal: anyone reviewing the project should find the answers to "where does this d
 | # | File | Source | Content | License |
 |---|---|---|---|---|
 | 1 | `raw/layoffs_2026.csv` | layoffhedge.com (version of 8 Nov 2026) | 653 job-cut announcements in 2026: company, industry, people cut, workforce %, total workforce, date, category, source link | Free to use with attribution |
-| 2 | `raw/layoffs_monthly_2026.csv`, `raw/layoffs_industries_2026.csv` | layoffhedge.com | The site's own monthly and industry summaries (used for reconciliation only) | Free to use with attribution |
-| 3 | `raw/indeed_ai_posting.csv` | Indeed Hiring Lab – AI Tracker | Daily share of job postings mentioning AI in 9 countries (7-day average). 25,470 rows | CC-BY-4.0 |
-| 4 | `clean/challenger_ai_monthly.csv` (`build_challenger.py`) | Challenger, Gray & Christmas monthly reports | Jan–Oct 2026, monthly total and AI-attributed job cuts in the US (independent cross-check) | Public reports |
+| 2 | `raw/indeed_ai_posting.csv` | Indeed Hiring Lab – AI Tracker | Daily share of job postings mentioning AI in 9 countries (7-day average). 25,470 rows | CC-BY-4.0 |
+| 3 | `clean/challenger_ai_monthly.csv` (`build_challenger.py`) | Challenger, Gray & Christmas monthly reports | Jan–Oct 2026, monthly total and AI-attributed job cuts in the US (independent cross-check) | Public reports |
 
 **Why these sources?**
 - layoffhedge is the most up-to-date free source for 2026 that gives a source link for every row. Because it is little known, **it had to be verified** (§3–§7).
@@ -371,7 +370,7 @@ Manual verification results live in dictionaries inside `clean_layoffs.py`. When
 4. ~~Power BI (4 pages)~~ ✅ (§17)
 5. ~~Presentation~~ ✅ (§18)
 6. ~~README (English + Turkish)~~ ✅
-7. Word report, Medium post, LinkedIn post.
+7. Medium post and LinkedIn post (published outside this repository).
 
 ---
 
