@@ -1,6 +1,6 @@
 # Power BI folder
 
-Everything Power BI needs is in this folder. Copy the whole `powerbi/` folder to the Windows machine and open it from Power BI Desktop — no database connection is required.
+Everything Power BI needs is in this folder. **Dashboard pages:** Overview · AI Narrative · Hiring Side · Data Reliability (see `screenshots/`). Copy the whole `powerbi/` folder to the Windows machine and open it from Power BI Desktop — no database connection is required.
 
 ```
 powerbi/
@@ -8,8 +8,10 @@ powerbi/
 ├── data/
 │   ├── model/           ← the data model (7 tables) — use these to build the dashboard
 │   └── summary/         ← ready-made answers (8 small tables) — use these to check the numbers
-├── dashboard.pbix       ← (to be created) the Power BI file
-└── screenshots/         ← (to be created) one PNG per dashboard page
+├── dashboard.pbix       ← the Power BI file (4 pages, data imported — opens without the CSVs)
+├── dashboard.pdf        ← PDF export of the four pages
+├── screenshots/         ← one PNG per page (rendered from the PDF by pdf_to_png.swift)
+└── pdf_to_png.swift     ← macOS script: PDF pages → PNG
 ```
 
 The CSV files are exported from the PostgreSQL database by `sql/05_export_powerbi.sql`. Booleans are written as `TRUE`/`FALSE`, so Power BI reads them as True/False columns.
